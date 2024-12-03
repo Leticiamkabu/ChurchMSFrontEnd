@@ -197,7 +197,7 @@ export default {
         console.log("Form is valid. Proceeding with registration...", payload);
 
         try {
-          const response = await axios.post('http://localhost:5000/auth/create_user', {
+          const response = await axios.post('hhttps://churchmsbackend.onrender.com/auth/create_user', {
             firstname: this.form.firstname,
             lastname: this.form.lastname,
             email: this.form.email,

@@ -445,7 +445,7 @@ export default {
       if (formattedData && Object.keys(formattedData).length > 0){
         this.loading = true; 
       try {
-        const response = await axios.post('http://localhost:5000/members/create_member',formattedData);
+        const response = await axios.post('https://churchmsbackend.onrender.com/members/create_member',formattedData);
             
 
         console.info(response.data)
@@ -462,7 +462,7 @@ export default {
 
 this.loading = true; 
           try {
-            const response = await axios.post('http://localhost:5000/members/create_member_image', formData, {
+            const response = await axios.post('https://churchmsbackend.onrender.com/members/create_member_image', formData, {
               headers: {
                 'Content-Type': 'multipart/form-data', // Ensure you set the correct header for file upload
               },

@@ -69,7 +69,7 @@ export default {
 		console.info(this.password)
 		this.loading = true; 
       try {
-        const response = await axios.post('http://localhost:5000/auth/login', {
+        const response = await axios.post('https://churchmsbackend.onrender.com/auth/login', {
           email: this.email,
           password: this.password,
         });
