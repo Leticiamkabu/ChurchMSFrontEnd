@@ -20,7 +20,8 @@
       <i class="bi bi-grid"></i>
       <i class='bx bx-sun' id="darkLight"></i>
       <i class='bx bx-bell' ></i>
-      <img src="@/assets/logo.png" alt="" class="profile" />
+      <button @click="logout">Logout</button>
+
     </div>
   </nav>
   </body>
@@ -28,6 +29,16 @@
 
 <script>
 export default {
+  methods: {
+    logout() {
+      // Clear local storage
+      localStorage.clear();
+
+      // Optional: Redirect the user to the login page
+      window.location.href = "/login";
+    }
+  },
+
   mounted() {
     // Dark mode functionality
     document.addEventListener("DOMContentLoaded", () => {
@@ -140,5 +151,11 @@ body.dark {
   cursor: pointer;
   font-size: 20px;
   color: var(--grey-color);
+}
+
+.navbar_content button{
+    color: black;
+    background-color: #92c1c0;
+    border-radius: 5px;
 }
 </style>

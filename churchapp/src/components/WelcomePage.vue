@@ -4,15 +4,13 @@
 
   <div  class="welcome-container">
     <h1>Welcome to CTC CMS</h1>
-    <p>Please log in or register to continue.</p>
+    <p>Please log in to continue.</p>
     
     <div class="button-container">
       <router-link to="/login">
         <button class="login-btn">Login</button>
       </router-link>
-      <router-link to="/register">
-        <button class="register-btn">Register</button>
-      </router-link>
+      
     </div>
   </div>
 

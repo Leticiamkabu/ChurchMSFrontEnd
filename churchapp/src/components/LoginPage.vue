@@ -1,6 +1,14 @@
 <template>
 <router-view></router-view>
 <div class = "login-B">
+
+ <!-- Loading Screen -->
+    <div v-if="loading" class="loading-screen">
+      <div class="spinner"></div>
+      <p>Loading, please wait...</p>
+    </div>
+
+
   <div class="container">
 	<div class="screen">
 		<div class="screen__content">
@@ -50,6 +58,7 @@ export default {
   name: 'LoginPage',
   data() {
     return {
+		loading: false,
       email: '',
       password: '',
     };
@@ -58,8 +67,9 @@ export default {
     async login() {
 		console.info(this.email)
 		console.info(this.password)
+		this.loading = true; 
       try {
-        const response = await axios.post('https://churchmsbackend.onrender.com/auth/login', {
+        const response = await axios.post('http://localhost:5000/auth/login', {
           email: this.email,
           password: this.password,
         });
@@ -68,13 +78,23 @@ export default {
         if (response.data.message === 'User login successful') {
           // Save token if your backend sends one for future authenticated requests
           localStorage.setItem('isAuthenticated', 'True');
-          this.$router.push('/home'); // Navigate to home page upon successful login
+			localStorage.setItem('userRole', response.data.data.role);
+
+			if (response.data.data.role === "ADMIN"){
+				this.$router.push('/adminDashboard'); // Navigate to home page upon successful login
+			}
+			else{
+				this.$router.push('/home');
+			}
+
         } else {
           alert('Invalid credentials');
         }
       } catch (error) {
         console.error("Login error:", error);
         alert("An error occurred during login. Please try again.");
+      }finally {
+        this.loading = false; // Hide loading screen
       }
     },
   },
@@ -266,5 +286,52 @@ export default {
 
 .social-login__icon:hover {
 	transform: scale(1.5);	
+}
+
+
+
+/* Loading Screen Styles */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loading-screen .spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-screen p {
+  color: #fff;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Main Content Styles */
+.content {
+  padding: 20px;
 }
 </style>

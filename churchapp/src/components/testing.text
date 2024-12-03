@@ -893,3 +893,617 @@ if (response.data.message === 'User login successful') {
 
       this.attendanceList.push({ name: response.data.Attendance.fullname, date: response.data.Attendance.date , attendanceStatus: response.data.Attendance.status});
       this.name = '';
+
+
+
+
+
+      for image preview
+
+      data() {
+  return {
+    imageUrl: null, // For holding the uploaded image URL
+  };
+},
+methods: {
+  handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+      this.imageUrl = URL.createObjectURL(file); // Creates a local URL for the image
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="attendance-page">
+    <!-- Sidebar -->
+    <Sidebar />
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <Navbar />
+
+      <h1>User Registration</h1>
+      
+      <form @submit.prevent="submitRegistration" class="registration-form">
+        <!-- User Details -->
+        <div v-if="step === 1" class = "first_info">
+          
+
+          <label class = "label_fn" for="firstName">First Name</label>
+          <input class = "fn" type="text" v-model="form.firstName" id="firstName" placeholder="First Name" required />
+
+          <label class = "label_ln" for="lastName">Last Name</label>
+          <input  class = "ln" type="text" v-model="form.lastName" id="lastName" placeholder="Last Name" required />
+         
+
+          <label class = "label_pn" for="phoneNumber">Phone Number</label>
+          <input class = "pn" type="text" v-model="form.phoneNumber" id="phoneNumber" placeholder="Phone Number" required />
+
+          <label class = "label_ea" for="email">Email</label>
+          <input class = "ea" type="email" v-model="form.email" id="email" placeholder="Email" required />
+
+          <label class = "label_ny" for="nationality">Nationality</label>
+          <input class = "ny" type="text" v-model="form.nationality" id="nationality" placeholder="Nationality" required />
+
+          <label class = "label_ht" for="homeTown">Home Town</label>
+          <input  class = "ht" type="password" v-model="form.homeTown" id="homeTown" placeholder="Home Town" required />
+
+          <label class = "label_ha" for="homeAddress">Home Address</label>
+          <input class = "ha" type="text" v-model="form.homeAddress" id="homeAddress" placeholder="Home Address" required />
+
+          <button type="button" @click="nextStep">Next</button>
+        </div>
+
+
+        <div v-if="step === 2">
+
+          <h2 class = "step2_first_h2"> Professional Background</h2>
+
+          <label class = "label_auw" for="auw">Are you working</label>
+          <select class = "auw" v-model="form.working" id="auw"  required>
+            <option disabled value="">Select Working Status</option>
+            <option v-for="work in working" :key="work" :value="work">
+              {{ work }}
+            </option>
+          </select>
+
+          <label class = "label_op" for="occupation">Occupation</label>
+          <input class = "op" type="text" v-model="form.occupation" id="occupation" placeholder="Occupation" required />
+
+          <label class = "label_qf" for="qualification">Qualification</label>
+          <input class = "qf" type="text" v-model="form.qualification" id="qualification" placeholder="Qualification" required />
+
+          <label class = "label_in" for="institutionName">Institution Name</label>
+          <input  class = "in" type="text" v-model="form.institutionName" id="institutionName" placeholder="Institution Name" required />
+
+          <h2 class = "step2_second_h2" >Family & Emergency Contact Information</h2>
+
+          <label class = "label_man" for="dob">Mothers Name</label>
+          <input class = "man" type="text" v-model="form.mothersName" id="mothersName" placeholder="Mothers name" required />
+
+          <label class = "label_fan" for="fathersName">Fathers Name</label>
+          <input class = "fan" type="text" v-model="form.fathersName" id="fathersName" placeholder="Fathers name" required />
+
+          <label class = "label_nok" for="nextOfKin">Next of kin</label>
+          <input class = "nok" type="text" v-model="form.nextOfKin" id="nextOfKin" placeholder="Next of kin" required />
+
+          <label class = "label_nokp" for="nextOfKinPhone">Next Of Kin Phone</label>
+          <input class = "nokp" type="text" v-model="form.nextOfKinPhone" id="nextOfKinPhone" placeholder="Next Of Kin Phone" required />
+
+          
+          <button class = "s2preveBut" type="button" @click="prevStep">Previous</button>
+          <button class = "s2nextBut" type="button" @click="nextStep">Next</button>
+        </div>
+
+        <div v-if="step === 3">
+
+          <h2 class = "step3_first_h2"> Family & Emergency Contact Information 2</h2>
+
+          <label class = "label_mariSta" for="maritalStatus">Marital Status</label>
+          <select class = "mariSta" v-model="form.maritalStatus" id="maritalStatus"  required>
+            <option disabled value="">Select Marital Status</option>
+            <option v-for= "marital in maritalS" :key="marital" :value="marital">
+              {{ marital }}
+            </option>
+          </select>
+
+          <label class = "label_spcon" for="spouseContact">Spouse contact</label>
+          <input class = "spcon" type="text" v-model="form.spouseContact" id="spouseContact" placeholder="Spouse Contact" required />
+
+          <label class = "label_spnam" for="spouseName">Spouse Name </label>
+          <input class = "spnam" type="text" v-model="form.spouseName" id="spouseName" placeholder="Spouse Name" required />
+
+          <label class = "label_noch" for="numberOfChildren">Number of children</label>
+          <input  class = "noch" type="text" v-model="form.numberOfChildren" id="numberOfChildren" placeholder="Number of children" required />
+
+          <h2 class = "step3_second_h2" > Church Details </h2>
+
+          <label class = "label_meT" for="memeberType">Member Type</label>
+          <select class = "meT" v-model="form.memberType" id="memberType"  required>
+            <option disabled value="">Select Member Type</option>
+            <option v-for="member in memberT" :key="member" :value="member">
+              {{ member }}
+            </option>
+          </select>
+
+          <label class = "label_zone" for="zone">Zone</label>
+          <select class = "zone" v-model="form.zone" id="zone"  required>
+            <option disabled value="">Select Zone</option>
+            <option v-for="zone in zones" :key="zone" :value="zone">
+              {{ zone }}
+            </option>
+          </select>
+
+          <label class = "label_dapNa" for="departmentName">Department name</label>
+          <input class = "dapNa" type="text" v-model="form.departmentName" id="departmentName" placeholder="DepartmentName" required />
+
+          <label class = "label_datJo" for="datejoined">DateJoined</label>
+          <input class = "datJo" type="date" v-model="form.dateJoined" id="dateJoined" placeholder="dateJoined" required />
+
+          <label class = "label_claSelec" for="classSelection">Class Selection</label>
+          <select class = "claSelec" v-model="form.classSelection" id="classSelection"  required>
+            <option disabled value="">Select Class Selection</option>
+            <option v-for="classsel in classsels" :key="classsel" :value="classsel">
+              {{ classsel }}
+            </option>
+          </select>
+          
+          <button class = "s3preveBut" type="button" @click="prevStep">Previous</button>
+          <button class = "s3nextBut" type="button" @click="nextStep">Next</button>
+
+        </div>
+
+        <div v-if="step === 4">
+
+          <h2 class = "step4_first_h2"> Church Details 2</h2>
+
+          <label class = "label_spGi" for="spiritualGift">Spiritual Gift(s)</label>
+          <input class = "spGi" type="text" v-model="form.spiritualGift" id="spiritualGift" placeholder="Spiritual Gift" required />
+
+          <label class = "label_posi" for="position">Position</label>
+          <select class = "posi" v-model="form.position" id="position"  required>
+            <option disabled value="">Select Position</option>
+            <option v-for="position in positions" :key="position" :value="position">
+              {{ position }}
+            </option>
+          </select>
+
+          <label class = "label_waterBa" for="waterBa">Water Baptised</label>
+          <select class = "waterBa" v-model="form.waterBaptised" id="waterBaptised"  required>
+            <option disabled value="">Select option</option>
+            <option v-for="waterBap in waterBaps" :key="waterBap" :value="waterBap">
+              {{ waterBap }}
+            </option>
+          </select>
+
+          <label class = "label_batby" for="baptisedBy">Babtised By </label>
+          <input class = "batby" type="text" v-model="form.baptisedBy" id="baptisedBy" placeholder="Baptised By" required />
+
+          <label class = "label_dateBapt" for="dateBaptised">Date Baptised</label>
+          <input  class = "dateBapt" type="date" v-model="form.dateBaptised" id="dateBaptised" placeholder="Date Baptised" required />
+
+          <label class = "label_bbths" for="bbths">Baptised by the Holy Spirit</label>
+          <select class = "bbths" v-model="form.baptisedBy" id="bbths"  required>
+            <option disabled value="">Select option</option>
+            <option v-for="baptisedBy in baptisedBys" :key="baptisedBy" :value="baptisedBy">
+              {{ baptisedBy }}
+            </option>
+          </select>
+
+          <label class = "label_memberSta" for="memeberStatus">Member Status </label>
+          <select class = "memberSta" v-model="form.memberStatus " id="memberStatus"  required>
+            <option disabled value="">Select Member Status</option>
+            <option v-for="memberSta in memberStatuses" :key="memberSta" :value="memberSta">
+              {{ memberSta }}
+            </option>
+          </select>
+
+
+          
+          <button class = "s4preveBut" type="button" @click="prevStep">Previous</button>
+          <button class = "s4nextBut" type="button" @click="nextStep">Next</button>
+
+        </div>
+        <div v-if="step === 5">
+
+          <h2 class = "step5_first_h2"> Other Info</h2>
+
+          <label class = "label_datDece" for="dateDeceased">Date Deceased</label>
+          <input class = "datDece" type="date" v-model="form.dateDeceased" id="dateDeceased" placeholder="DateDeceased" required />
+
+          <label class = "label_datBur" for="dateBuried">Date Buried</label>
+          <input class = "datBur" type="date" v-model="form.dateBuried" id="dateburied" placeholder="Date Buried" required />
+
+          <label class = "label_confirm" for="confirmed">Confirmed</label>
+          <select class = "confirm" v-model="form.confirmed" id="confirmed"  required>
+            <option disabled value="">Select confirmed</option>
+            <option v-for="confirmed in confirmeds" :key="confirmed" :value="confirmed">
+              {{ confirmed }}
+            </option>
+          </select>
+
+          <label class = "label_dateConfir" for="dateConfirmed">Date Confirmed</label>
+          <input class = "dateConfir" type="date" v-model="form.dateConfirmed" id="dateConfirmed" placeholder="Date Comfired" required />
+
+          <label class = "label_comment" for="comment">Comment</label>
+          <textarea class="comment" v-model="form.comment" id="comment" placeholder="Write your comment here..." required></textarea>
+
+         
+          <input class = "label_image" type="file" @change="handleImageUpload" />
+          <div class = "image_container">
+          <img  v-if="imageUrl" :src="imageUrl" alt="Image Preview" class="images" />
+          </div>
+
+          <button class = "s5nextBut" type="button" @click="prevStep">Previous</button>
+          <button class = "s5resetBut" type="button" @click="nextStep">Reset</button>
+          <button class = "s5SaveBut" type="submit">Submit</button>
+
+        </div>
+
+        <div v-if="step === 6">
+
+        </div>
+      </form>
+
+      <div class="progress-bar">
+        <div :style="{ width: (step - 1) * 33 + '%' }" class="progress"></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+
+<script>
+import axios from 'axios';
+
+export default {
+  name: 'RegisterationPage'
+  ,
+  data() {
+    return {
+      firstname: '',
+      lastname: '',
+      email: '',
+      phoneNumber: '',
+      password: '',
+      confirmPassword: '',
+      role: '',
+      previllages: [],
+
+    };
+  },
+  computed: {
+    // Check if password and confirmPassword match
+    passwordMismatch() {
+      return this.password && this.confirmPassword && this.password !== this.confirmPassword;
+    },
+    // Validate if all fields are filled and passwords match
+    isFormValid() {
+      return (
+        this.firstname &&
+        this.lastname &&
+        this.email &&
+        this.phoneNumber &&
+        this.password &&
+        this.confirmPassword &&
+        this.role &&
+        !this.passwordMismatch
+      );
+    }
+  },
+  methods: {
+    async register() {
+      if (this.isFormValid) {
+        // Prepare data payload for backend
+        const payload = {
+          firstname: this.firstname,
+          lastname: this.lastname,
+          email: this.email,
+          phoneNumber: this.phoneNumber,
+          password: this.password,
+          role: this.role
+        };
+
+        try {
+          const response = await axios.post('https://churchmsbackend.onrender.com/auth/create_user', {
+            firstname: this.firstname,
+            lastname: this.lastname,
+            email: this.email,
+            phoneNumber: this.phoneNumber,
+            password: this.password,
+            role: this.role
+          });
+
+          console.info(response)
+          if (response.data.message === 'User registeration successfully') {
+            // Save token if your backend sends one for future authenticated requests
+            
+            this.$router.push('/login'); // Navigate to home page upon successful login
+          } else {
+            alert(response);
+          }
+      } catch (error) {
+        console.error("Registeration error:", error);
+        alert("An error occurred during registeration. Please try again.");
+      }
+        // Send the payload to the backend registration endpoint
+        // axios.post('your-backend-endpoint', payload)
+        // .then(response => {
+        //   // Handle success, maybe redirect to a login or home page
+        // })
+        // .catch(error => {
+        //   // Handle error
+        // });
+        console.log("Form is valid. Proceeding with registration...", payload);
+      } else {
+        console.log("Form is invalid");
+      }
+    }
+  }
+};
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<template>
+<router-view></router-view>
+<div class = "register-B">
+  <div class="container">
+    <!-- Title section -->
+    <div class="title">Registration</div>
+    <div class="content">
+      <!-- Registration form -->
+
+      <form @submit.prevent="register" action="#">
+
+        <div class="user-details">
+
+          <!-- Input for First Name -->
+          <div class="input-box">
+            <span class="details">First Name</span>
+            <input type="text" v-model="firstname" placeholder="Enter your first name" required>
+          </div>
+
+          <!-- Input for Last name -->
+          <div class="input-box">
+            <span class="details"> Last name</span>
+            <input type="text"  v-model="lastname" placeholder="Enter your last name" required>
+          </div>
+
+          <!-- Input for Email -->
+          <div class="input-box">
+            <span class="details">Email</span>
+            <input type="text" v-model="email"  placeholder="Enter your email" required>
+          </div>
+
+          <!-- Input for Phone Number -->
+          <div class="input-box">
+            <span class="details">Phone Number</span>
+            <input type="text" v-model="phoneNumber" placeholder="Enter your number" required>
+          </div>
+
+          <!-- Input for Password -->
+          <div class="input-box">
+            <span class="details">Password</span>
+            <input type="password" v-model="password" placeholder="Enter your password" required>
+          </div>
+
+          <!-- Input for Confirm Password -->
+          <div class="input-box">
+            <span class="details">Confirm Password</span>
+            <input type="password" v-model="confirmPassword" placeholder="Confirm your password" required>
+          </div>
+          
+          <p v-if="passwordMismatch" class="error">Passwords do not match</p>
+        </div>
+
+        <div class="gender-details">
+
+          <!-- Radio buttons for gender selection -->
+          <input type="radio" v-model="role" name="gender" value="ADMIN" id="dot-1">
+          <input type="radio" v-model="role" name="gender" value="USER" id="dot-2">
+
+          <span class="gender-title">Role</span>
+
+          <div class="category">
+            <!-- Label for Admin -->
+            <label for="dot-1">
+              <span class="dot one"></span>
+              <span class="gender">Admin</span>
+            </label>
+            <!-- Label for  User -->
+            <label for="dot-2">
+              <span class="dot two"></span>
+              <span class="gender">User</span>
+            </label>
+            
+            
+          </div>
+        </div>
+        <!-- Submit button -->
+        <div class="button">
+          <input type="submit" value="Register" :disabled="!isFormValid">
+        </div>
+
+        <router-link to="/" >
+        <i> Back</i>
+        </router-link>
+      </form>
+    </div>
+  </div>
+</div>
+</template>
+
+
+
+
+title : str
+    firstname : str
+    middlename : str
+    lastname : str
+    dateOfBirth : str
+    gender : str
+    phoneNumber : str
+    email : str
+    nationality :str
+    homeTown :str
+    homeAddress : str
+    workingStatus : str
+    occupation : str
+    qualification : str
+    institutionName : str
+    mothersName :str
+    fathersName :str
+    nextOfKin :str
+    nextOfKinPhoneNumber :str
+    maritalStatus :str
+    spouseContact :str
+    spouseName :str
+    numberOfChildren :str
+    memberType :str
+    cell :str
+    departmentName :str
+    dateJoined :str
+    classSelection :str
+    spiritualGift :str
+    position :str
+    waterBaptised :str
+    baptisedBy :str
+    dateBaptised :str
+    baptisedByTheHolySpirit :str
+    memberStatus :str
+    dateDeceased :str
+    dateBuried :str
+    confirmed :str
+    dateConfirmed :str
+    comment :str
+    
+
+
+
+
+
+
+    - Add members
+- create users
+Get user details
+- take attemdamce
+- get attandance overview
+- Get member details
+
+
+
+
+
+
+created_on
+: 
+"2024-11-13"
+email
+: 
+"ada@gmail.com"
+firstname
+: 
+"ama"
+id
+: 
+"88cfb123-b767-4ea1-a87d-2dc53b2fcba3"
+lastLogedin
+: 
+"NOT_SET"
+lastname
+: 
+"ada"
+password
+: 
+"$2b$12$UjMvoLmk6pE4YGsbog3IbuDvvH9SzQAix96I4nUiajywMHe5a7a1a"
+phoneNumber
+: 
+"0235788967"
+privileges
+: 
+"Add members,Take Attendance"
+role
+: 
+"DATA CLERK"
+[[Prototype]]
+: 
+Object
+
+
+
+
+table {
+  width: 60%;
+  border-collapse: collapse;
+  position: fixed;
+  top: 160px;
+  left:280px;
+}
+table, th, td {
+  
+  border: 1px solid #ccc;
+}
+
+th, td {
+  
+  padding: 10px;
+  text-align: center;
+}
+  
+th {
+  background-color: #f2f2f2;
+  width: 700px;
+}
+
+
+
+
+table {
+  width: 70%;
+  border-collapse: collapse;
+  position: fixed;
+  top: 300px;
+  left:300px;
+}
+
+table, th, td {
+  
+  border: 1px solid #ccc;
+}
+
+th, td {
+  
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+  width: 700px;
+}

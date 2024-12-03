@@ -4,32 +4,29 @@
     <Navbar />
     <Sidebar />
     <router-view />
-    <ImageSlider />
+    <overView />
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/GlobalNavbar.vue";
-import Sidebar from "@/components/GlobalSidebar.vue";
-import ImageSlider from "@/components/ImageSlider.vue";
+import Sidebar from "@/components/admin/AdminSidebar.vue";
+import overView from "@/components/admin/AdminOverviewPage.vue";
 
 export default {
   components: {
     Navbar,
     Sidebar,
-    ImageSlider,
+    overView,
   },
 
-
- mounted() {
+   mounted() {
     // Clear local storage when the tab or window is closed
     window.addEventListener("beforeunload", () => {
       localStorage.clear();
     });
   }
 };
-
-
 </script>
 
 <style scoped>
