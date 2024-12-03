@@ -145,7 +145,7 @@ export default {
     async fetchSummaryData() {
       this.loading = true; 
       try {
-        const response = await axios.get('http://localhost:5000/attendance/get_attendance_for_the_current_day');
+        const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_attendance_for_the_current_day');
         this.totalAttendance = response.data.total_attendance;
         this.totalPresent = response.data.present_attendance;
         this.totalAbsent = response.data.absent_attendance;
@@ -161,7 +161,7 @@ export default {
     async getUsers() {
       this.loading = true; 
       try {
-        const response = await axios.get('http://localhost:5000/auth/get_all_users');
+        const response = await axios.get('https://churchmsbackend.onrender.com/auth/get_all_users');
         
         console.info("user list", response.data)
         if (response.data !== 'No user data exists') {
@@ -189,7 +189,7 @@ export default {
       console.error('getting details to update')
 
        try {
-        const response = await axios.get(`http://localhost:5000/auth/get_user_by_id/${record.user_id}`);
+        const response = await axios.get(`https://churchmsbackend.onrender.com/auth/get_user_by_id/${record.user_id}`);
         
         console.info("user data", response.data)
 
@@ -262,7 +262,7 @@ export default {
         console.log("Form is valid. Proceeding with user update...", payload);
 
         try {
-          const response = await axios.patch(`http://localhost:5000/auth/update_individual_user_fields/${this.user_id}`, {
+          const response = await axios.patch(`https://churchmsbackend.onrender.com/auth/update_individual_user_fields/${this.user_id}`, {
             firstname: this.form.firstname,
             lastname: this.form.lastname,
             email: this.form.email,
@@ -312,7 +312,7 @@ export default {
         const confirmDelete = window.confirm(`Are you sure you want to delete the user with the name "${record.email}"?`);
 
         if (confirmDelete) {
-          const response = await axios.delete(`http://localhost:5000/auth/delete_user_by_id/${record.user_id}`);
+          const response = await axios.delete(`https://churchmsbackend.onrender.com/auth/delete_user_by_id/${record.user_id}`);
           
           console.info(" delete response ", response)
           if (response.data !== 'User not found') {

@@ -112,7 +112,7 @@ export default {
     async fetchAttendanceSummaryData() {
       this.loading = true; 
       try {
-        const response = await axios.get('http://localhost:5000/attendance/get_attendance_for_the_current_day');
+        const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_attendance_for_the_current_day');
         this.totalAttendance = response.data.total_attendance;
         this.totalPresent = response.data.present_attendance;
         this.totalAbsent = response.data.absent_attendance;
@@ -128,7 +128,7 @@ export default {
     async fetchUsersSummaryData() {
       this.loading = true;
       try {
-        const response = await axios.get('http://localhost:5000/auth/get_user_count');
+        const response = await axios.get('https://churchmsbackend.onrender.com/auth/get_user_count');
         this.totalUsers = response.data.total_users;
         this.totalDataclerk = response.data.data_clerk;
         this.totalAccounts = response.data.accounts;
@@ -148,7 +148,7 @@ export default {
     async fetchMembersSummaryData() {
       this.loading = true;
       try {
-        const response = await axios.get('http://localhost:5000//members/get_total_number_of_members');
+        const response = await axios.get('https://churchmsbackend.onrender.com/members/get_total_number_of_members');
         this.totalMembers = response.data.total_members;
         
 

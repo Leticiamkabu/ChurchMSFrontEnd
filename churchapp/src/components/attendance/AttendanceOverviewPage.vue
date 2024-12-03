@@ -98,7 +98,7 @@ export default {
     async fetchSummaryData() {
       this.loading = true; 
       try {
-        const response = await axios.get('http://localhost:5000/attendance/get_attendance_for_the_current_day');
+        const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_attendance_for_the_current_day');
         this.totalAttendance = response.data.total_attendance;
         this.totalPresent = response.data.present_attendance;
         this.totalAbsent = response.data.absent_attendance;
@@ -114,7 +114,7 @@ export default {
     async attendance() {
       this.loading = true; 
       try {
-        const response = await axios.get('http://localhost:5000/attendance/get_attendance_data');
+        const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_attendance_data');
         this.attendanceList = response.data;
         console.info("attendance list", response.data)
         if (response.data !== 'No data found') {
@@ -140,7 +140,7 @@ export default {
     async presentAttendance() {
       this.loading = true; 
       try {
-        const response = await axios.get('http://localhost:5000/attendance/get_present_attendance_data');
+        const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_present_attendance_data');
         this.attendanceList = response.data;
 
         console.info("asbsent attendance list", response.data)
@@ -168,7 +168,7 @@ export default {
     async absentAttendance() {
       this.loading = true; 
       try {
-        const response = await axios.get('http://localhost:5000/attendance/get_absent_attendance_data');
+        const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_absent_attendance_data');
         this.attendanceList = response.data;
 
         console.info("present attendance list", response.data)
