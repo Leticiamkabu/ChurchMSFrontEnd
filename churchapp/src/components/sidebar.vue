@@ -7,6 +7,10 @@
         <ul class="menu_items">
           <div class="menu_title menu_dahsboard"></div>
 
+          <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
+          <!-- start -->
+          
+          <!-- end -->
 
           <!-- duplicate this li tag if you want to add or remove  navlink with submenu -->
           <!-- start -->
@@ -16,9 +20,14 @@
                 <i class="bx bx-grid-alt"></i>
               </span>
               <span class="navlink">Overview</span>
-              
+              <i class="bx bx-chevron-right arrow-left"></i>
             </div>
-            
+            <ul class="menu_items submenu">
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+            </ul>
           </li>
           <!-- end -->
         
@@ -26,63 +35,25 @@
         <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
           <!-- start -->
           <li class="item">
-
-            <div href="#" class="nav_link submenu_item">
+          <router-link to="/attendance" class="nav_link submenu_item">
               <span class="navlink_icon">
-                <i class="bx bx-check-circle"></i>
+                <i class="bx bx-user"></i>
               </span>
               <span class="navlink">Attendance</span>
-              <i class="bx bx-chevron-right arrow-left"></i>
-            
-            </div>
-
-            <ul class="menu_items submenu">
-              <router-link to="/attendance" class="nav_link submenu_item">
-              <i class='bx bx-task'></i>
-              <a href="#" class="nav_link sublink"> Take Attendance</a>
-              </router-link>
-
-              <router-link to="/attendanceOverview" class="nav_link submenu_item">
-              <i class='bx bx-grid-small'></i>
-              <a href="#" class="nav_link sublink">overview</a>
-              </router-link>
-
-              
-            </ul>
-          </li>
-          <!-- end -->
-        
-        <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
-              <!-- start -->
-          
-          <li class="item">
-            <router-link to="" class="nav_link submenu_item">
-
-              <span class="navlink_icon">
-                <i class="bx bx-group"></i>
-              </span>
-              <span class="navlink">Members</span>
               <i class="bx bx-chevron-right arrow-left"></i>
             
             </router-link>
 
             <ul class="menu_items submenu">
-              <router-link to="/members" class="nav_link submenu_item">
-              <i class="bx bx-user-plus"></i>
-              <a href="#" class="nav_link sublink">Add members</a>
-              </router-link>
-
-              <router-link to="/editMemberPage" class="nav_link submenu_item">
-              <i class='bx bxs-user-detail'></i>
-              <a href="#" class="nav_link sublink">Edit members</a>
-              </router-link>
-
-
-              
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
             </ul>
           </li>
           <!-- end -->
-
+        
+        <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
           <!-- start -->
           <li class="item">
             <div href="#" class="nav_link submenu_item">
@@ -90,15 +61,91 @@
                 <i class="bx bx-file"></i>
               </span>
               <span class="navlink">Reports</span>
-              
+              <i class="bx bx-chevron-right arrow-left"></i>
             </div>
-            
+            <ul class="menu_items submenu">
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+            </ul>
           </li>
+          <!-- end -->
 
         </ul>
-        
-        
-
+        <ul class="menu_items">
+          <div class="menu_title menu_editor"></div>
+          <!-- duplicate these li tag if you want to add or remove navlink only -->
+          <!-- Start -->
+          <li class="item">
+            <a href="#" class="nav_link">
+              <span class="navlink_icon">
+                <i class="bx bxs-magic-wand"></i>
+              </span>
+              <span class="navlink">Magic build</span>
+            </a>
+          </li>
+          <!-- End -->
+          <li class="item">
+            <a href="#" class="nav_link">
+              <span class="navlink_icon">
+                <i class="bx bx-loader-circle"></i>
+              </span>
+              <span class="navlink">Filters</span>
+            </a>
+          </li>
+          <li class="item">
+            <a href="#" class="nav_link">
+              <span class="navlink_icon">
+                <i class="bx bx-filter"></i>
+              </span>
+              <span class="navlink">Filter</span>
+            </a>
+          </li>
+          <li class="item">
+            <a href="#" class="nav_link">
+              <span class="navlink_icon">
+                <i class="bx bx-cloud-upload"></i>
+              </span>
+              <span class="navlink">Upload new</span>
+            </a>
+          </li>
+        </ul>
+        <ul class="menu_items">
+          <div class="menu_title menu_setting"></div>
+          <li class="item">
+            <a href="#" class="nav_link">
+              <span class="navlink_icon">
+                <i class="bx bx-flag"></i>
+              </span>
+              <span class="navlink">Notice board</span>
+            </a>
+          </li>
+          <li class="item">
+            <a href="#" class="nav_link">
+              <span class="navlink_icon">
+                <i class="bx bx-medal"></i>
+              </span>
+              <span class="navlink">Award</span>
+            </a>
+          </li>
+          <li class="item">
+            <a href="#" class="nav_link">
+              <span class="navlink_icon">
+                <i class="bx bx-cog"></i>
+              </span>
+              <span class="navlink">Setting</span>
+            </a>
+          </li>
+          <li class="item">
+            <a href="#" class="nav_link">
+              <span class="navlink_icon">
+                <i class="bx bx-layer"></i>
+              </span>
+              <span class="navlink">Features</span>
+            </a>
+          </li>
+        </ul>
         <!-- Sidebar Open / Close -->
         <div class="bottom_content">
           <div class="bottom expand_sidebar">
@@ -152,22 +199,6 @@ submenuItems.forEach((item, index) => {
   });
 });
 
-  },
-
-
-  methods: {
-    getDashboardRoute() {
-      const userRole = localStorage.getItem('userRole'); // Or use Vuex if roles are managed there
-
-      switch (userRole) {
-        case 'ADMIN':
-          return '/admin-dashboard';
-        case 'User':
-          return '/user-dashboard';
-        default:
-          return '/home'; // Fallback route if role is unknown
-      }
-    }
   }
 };
 </script>
@@ -370,11 +401,6 @@ submenuItems.forEach((item, index) => {
   display: none;
 }
 
-.submenu i{
-    position: relative;
-    left: 40px;
-}
-
 @media screen and (max-width: 768px) {
   #sidebarOpen {
     font-size: 25px;
@@ -397,3 +423,4 @@ submenuItems.forEach((item, index) => {
   }
 }
 </style>
+

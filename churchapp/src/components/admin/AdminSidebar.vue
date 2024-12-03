@@ -7,21 +7,50 @@
         <ul class="menu_items">
           <div class="menu_title menu_dahsboard"></div>
 
-
-          <!-- duplicate this li tag if you want to add or remove  navlink with submenu -->
+          <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
           <!-- start -->
           <li class="item">
-            <div href="#" class="nav_link submenu_item">
+            <router-link to="/adminOverView" class="nav_link submenu_item">
               <span class="navlink_icon">
                 <i class="bx bx-grid-alt"></i>
               </span>
+              
               <span class="navlink">Overview</span>
               
-            </div>
+        
+            </router-link>
             
           </li>
           <!-- end -->
         
+        <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
+          <!-- start -->
+          <li class="item">
+          <router-link to="" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-user"></i>
+              </span>
+              <span class="navlink">Users</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            
+            </router-link>
+
+            <ul class="menu_items submenu">
+              <router-link to="/register" class="nav_link submenu_item">
+              <i class="bx bx-user-plus"></i>
+              <a href="#" class="nav_link sublink">Add Users</a>
+              </router-link>
+
+              <router-link to="/editUser" class="nav_link submenu_item">
+              <i class='bx bxs-user-detail'></i>
+              <a href="#" class="nav_link sublink">Edit Users</a>
+              </router-link>
+
+              
+            </ul>
+          </li>
+          <!-- end -->
+
 
         <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
           <!-- start -->
@@ -44,7 +73,7 @@
 
               <router-link to="/attendanceOverview" class="nav_link submenu_item">
               <i class='bx bx-grid-small'></i>
-              <a href="#" class="nav_link sublink">overview</a>
+              <a href="#" class="nav_link sublink">Overview</a>
               </router-link>
 
               
@@ -53,7 +82,7 @@
           <!-- end -->
         
         <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
-              <!-- start -->
+          <!-- start -->
           
           <li class="item">
             <router-link to="" class="nav_link submenu_item">
@@ -77,12 +106,17 @@
               <a href="#" class="nav_link sublink">Edit members</a>
               </router-link>
 
+              <router-link to="" class="nav_link submenu_item">
+              <a href="#" class="nav_link sublink">Members actions</a>
+              </router-link>
 
               
             </ul>
           </li>
           <!-- end -->
 
+
+          <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
           <!-- start -->
           <li class="item">
             <div href="#" class="nav_link submenu_item">
@@ -90,15 +124,19 @@
                 <i class="bx bx-file"></i>
               </span>
               <span class="navlink">Reports</span>
-              
+              <i class="bx bx-chevron-right arrow-left"></i>
             </div>
-            
+            <ul class="menu_items submenu">
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+            </ul>
           </li>
+          <!-- end -->
 
         </ul>
         
-        
-
         <!-- Sidebar Open / Close -->
         <div class="bottom_content">
           <div class="bottom expand_sidebar">
@@ -152,22 +190,6 @@ submenuItems.forEach((item, index) => {
   });
 });
 
-  },
-
-
-  methods: {
-    getDashboardRoute() {
-      const userRole = localStorage.getItem('userRole'); // Or use Vuex if roles are managed there
-
-      switch (userRole) {
-        case 'ADMIN':
-          return '/admin-dashboard';
-        case 'User':
-          return '/user-dashboard';
-        default:
-          return '/home'; // Fallback route if role is unknown
-      }
-    }
   }
 };
 </script>
