@@ -7,8 +7,10 @@
       <p>Loading, please wait...</p>
     </div>
 
-    <!-- Sidebar -->
-    <Sidebar />
+     <!-- Sidebar -->
+     <!-- Conditional Rendering for Sidebar -->
+    <AdminSidebar v-if="isAdmin" />
+    <UserSidebar v-else />
 
     <!-- Main Content Area -->
     <div class="main-content">
@@ -26,6 +28,9 @@
       <!-- Button Actions -->
       <section class="left_view">
         <button class="button4" @click="getMembers">Get Members</button>
+      </section>
+      <section class="left_view">
+        <button class="button5" @click="downloadMembers">Download Members</button>
       </section>
 
       <!-- User Table -->
@@ -116,13 +121,15 @@
 </template>
 
 <script>
-import Sidebar from '@/components/GlobalNavbar.vue';
-import Navbar from '@/components/admin/AdminSidebar.vue';
+import Navbar from '@/components/GlobalNavbar.vue';
+import UserSidebar from '@/components/GlobalSidebar.vue';      // Make sure to import your Navbar component
+import AdminSidebar from '@/components/admin/AdminSidebar.vue';
 import axios from 'axios';
 
 export default {
   components: {
-    Sidebar,
+    UserSidebar,
+    AdminSidebar,
     Navbar
   },
   data() {
@@ -400,6 +407,56 @@ this.loading = true;
   },
 
 
+  
+  async downloadMembers() {
+  console.info("In the download attendance function");
+
+  try {
+    // Fetch the file from the backend
+    const response = await axios.get('http://localhost:5000/members/download_member_data', {
+      responseType: 'blob', // Specify response type as blob
+    });
+
+    console.info("Response:", response);
+
+    // Create a Blob from the response
+    const blob = new Blob([response.data], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+
+    console.info("File response converted:", blob);
+
+    // Create a download link
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+
+    // Use the filename provided by the backend or set a default one
+    const contentDisposition = response.headers['content-disposition'];
+    let fileName = 'attendance_data.xlsx';
+    if (contentDisposition) {
+      const match = contentDisposition.match(/filename="(.+)"/);
+      if (match && match[1]) {
+        fileName = match[1];
+      }
+    }
+
+    a.download = fileName;
+    document.body.appendChild(a); // Append the link to the body
+    a.click();
+    document.body.removeChild(a); // Remove the link after clicking
+
+    console.info("File is downloaded");
+
+    // Cleanup
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Error downloading the file:", error);
+  }
+},
+  
+
+
   mounted() {
     // Automatically fetch summary data when the component is mounted
     this.fetchSummaryData();
@@ -463,6 +520,20 @@ select{
   position: fixed;
   left: 1160px;
   top: 100px;
+
+}
+
+.button5 {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #92c1c0;
+  color: black;
+  cursor: pointer;
+  margin-right: 10px;
+  position: fixed;
+  left: 1160px;
+  top: 150px;
 
 }
 
