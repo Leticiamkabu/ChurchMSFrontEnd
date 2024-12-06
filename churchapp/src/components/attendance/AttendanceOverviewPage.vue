@@ -24,7 +24,7 @@
         <button class="button1" @click="attendance">Attendance</button>
         <button class="button2" @click="presentAttendance"> Attendees</button>
         <button class="button3" @click="absentAttendance">Absentees</button>
-        <button class="button4" @click="PrintAttendance">Print Attendance</button>
+        <button class="button4" @click="downloadAttendance">Download Attendance</button>
       </section>
 
       <!-- Summary Data Display -->
@@ -191,6 +191,55 @@ export default {
         this.loading = false; // Hide loading screen
       }
     },
+
+
+    async downloadAttendance() {
+  console.info("In the download attendance function");
+
+  try {
+    // Fetch the file from the backend
+    const response = await axios.get('http://localhost:5000/attendance/download_current_attendance_data', {
+      responseType: 'blob', // Specify response type as blob
+    });
+
+    console.info("Response:", response);
+
+    // Create a Blob from the response
+    const blob = new Blob([response.data], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+
+    console.info("File response converted:", blob);
+
+    // Create a download link
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+
+    // Use the filename provided by the backend or set a default one
+    const contentDisposition = response.headers['content-disposition'];
+    let fileName = 'attendance_data.xlsx';
+    if (contentDisposition) {
+      const match = contentDisposition.match(/filename="(.+)"/);
+      if (match && match[1]) {
+        fileName = match[1];
+      }
+    }
+
+    a.download = fileName;
+    document.body.appendChild(a); // Append the link to the body
+    a.click();
+    document.body.removeChild(a); // Remove the link after clicking
+
+    console.info("File is downloaded");
+
+    // Cleanup
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Error downloading the file:", error);
+  }
+},
+  
 
     
   },
