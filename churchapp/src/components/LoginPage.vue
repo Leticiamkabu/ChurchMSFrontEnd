@@ -81,7 +81,7 @@ export default {
 			localStorage.setItem('userRole', response.data.data.role);
 
 			if (response.data.data.role === "ADMIN"){
-				this.$router.push('/adminDashboard'); // Navigate to home page upon successful login
+				this.$router.push('/adminOverView'); // Navigate to home page upon successful login
 			}
 			else{
 				this.$router.push('/home');
