@@ -147,8 +147,12 @@ export default {
               service_type = 'Not Indicated'
             }
 
+            let firstname = member.firstname || "";
+            let othername = member.othername || "";
+            let lastname = member.lastname || "";
+
             const today = new Date().toLocaleDateString();
-            const name = `${member.firstname} ${member.othername} ${member.lastname}`;
+            const name = `${firstname} ${othername} ${lastname}`;
             this.attendanceList.push({ name: name, date: today, attendanceStatus: attendance, membersId : member.id, attendanceID : attendanceId, serviceType: service_type});
           } catch (attendanceError) {
             console.error("Error fetching attendance:", attendanceError);
@@ -187,28 +191,30 @@ export default {
       this.isMarkingAttendance = true; 
 
       console.info("you are in markAttendance")
-      console.info("member id", this.members_ID)
+      console.info("member id", this.members_ID) 
 
-      const names = this.name.split(" ");
-      const firstnames = names[0] || '';       // First name
-      const othernames = names[1] || '';       // Middle name (if available)
-      const lastnames = names[2] || '';   
-
-      console.info("firstname", firstnames)
-      console.info("lastname", othernames)
-      console.info("othername", lastnames)
+      
+      console.info("name", this.name)
       console.info("attendance Status", this.currentStatus)
       console.info("attendance Id", this.attendanceIDS)
 
       this.loading = true;
+      
+
+      console.log("Sending Data:", {
+    memberID: this.members_ID || "",
+    name : this.name,
+    status: 'PRESENT',
+    serviceType: this.selectedService || "",
+});
+
       try {
           const response = await axios.post('https://churchmsbackend.onrender.com/attendance/create_attendance',{
             memberID: this.members_ID,
-            firstname: firstnames,
-            lastname: lastnames,
-            othername: othernames,
+            name : this.name,
             status: 'PRESENT',
-            serviceType : this.selectedService,
+            serviceType : this.selectedService || "",
+            
 
 
           
