@@ -1,4 +1,5 @@
 <template>
+
   <div class="attendance-page">
 
   <!-- Loading Screen -->
@@ -121,12 +122,12 @@ export default {
         console.error('Error fetching Attendance summary data:', error);
       }
       finally {
-        this.loading = false; // Hide loading screen
+        //this.loading = false; // Hide loading screen
       }
     },
 
     async fetchUsersSummaryData() {
-      this.loading = true;
+      //this.loading = true;
       try {
         const response = await axios.get('https://churchmsbackend.onrender.com/auth/get_user_count');
         this.totalUsers = response.data.total_users;
@@ -140,13 +141,13 @@ export default {
         console.error('Error fetching user summary data:', error);
       }
       finally {
-        this.loading = false; // Hide loading screen
+        //this.loading = false; // Hide loading screen
       }
     },
 
 
     async fetchMembersSummaryData() {
-      this.loading = true;
+     // this.loading = true;
       try {
         const response = await axios.get('https://churchmsbackend.onrender.com/members/get_total_number_of_members');
         this.totalMembers = response.data.total_members;
@@ -166,12 +167,12 @@ export default {
     
   },
   mounted() {
+    
     // Automatically fetch summary data when the component is mounted
     this.fetchAttendanceSummaryData();
     this.fetchUsersSummaryData();
     this.fetchMembersSummaryData();
-
-
+    
     // Clear local storage when the tab or window is closed
     window.addEventListener("beforeunload", () => {
       localStorage.clear();
