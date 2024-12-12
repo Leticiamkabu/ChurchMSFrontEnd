@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // import App from '../App.vue';
-// import WelcomePage from '../components/WelcomePage.vue';
+import WelcomePage from '../components/WelcomePage.vue';
 import LoginPage from '../components/LoginPage.vue';
 import AdminPage from '../components/admin/AdminPage.vue';
 import RegisterationPage from '../components/admin/RegisterationPage.vue';
@@ -15,7 +15,7 @@ import EditMemberPage from '../components/members/EditMembersPage.vue';
 
 
 const routes = [
-  // { path: '/', component: WelcomePage },
+  { path: '/', component: WelcomePage },
   { path: '/login', component: LoginPage },
 
   // admin
