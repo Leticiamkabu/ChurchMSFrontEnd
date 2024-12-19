@@ -35,7 +35,7 @@ export default {
       localStorage.clear();
 
       // Optional: Redirect the user to the login page
-      window.location.href = "/login";
+      window.location.href = "/#/login";
     }
   },
 
