@@ -198,7 +198,7 @@ export default {
 
   try {
     // Fetch the file from the backend
-    const response = await axios.get('http://localhost:5000/attendance/download_current_attendance_data', {
+    const response = await axios.get('https://churchmsbackend.onrender.com/attendance/download_current_attendance_data', {
       responseType: 'blob', // Specify response type as blob
     });
 
