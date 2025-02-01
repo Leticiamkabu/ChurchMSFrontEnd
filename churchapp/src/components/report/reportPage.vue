@@ -356,6 +356,21 @@ export default {
       console.info('birthMonth :', this.memberFilters.birthMonth)
       console.info('department :', this.memberFilters.department)
 
+      if (this.memberFilters.age == ""){
+          this.memberFilters.age = "a";
+      }
+
+      if (this.memberFilters.ageRange == ""){
+          this.memberFilters.ageRange = "ar";
+      }
+      if (this.memberFilters.birthMonth == ""){
+          this.memberFilters.birthMonth = "bm";
+      }
+      if (this.memberFilters.department == ""){
+          this.memberFilters.department = "d";
+      }
+      
+
        try {
     
         const response = await axios.get(`https://churchmsbackend.onrender.com/members/sort_member_data/${this.memberFilters.age}/${this.memberFilters.ageRange}/${this.memberFilters.department}/${this.memberFilters.birthMonth}`,{
