@@ -174,7 +174,7 @@ export default {
     async getMembers() {
       this.loading = true; 
       try {
-        const response = await axios.get('htthttps://churchmsbackend.onrender.com/members/get_all_members');
+        const response = await axios.get('https://churchmsbackend.onrender.com/members/get_all_members');
         
         console.info("member list", response.data)
         if (response.data !== 'No user data exists') {
@@ -413,7 +413,7 @@ this.loading = true;
 
   try {
     // Fetch the file from the backend
-    const response = await axios.get('http://localhost:5000/members/download_member_data', {
+    const response = await axios.get('https://churchmsbackend.onrender.com/members/download_member_data', {
       responseType: 'blob', // Specify response type as blob
     });
 

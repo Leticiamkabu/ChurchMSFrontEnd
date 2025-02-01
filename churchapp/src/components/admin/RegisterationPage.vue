@@ -83,6 +83,11 @@
                 <span class="privilege5-text">Get Member Details</span>
               </label>
 
+              <label for="privilege5">
+                <input class="privilege5" type="checkbox" id="privilege5" value="Get Member Details" v-model="form.privileges"> 
+                <span class="privilege5-text">Generate Report</span>
+              </label>
+
               
              <button class = "s2preveBut" type="button" @click="prevStep">Previous</button>
               <button class="s2submitBut" type="button" @click="register">Submit</button>

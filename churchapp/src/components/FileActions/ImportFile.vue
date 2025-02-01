@@ -38,7 +38,7 @@ export default {
       formData.append("file", this.selectedFile);
 
       try {
-        const response = await axios.post("http://localhost:5000/members/upload", formData, {
+        const response = await axios.post("https://churchmsbackend.onrender.com/members/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

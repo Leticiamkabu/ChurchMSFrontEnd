@@ -127,10 +127,12 @@
               <i class="bx bx-chevron-right arrow-left"></i>
             </div>
             <ul class="menu_items submenu">
-              <a href="#" class="nav_link sublink">Nav Sub Link</a>
-              <a href="#" class="nav_link sublink">Nav Sub Link</a>
-              <a href="#" class="nav_link sublink">Nav Sub Link</a>
-              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+            <router-link to="/reportPage" class="nav_link submenu_item">
+              <i class='bx bxs-user-detail'></i>
+              <a href="#" class="nav_link sublink">Attendance</a>
+              </router-link>
+
+              
             </ul>
           </li>
           <!-- end -->
