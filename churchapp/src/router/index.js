@@ -12,6 +12,7 @@ import AttendanceOverviewPage from '../components/attendance/AttendanceOverviewP
 import MembersPage from '../components/members/AddMembersPage.vue';
 import AdminMemberActionPage from '../components/admin/AdminMemberActionPage.vue';
 import EditMemberPage from '../components/members/EditMembersPage.vue';
+import ReportPage from '../components/report/reportPage.vue';
 
 
 const routes = [
@@ -26,6 +27,8 @@ const routes = [
   { path: '/adminMemberActionPage', component: AdminMemberActionPage },
   
   { path: '/editMemberPage', component: EditMemberPage },
+  { path: '/reportPage', component: ReportPage },
+
   // user
   { path: '/home', component: HomePage },
   { path: '/attendance', component: AttendancePage },
