@@ -87,7 +87,7 @@
 
           <div>
             <label for="age" class="ageFilterLabel">Age</label>
-            <input class = "ageFilter" type="text" v-model="memberFilters.age" placeholder="Enter Name" required  @keydown.enter="checkName" />
+            <input class = "ageFilter" type="text" v-model="memberFilters.age" placeholder="Enter Age" required  @keydown.enter="checkName" />
             
           </div>
 
