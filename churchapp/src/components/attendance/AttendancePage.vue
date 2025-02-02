@@ -57,7 +57,12 @@
             </tr>
           </tbody>
         </table>
-      </div>
+      </div>ingAttendance: false,ingAttendance: false,ingAttendance: false,
+ingAttendance: false,
+ingAttendance: false,
+
+
+
 
     </div>
   </div>
@@ -153,7 +158,7 @@ export default {
 
             const today = new Date().toLocaleDateString();
             const name = `${firstname} ${othername} ${lastname}`;
-            this.attendanceList.push({ name: name, date: today, attendanceStatus: attendance, membersId : member.id, attendanceID : attendanceId, serviceType: service_type});
+            this.attendanceList.push({ name: name, date: today, attendanceStatus: attendance, membersId : member.id, attendanceIDS : attendanceId, serviceType: service_type});
           } catch (attendanceError) {
             console.error("Error fetching attendance:", attendanceError);
           }
