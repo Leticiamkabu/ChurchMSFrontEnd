@@ -144,6 +144,7 @@ export default {
               console.info('member attendance found')
               attendance = attendanceResponse.data.status;
               attendanceId = attendanceResponse.data.id
+              this.attendanceID = attendanceResponse.data.id
               service_type = attendanceResponse.data.serviceType
             }
             else{
