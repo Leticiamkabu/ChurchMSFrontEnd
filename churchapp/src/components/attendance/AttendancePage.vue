@@ -49,7 +49,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(record, index) in attendanceList" :key="index" @click="populateName(record.name, record.membersId, record.attendanceStatus, record.attendanceIDS)">
+            <tr v-for="(record, index) in attendanceList" :key="index" @click="populateName(record.name, record.membersId, record.attendanceStatus, record.atttendanceID)">
               <td>{{ record.name }}</td>
               <td>{{ record.date }}</td>
               <td>{{ record.attendanceStatus }}</td>
@@ -88,7 +88,7 @@ export default {
       attendanceList: [],
       members_ID : '',
       currentStatus : '',
-      attendanceIDS : '',
+      attendanceID : '',
     };
   },
 
