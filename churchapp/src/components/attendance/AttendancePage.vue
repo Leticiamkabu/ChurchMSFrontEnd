@@ -133,7 +133,7 @@ export default {
         // Using for...of to handle asynchronous requests within loop
         for (const member of response.data) {
           try {
-            const attendanceResponse = await axios.get(`https://churchmsbackend.onrender.com/attendance/get_attendance_by_member_id/${member.id}`);
+            const attendanceResponse = await axios.get(`https://churchmsbackend.onrender.com/attendance/get_attendance_by_member_id/${members_ID}`);
             console.info(attendanceResponse);
 
             let attendance = 'Not Marked'; // Default to 'ABSENT'
@@ -147,7 +147,7 @@ export default {
               service_type = attendanceResponse.data.serviceType
             }
             else{
-              console.info('member attendance notfound')
+              console.info('member attendance not found')
               attendance = 'Not Marked';
               service_type = 'Not Indicated'
             }
@@ -299,7 +299,8 @@ export default {
       this.loading = true;
         try {
           console.info("with editing endpoint")
-          const response = await axios.patch(`https://churchmsbackend.onrender.com/attendance/update_individual_attendance_fields/${this.attendanceIDS}`, {
+          console.info("id : ", this.attendanceID )
+          const response = await axios.patch(`https://churchmsbackend.onrender.com/attendance/update_individual_attendance_fields/${this.attendanceID}`, {
             // Include the fields and new values you want to update
             status: nowStatus,
             serviceType : this.selectedService,
