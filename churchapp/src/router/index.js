@@ -13,6 +13,7 @@ import MembersPage from '../components/members/AddMembersPage.vue';
 import AdminMemberActionPage from '../components/admin/AdminMemberActionPage.vue';
 import EditMemberPage from '../components/members/EditMembersPage.vue';
 import ReportPage from '../components/report/reportPage.vue';
+import SMSNotificationPage from '../components/notification/smsNotificationPage.vue';
 
 
 const routes = [
@@ -28,6 +29,7 @@ const routes = [
   
   { path: '/editMemberPage', component: EditMemberPage },
   { path: '/reportPage', component: ReportPage },
+  { path: '/smsNotificationPage', component: SMSNotificationPage },
 
   // user
   { path: '/home', component: HomePage },

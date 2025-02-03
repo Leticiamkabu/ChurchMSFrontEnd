@@ -137,6 +137,31 @@
           </li>
           <!-- end -->
 
+
+
+          <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
+          <!-- start -->
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-file"></i>
+              </span>
+              <span class="navlink">Notifications</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+            <ul class="menu_items submenu">
+            <router-link to="/smsNotificationPage" class="nav_link submenu_item">
+              <i class='bx bxs-user-detail'></i>
+              <a href="#" class="nav_link sublink">SMS</a>
+              </router-link>
+
+              
+            </ul>
+          </li>
+          <!-- end -->
+
+
+
         </ul>
         
         <!-- Sidebar Open / Close -->
