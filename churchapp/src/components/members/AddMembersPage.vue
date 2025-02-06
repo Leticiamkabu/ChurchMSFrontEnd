@@ -460,7 +460,7 @@ export default {
           formData.append('fullname', fullname);
           formData.append('file', this.selectedImage);
 
-this.loading = true; 
+          this.loading = true; 
           try {
             const response = await axios.post('https://churchmsbackend.onrender.com/members/create_member_image', formData, {
               headers: {
@@ -808,7 +808,8 @@ this.loading = true;
 }
 
 h2{
-position: fixed;
+
+  position: fixed;
     left: 420px;
     top: 135px;
     height: 10px;

@@ -229,6 +229,13 @@ export default {
     };
   },
 
+
+  computed: {
+    isAdmin() {
+      return localStorage.getItem("userRole") === 'ADMIN';
+    }
+  },
+
   methods: {
 
     toggleFilters() {

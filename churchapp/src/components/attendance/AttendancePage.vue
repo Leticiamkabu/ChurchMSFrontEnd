@@ -113,6 +113,7 @@ export default {
   if (this.isMarkingAttendance) return;
 
   this.isSearching = true;  // Set search flag
+  this.name = this.name.replace(/\s+/g, ' ');
   console.log("Searching for:", this.name);
 
   try {

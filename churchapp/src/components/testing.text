@@ -1564,3 +1564,536 @@ th {
   { date: "2024-02-18", fullname: "Oliver Powell", id: "49", serviceType: "Sunday Service", status: "PRESENT", memberID: "A049" },
   { date: "2024-02-19", fullname: "Grace Parker", id: "50", serviceType: "Midweek Service", status: "PRESENT", memberID: "A050" }
       ],
+
+
+
+
+
+
+
+      age
+: 
+"52"
+baptisedBy
+: 
+"Pastor Lee"
+baptisedByTheHolySpirit
+: 
+"Yes"
+cell
+: 
+"Cell 3"
+classSelection
+: 
+"Bible Studies"
+comment
+: 
+"Long-time member"
+confirmed
+: 
+"No"
+createdOn
+: 
+"2025-01-29"
+dateBaptised
+: 
+"2016-09-05"
+dateBuried
+: 
+""
+dateConfirmed
+: 
+""
+dateDeceased
+: 
+""
+dateJoined
+: 
+"2018-03-25"
+dateOfBirth
+: 
+"1978-11-10"
+departmentName
+: 
+"Evangelism"
+email
+: 
+"michael.brown@example.com"
+fathersName
+: 
+"Thomas Brown"
+firstname
+: 
+"Michael"
+gender
+: 
+"Male"
+homeAddress
+: 
+"789 Road"
+homeTown
+: 
+"Toronto"
+id
+: 
+"36e6a878-ae5f-45ad-91c3-75ee2d01a1d8"
+institutionName
+: 
+"University of Toronto"
+lastname
+: 
+"Brown"
+maritalStatus
+: 
+"Married"
+memberStatus
+: 
+"Inactive"
+memberType
+: 
+"Full Member"
+middlename
+: 
+"C."
+mothersName
+: 
+"Linda Brown"
+nationality
+: 
+"Canadian"
+nextOfKin
+: 
+"Susan Brown"
+nextOfKinPhoneNumber
+: 
+"1234098765"
+numberOfChildren
+: 
+"3"
+occupation
+: 
+"Doctor"
+phoneNumber
+: 
+"7890123456"
+position
+: 
+"Deacon"
+qualification
+: 
+"MBBS"
+spiritualGift
+: 
+"Healing"
+spouseContact
+: 
+"2345678901"
+spouseName
+: 
+"Susan Brown"
+title
+: 
+"Dr."
+waterBaptised
+: 
+"Yes"
+workingStatus
+: 
+"Employed"
+
+
+methods: {
+
+
+    nextStep() {
+      if (this.step < 5) {
+        this.step++;
+      }
+    },
+    prevStep() {
+      if (this.step > 1) {
+        this.step--;
+      }
+    },
+
+
+    async fetchSummaryData() {
+      this.loading = true; 
+      try {
+        const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_attendance_for_the_current_day');
+        this.totalAttendance = response.data.total_attendance;
+        this.totalPresent = response.data.present_attendance;
+        this.totalAbsent = response.data.absent_attendance;
+        
+      } catch (error) {
+        console.error('Error fetching summary data:', error);
+      }
+      finally {
+        this.loading = false; // Hide loading screen
+      }
+    },
+
+    
+
+   handleImageUpload(event) {
+      const file = event.target.files[0];
+      console.info("in image handeler")
+      console.info(file)
+      if (file) {
+        this.imageUrl = URL.createObjectURL(file); // Generate a preview URL
+        this.selectedImage = file
+      }
+
+    },
+
+    async editMember(record) {
+    this.loading = true;
+    this.showEditModal = true;
+      console.error('getting member details to update')
+
+      try {
+        const response = await axios.get(`https://churchmsbackend.onrender.com/members/get_member_by_id/${record.member_id}`);
+        
+        console.info("member data", response.data)
+
+        if (response.data){
+          const member = response.data;
+
+          // Populate the form with fetched member details
+          this.form = {
+            title: member.title || "",
+            firstname: member.firstname || "",
+            middlename: member.middlename || "",
+            lastname: member.lastname || "",
+            dateOfBirth:member.dateOfBirth || "", // Leave password empty for security reasons
+            gender: member.gender || "",
+            phoneNumber: member.phoneNumber || "",
+            email: member.email || "",
+            nationality: member.nationality || "",
+            homeTown: member.homeTown || "",
+            workingStatus: member.workingStatus || "",
+            homeAddress: member.homeAddress || "",
+            occupation: member.occupation || "",
+            qualification: member.qualification || "",
+            institutionName: member.institutionName || "",
+            mothersName: member.mothersName || "",
+            fathersName: member.fathersName || "",
+            nextOfKin: member.nextOfKin || "",
+            nextOfKinPhoneNumber: member.nextOfKinPhoneNumber || "",
+            maritalStatus: member.maritalStatus || "",
+            spouseContact: member.spouseContact || "",
+            spouseName: member.spouseName || "",
+            numberOfChildren: member.numberOfChildren || "",
+            memberType: member.memberType || "",
+            cell: member.cell || "",
+            departmentName: member.departmentName || "",
+            dateJoined: member.dateJoined || "",
+            classSelection: member.classSelection || "",
+            spiritualGift: member.spiritualGift || "",
+            position: member.position || "",
+            waterBaptised: member.waterBaptised || "",
+            baptisedBy: member.baptisedBy || "",
+            dateBaptised: member.dateBaptised || "",
+            baptisedByTheHolySpirit: member.baptisedByTheHolySpirit || "",
+            memberStatus: member.memberStatus || "",
+            dateDeceased: member.dateDeceased || "",
+            dateBuried: member.dateBuried || "",
+            confirmed: member.confirmed || "",
+            dateConfirmed: member.dateConfirmed || "",
+            comment: member.comment || "",
+            
+          }
+
+          this.member_id = member.id
+
+        } else {
+          alert("Error getting user data"); 
+        }
+
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+      finally {
+        this.loading = false; // Hide loading screen
+      }
+    }  , 
+  
+
+    isFormValid() {
+      return (
+        this.form.title &&
+        this.form.firstname &&
+        this.form.middlename &&
+        this.form.lastname &&
+        this.form.dateOfBirth &&
+        this.form.gender &&
+        this.form.phoneNumber &&
+        this.form.email &&
+        this.form.nationality &&
+        this.form.homeTown &&
+        this.form.workingStatus &&
+        this.form.homeAddress &&
+        this.form.occupation &&
+        this.form.qualification &&
+        this.form.institutionName &&
+        this.form.mothersName &&
+        this.form.fathersName &&
+        this.form.nextOfKin &&
+        this.form.nextOfKinPhoneNumber &&
+        this.form.maritalStatus &&
+        this.form.spouseContact &&
+        this.form.spouseName &&
+        this.form.numberOfChildren &&
+        this.form.memberType &&
+        this.form.cell &&
+        this.form.departmentName &&
+        this.form.dateJoined &&
+        this.form.classSelection &&
+        this.form.spiritualGift &&
+        this.form.position &&
+        this.form.waterBaptised &&
+        this.form.baptisedBy &&
+        this.form.dateBaptised &&
+        this.form.baptisedByTheHolySpirit &&
+        this.form.memberStatus &&
+        this.form.dateDeceased &&
+        this.form.dateBuried &&
+        this.form.confirmed &&
+        this.form.dateConfirmed &&
+        this.form.comment 
+      
+        
+      );
+      
+    },
+
+    
+    async updateMemberDetails() {
+      this.loading = true; 
+      if (this.isFormValid) {
+        console.info("in the update member function")
+        
+        
+
+        // Prepare data payload for backend
+        const payload = {
+          title: this.form.title,
+          firstname: this.form.firstname,
+          middlename: this.form.middlename,
+          lastname: this.form.lastname,
+          dateOfBirth: this.form.dateOfBirth,
+          gender: this.form.gender,
+          phoneNumber: this.form.phoneNumber,
+          email: this.form.email,
+          nationality: this.form.nationality,
+          homeTown: this.form.homeTown,
+          workingStatus: this.form.workingStatus,
+          homeAddress: this.form.homeAddress,
+          occupation: this.form.occupation,
+          qualification: this.form.qualification,
+          institutionName: this.form.institutionName,
+          mothersName: this.form.mothersName,
+          fathersName: this.form.fathersName,
+          nextOfKin: this.form.nextOfKin,
+          nextOfKinPhoneNumber: this.form.nextOfKinPhoneNumber,
+          maritalStatus: this.form.maritalStatus,
+          spouseContact: this.form.spouseContact,
+          spouseName: this.form.spouseName,
+          numberOfChildren: this.form.numberOfChildren,
+          memberType: this.form.memberType,
+          cell: this.form.cell,
+          departmentName: this.form.departmentName,
+          dateJoined: this.form.dateJoined,
+          classSelection: this.form.classSelection,
+          spiritualGift: this.form.spiritualGift,
+          position: this.form.position,
+          waterBaptised: this.form.waterBaptised,
+          baptisedBy: this.form.baptisedBy,
+          dateBaptised: this.form.dateBaptised,
+          baptisedByTheHolySpirit: this.form.baptisedByTheHolySpirit,
+          memberStatus: this.form.memberStatus,
+          dateDeceased: this.form.dateDeceased,
+          dateBuried: this.form.dateBuried,
+          confirmed: this.form.confirmed,
+          dateConfirmed: this.form.dateConfirmed,
+          comment: this.form.comment,
+        };
+
+        console.log("Form is valid. Proceeding with user update...", payload);
+
+        try {
+          const response = await axios.patch(`http://127.0.0.1:5000/members/update_individual_member_fields/${this.member_id}`, {
+            title: this.form.title,
+          firstname: this.form.firstname,
+          middlename: this.form.middlename,
+          lastname: this.form.lastname,
+          dateOfBirth: this.form.dateOfBirth,
+          gender: this.form.gender,
+          phoneNumber: this.form.phoneNumber,
+          email: this.form.email,
+          nationality: this.form.nationality,
+          homeTown: this.form.homeTown,
+          workingStatus: this.form.workingStatus,
+          homeAddress: this.form.homeAddress,
+          occupation: this.form.occupation,
+          qualification: this.form.qualification,
+          institutionName: this.form.institutionName,
+          mothersName: this.form.mothersName,
+          fathersName: this.form.fathersName,
+          nextOfKin: this.form.nextOfKin,
+          nextOfKinPhoneNumber: this.form.nextOfKinPhoneNumber,
+          maritalStatus: this.form.maritalStatus,
+          spouseContact: this.form.spouseContact,
+          spouseName: this.form.spouseName,
+          numberOfChildren: this.form.numberOfChildren,
+          memberType: this.form.memberType,
+          cell: this.form.cell,
+          departmentName: this.form.departmentName,
+          dateJoined: this.form.dateJoined,
+          classSelection: this.form.classSelection,
+          spiritualGift: this.form.spiritualGift,
+          position: this.form.position,
+          waterBaptised: this.form.waterBaptised,
+          baptisedBy: this.form.baptisedBy,
+          dateBaptised: this.form.dateBaptised,
+          baptisedByTheHolySpirit: this.form.baptisedByTheHolySpirit,
+          memberStatus: this.form.memberStatus,
+          dateDeceased: this.form.dateDeceased,
+          dateBuried: this.form.dateBuried,
+          confirmed: this.form.confirmed,
+          dateConfirmed: this.form.dateConfirmed,
+          comment: this.form.comment,
+          });
+
+          
+          console.info(response.data)
+          if (response.data.message === 'Member details update successful' && this.selectedImage !== null ){
+           
+            // update image here
+              alert("User updated successfully");
+
+              const formData = new FormData();
+
+            // Construct the fullname by concatenating the form fields.
+            let fullname = this.form.firstname + ' ' + this.form.middlename + ' ' + this.form.lastname;
+
+            // Append the image and fullname to the formData
+            formData.append('fullname', fullname);
+            formData.append('file', this.selectedImage);
+
+
+          this.loading = true; 
+          try {
+            const response = await axios.post(`http://127.0.0.1:5000/members/update_member_image/${fullname}`, formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data', // Ensure you set the correct header for file upload
+              },
+            });
+
+            console.info("response from image",response.data)
+            if (response.data.message === 'Member image creation successful'){
+              this.step = 6;
+
+              this.showEditModal = false;
+
+            } else {
+              console.info("error response for registeration ",response)
+              alert("User details update failed");
+            }
+
+        
+          } catch (error) {
+              console.error("Registeration error:", error);
+              alert("An error occurred during registeration. Please try again.");
+              }
+
+          }
+
+
+      } catch (error) {
+              console.error("Registeration error:", error);
+              alert("An error occurred during registeration. Please try again.");
+              }
+      
+
+        finally {
+        this.loading = false; // Hide loading screen
+      }
+        
+        
+      
+      } else {
+        console.log("Form is invalid");
+        alert("Form is invalid. Please try again.");
+      }
+    },
+
+    
+
+    
+
+    
+    async deleteMember(record) {
+      this.loading = true; 
+      console.info("this is the current record: ", record)
+
+      try {
+        console.info("Member_id: ", record.user_id)
+        const confirmDelete = window.confirm(`Are you sure you want to delete the member with the name "${record.name}"?`);
+
+        if (confirmDelete) {
+          const response = await axios.delete(`https://churchmsbackend.onrender.com/members/delete_member_by_id/${record.member_id}`);
+          
+          console.info(" delete response ", response)
+          if (response.data !== 'Mmember not found') {
+            this.memberList = this.memberList.filter(user => user.user_id !== record.user_id);
+            alert("Member deleted successfully."); 
+
+          } else {
+            alert("Member with name not found.");
+              
+          }
+
+        } else {
+          // If the user cancels the deletion
+          console.info("Member deletion cancelled.");
+        }
+
+      } catch (error) {
+        console.error('Error deleting member', error);
+      }
+      finally {
+        this.loading = false; // Hide loading screen
+      }
+    },
+
+
+    
+
+    
+  
+
+
+  
+      
+        
+
+
+  mounted() {
+    // Automatically fetch summary data when the component is mounted
+    this.fetchSummaryData();
+
+
+    // Clear local storage when the tab or window is closed
+    window.addEventListener("beforeunload", () => {
+      localStorage.clear();
+    });
+  }
+
+
+};
+
+
+
+
+
