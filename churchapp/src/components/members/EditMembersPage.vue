@@ -495,6 +495,10 @@ export default {
 
 
   async downloadMembers() {
+
+ if(localStorage.getItem('userRole') == "GUEST"){
+      alert("You are not allowed to perform this action"); 
+    }else{
         console.info("In the download attendance function");
 
         try {
@@ -538,12 +542,15 @@ export default {
           window.URL.revokeObjectURL(url);
         } catch (error) {
           console.error("Error downloading the file:", error);
-        }
+        }}
       },
 
 
 
     async editMember(record) {
+       if(localStorage.getItem('userRole') == "GUEST"){
+      alert("You are not allowed to perform this action"); 
+    }else{
     this.loading = true;
     this.showEditModal = true;
       console.error('getting member details to update')
@@ -649,7 +656,7 @@ export default {
       
       finally {
         this.loading = false; // Hide loading screen
-      }
+      }}
     }  , 
   
 
@@ -729,6 +736,9 @@ export default {
     },
 
      async updateMemberDetails() {
+ if(localStorage.getItem('userRole') == "GUEST"){
+      alert("You are not allowed to perform this action"); 
+    }else{
       this.loading = true; 
 
       if (this.isFormValid) {
@@ -936,11 +946,14 @@ export default {
         alert("Form is invalid. Please try again.");
         this.loading = false;
 
-      }
+      }}
     },
 
 
     async deleteMember(record) {
+       if(localStorage.getItem('userRole') == "GUEST"){
+      alert("You are not allowed to perform this action"); 
+    }else{
       this.loading = true; 
       console.info("this is the current record: ", record)
 
@@ -971,7 +984,7 @@ export default {
       }
       finally {
         this.loading = false; // Hide loading screen
-      }
+      }}
     },
 
 

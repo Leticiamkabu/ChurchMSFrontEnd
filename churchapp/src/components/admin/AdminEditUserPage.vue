@@ -185,7 +185,10 @@ export default {
     },
 
   async editUser(record) {
-    this.loading = true; 
+    if(localStorage.getItem('userRole') == "GUEST"){
+      alert("You are not allowed to perform this action"); 
+    }else{
+      this.loading = true; 
       console.error('getting details to update')
 
        try {
@@ -222,6 +225,8 @@ export default {
       finally {
         this.loading = false; // Hide loading screen
       }
+    }
+    
 
       
 
@@ -242,8 +247,14 @@ export default {
     },
 
     async updateUserDetails() {
-      this.loading = true; 
-      if (this.isFormValid) {
+      
+      if (localStorage.getItem('userRole') == "GUEST") {
+    alert("You are not allowed to perform this action"); 
+      }
+      else{
+
+        this.loading = true; 
+        if (this.isFormValid) {
         console.info("in the registeration function")
         
         
@@ -296,6 +307,9 @@ export default {
         console.log("Form is invalid");
         alert("Form is invalid. Please try again.");
       }
+
+      }
+      
     },
 
     
@@ -304,6 +318,10 @@ export default {
 
     
     async deleteUser(record) {
+      
+      if(localStorage.getItem('userRole') == "GUEST"){
+      alert("You are not allowed to perform this action"); 
+    }else{
       this.loading = true; 
       console.info("this is the current record: ", record)
 
@@ -334,6 +352,7 @@ export default {
       }
       finally {
         this.loading = false; // Hide loading screen
+      }
       }
     },
 

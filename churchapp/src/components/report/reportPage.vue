@@ -292,6 +292,10 @@ export default {
 
 
     async getAttendanceReport() {
+
+       if(localStorage.getItem('userRole') == "GUEST"){
+      alert("You are not allowed to perform this action"); 
+    }else{
       this.loading = true;
       console.info('status :', this.filters.status)
       if (this.filters.status == ""){
@@ -346,7 +350,7 @@ export default {
         finally {
 
           this.loading = false; // Hide loading screen
-        }
+        }}
 
     },
 

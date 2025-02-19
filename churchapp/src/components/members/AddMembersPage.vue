@@ -389,6 +389,9 @@ export default {
 
 
     async submitRegistration() {
+       if(localStorage.getItem('userRole') == "GUEST"){
+      alert("You are not allowed to perform this action"); 
+    }else{
       console.info("in submit")
       
       console.info("image", this.selectedImage)
@@ -517,7 +520,7 @@ export default {
 
 
     
-  
+    }
 
 
     }, 

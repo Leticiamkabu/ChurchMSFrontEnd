@@ -182,6 +182,10 @@ export default {
 
 
     async register() {
+      
+       if(localStorage.getItem('userRole') == "GUEST"){
+      alert("You are not allowed to perform this action"); 
+    }else{
       this.loading = true; 
       if (this.isFormValid) {
         console.info("in the registeration function")
@@ -238,7 +242,7 @@ export default {
         console.log("Form is invalid");
         alert("Form is invalid. Please try again.");
       }
-    }
+    }}
   },
 
    mounted() {

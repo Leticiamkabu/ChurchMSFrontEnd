@@ -189,7 +189,9 @@ export default {
 
 
   async markAttendance() {
-    
+      if(localStorage.getItem('userRole') == "GUEST"){
+      alert("You are not allowed to perform this action"); 
+    }else{
       if (this.isSearching) {
       console.info("its searching")
       return;}
@@ -213,7 +215,8 @@ export default {
     name : this.name,
     status: 'PRESENT',
     serviceType: this.selectedService || "",
-});
+      }
+      );
 
       try {
           const response = await axios.post('https://churchmsbackend.onrender.com/attendance/create_attendance',{
@@ -277,10 +280,13 @@ export default {
       }
       
       
-    },
+  }},
 
     async editAttendance() {
 
+       if(localStorage.getItem('userRole') == "GUEST"){
+      alert("You are not allowed to perform this action"); 
+    }else{
       if (this.isSearching) return;
 
       if(this.isMarkingAttendance) return; 
@@ -340,7 +346,7 @@ export default {
 
       }
   
-    },
+    }},
 
    
 

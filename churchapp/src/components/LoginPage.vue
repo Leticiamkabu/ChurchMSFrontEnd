@@ -71,7 +71,15 @@ export default {
 		console.info(this.email)
 		console.info(this.password)
 		this.loading = true; 
-      try {
+
+		if (this.email == "guest" && this.password == "guest"){
+			localStorage.setItem('isAuthenticated', 'True');
+			localStorage.setItem('userRole', "GUEST");
+			this.$router.push('/adminOverView');
+			this.loading = false;
+		}
+		else{
+			try {
         const response = await axios.post('https://churchmsbackend.onrender.com/auth/login', {
           email: this.email,
           password: this.password,
@@ -99,6 +107,9 @@ export default {
       }finally {
         this.loading = false; // Hide loading screen
       }
+
+		}
+      
     },
   },
 };

@@ -196,6 +196,10 @@ export default {
     async downloadAttendance() {
   console.info("In the download attendance function");
 
+   if(localStorage.getItem('userRole') == "GUEST"){
+      alert("You are not allowed to perform this action"); 
+    }else{
+
   try {
     // Fetch the file from the backend
     const response = await axios.get('https://churchmsbackend.onrender.com/attendance/download_current_attendance_data', {
@@ -237,7 +241,7 @@ export default {
     window.URL.revokeObjectURL(url);
   } catch (error) {
     console.error("Error downloading the file:", error);
-  }
+  }}
 },
   
 
