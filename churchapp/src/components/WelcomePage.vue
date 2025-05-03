@@ -30,7 +30,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: #f9f6f9;
+  background-color: #87e3e1;
   border-radius: 10px; /* Optional: gives the square slightly rounded corners */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
   margin: 0 auto; /* Center horizontally on the page */
@@ -40,7 +40,8 @@
 }
 
 .welcome {
-      background: linear-gradient(135deg, #71b7e6, #9b59b6);
+      //background: linear-gradient(135deg, #71b7e6, #9b59b6);
+      background :#e7f2fd;
     height: 649px;
 
 }
@@ -48,7 +49,7 @@
 h1 {
   font-size: 3rem;
   margin-bottom: 20px;
-  color: #3b4246;
+  color: #1d6767;
 }
 
 p {
@@ -71,10 +72,10 @@ button {
 }
 
 .login-btn {
-  color: white;
+  color: #040404;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+  background: linear-gradient(135deg, #05919d, #7ab9b9);
 }
 
 .register-btn {

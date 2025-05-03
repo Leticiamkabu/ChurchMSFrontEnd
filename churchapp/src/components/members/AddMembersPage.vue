@@ -32,13 +32,13 @@
           </select>
 
           <label class = "label_fn" for="firstName">First Name</label>
-          <input class = "fn" type="text" v-model="form.firstname" id="firstName" placeholder="First Name" />
+          <input class = "fn" type="text" v-model="form.firstName" id="firstName" placeholder="First Name" />
 
           <label class = "label_mn" for="middleName">Middle Name</label>
-          <input class = "mn" type="text" v-model="form.middlename" id="middleName" placeholder="Middle Name"  />
+          <input class = "mn" type="text" v-model="form.middleName" id="middleName" placeholder="Middle Name"  />
 
           <label class = "label_ln" for="lastName">Last Name</label>
-          <input  class = "ln" type="text" v-model="form.lastname" id="lastName" placeholder="Last Name"  />
+          <input  class = "ln" type="text" v-model="form.lastName" id="lastName" placeholder="Last Name"  />
 
           <label class = "label_dobs" for="dob">Date of Birth</label>
           <input class = "dobs" type="date" v-model="form.dateOfBirth" id="dob" placeholder="Date of Birth"  />
@@ -237,7 +237,7 @@
           <input class = "datBur" type="date" v-model="form.dateBuried" id="dateburied" placeholder="Date Buried" />
 
           <label class = "label_confirm" for="confirmed">Confirmed</label>
-          <select class = "confirm" v-model="form.confirmed" id="confirmed"  >
+          <select class = "confirm" v-model="form.ctoggleFiltersonfirmed" id="confirmed"  >
             <option disabled value="">Select confirmed</option>
             <option v-for="confirmed in confirmeds" :key="confirmed" :value="confirmed">
               {{ confirmed }}
@@ -313,9 +313,9 @@ export default {
 
       form: {
         title: '',
-        firstname: '',
-        middlename: '',
-        lastname: '',
+        firstName: '',
+        middleName: '',
+        lastName: '',
         dateOfBirth: '',
         gender: '',
         phoneNumber: '',
@@ -365,6 +365,9 @@ export default {
   },
 
   methods: {
+
+    //https://churchmsbackend.onrender.com
+    
     nextStep() {
       if (this.step < 6) {
         this.step++;
@@ -403,9 +406,9 @@ export default {
 
       const formattedData = {
           title: this.form.title,
-          firstname: this.form.firstname,
-          middlename: this.form.middlename,
-          lastname: this.form.lastname,
+          firstName: this.form.firstName,
+          middleName: this.form.middleName,
+          lastName: this.form.lastName,
           dateOfBirth: this.form.dateOfBirth,
           gender: this.form.gender,
           phoneNumber: this.form.phoneNumber,
@@ -457,7 +460,7 @@ export default {
           const formData = new FormData();
 
           // Construct the fullname by concatenating the form fields.
-          let fullname = this.form.firstname + ' ' + this.form.middlename + ' ' + this.form.lastname;
+          let fullname = this.form.firstName + ' ' + this.form.middleName + ' ' + this.form.lastName;
 
           // Append the image and fullname to the formData
           formData.append('fullname', fullname);

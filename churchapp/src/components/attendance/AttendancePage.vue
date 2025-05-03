@@ -104,6 +104,7 @@ export default {
   },
 
   methods: {
+    // https://churchmsbackend.onrender.com
 
     async checkName() {
       this.loading = true; 
@@ -154,9 +155,9 @@ export default {
               service_type = 'Not Indicated'
             }
 
-            let firstname = member.firstname || "";
-            let othername = member.othername || "";
-            let lastname = member.lastname || "";
+            let firstname = member.firstName || "";
+            let othername = member.otherName || "";
+            let lastname = member.lastName || "";
 
             const today = new Date().toLocaleDateString();
             const name = `${firstname} ${othername} ${lastname}`;

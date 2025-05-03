@@ -7,6 +7,13 @@
       <p>Loading, please wait...</p>
     </div>
 
+    <div v-if="noData" class="no-data-card">
+  <div class="card">
+    <h3>No Data for Today</h3>
+    <p>Please check back later.</p>
+  </div>
+</div>
+
 
     <!-- Sidebar -->
      <!-- Conditional Rendering for Sidebar -->
@@ -79,6 +86,7 @@ export default {
   data() {
     return {
       loading: false,
+      noData: false,
 
       totalAttendance: 0,
       totalPresent: 0,
@@ -94,6 +102,7 @@ export default {
   },
 
   methods: {
+    // https://churchmsbackend.onrender.com
 
     async fetchSummaryData() {
       this.loading = true; 
@@ -143,7 +152,7 @@ export default {
         const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_present_attendance_data');
         this.attendanceList = response.data;
 
-        console.info("asbsent attendance list", response.data)
+        console.info("present attendance list", response.data)
         if (response.data !== 'No data found') {
     this.attendanceList = response.data.map(attendant => ({
         name: attendant.fullname,
@@ -153,6 +162,7 @@ export default {
     }));
     } else {
         this.attendanceList = [];  // Clear the list if no data is found
+        
     }
 
 
@@ -161,6 +171,7 @@ export default {
       }
       finally {
         this.loading = false; // Hide loading screen
+        //this.noData = true;
       }
     },
 
@@ -472,7 +483,14 @@ th {
   width: 700px;
 }
 
-
+.no-data-card{
+  background: #7faba5;
+    height: 200px;
+    position: fixed;
+    top: 300px;
+    left: 490px;
+    width: 400px;
+}
 /* Loading Screen Styles */
 .loading-screen {
   position: fixed;

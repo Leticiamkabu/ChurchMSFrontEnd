@@ -22,22 +22,22 @@
           
           <h2 class = "step1_first_h2"> User Registeration</h2>
           <label class = "label_fn" for="firstName">First Name</label>
-          <input class = "fn" type="text" v-model="form.firstname" id="firstName" placeholder="First Name" required />
+          <input class = "fn" type="text" v-model="form.firstname" id="firstName" placeholder=" First Name" required />
 
           <label class = "label_ln" for="lastName">Last Name</label>
-          <input  class = "ln" type="text" v-model="form.lastname" id="lastName" placeholder="Last Name" required />
+          <input  class = "ln" type="text" v-model="form.lastname" id="lastName" placeholder=" Last Name" required />
          
           <label class = "label_ea" for="email">Email</label>
-          <input class = "ea" type="email" v-model="form.email" id="email" placeholder="Email" required />
+          <input class = "ea" type="email" v-model="form.email" id="email" placeholder=" Email" required />
 
           <label class = "label_pn" for="phoneNumber">Phone Number</label>
-          <input class = "pn" type="text" v-model="form.phoneNumber" id="phoneNumber" placeholder="Phone Number" required />
+          <input class = "pn" type="text" v-model="form.phoneNumber" id="phoneNumber" placeholder=" Phone Number" required />
 
           <label class = "label_pw" for="password">Password</label>
-          <input class = "pw" type="password" v-model="form.password" id="password" placeholder="Password" required />
+          <input class = "pw" type="password" v-model="form.password" id="password" placeholder=" Password" required />
 
           <label class = "label_cpw" for="confirmPassword">Confirm password</label>
-          <input  class = "cpw" type="password" v-model="form.confirmPassword" id="confirmPassword" placeholder="Confirm password" required />
+          <input  class = "cpw" type="password" v-model="form.confirmPassword" id="confirmPassword" placeholder=" Confirm password" required />
           <p v-if="passwordMismatch" class="error">Passwords do not match</p>
 
           <label class = "label_role" for="role">Role</label>
@@ -74,8 +74,8 @@
               </label>
               
               <label for="privilege4">
-                <input class="privilege4" type="checkbox" id="privilege4" value="Get Attandance Overview" v-model="form.privileges"> 
-                <span class="privilege4-text">Get Attandance Overview</span>
+                <input class="privilege4" type="checkbox" id="privilege4" value="Get Attendance Overview" v-model="form.privileges"> 
+                <span class="privilege4-text">Get Attendance Overview</span>
               </label>
 
               <label for="privilege5">
@@ -83,9 +83,9 @@
                 <span class="privilege5-text">Get Member Details</span>
               </label>
 
-              <label for="privilege5">
-                <input class="privilege5" type="checkbox" id="privilege5" value="Get Member Details" v-model="form.privileges"> 
-                <span class="privilege5-text">Generate Report</span>
+              <label for="privilege6">
+                <input class="privilege6" type="checkbox" id="privilege5" value="Generate Report" v-model="form.privileges"> 
+                <span class="privilege6-text">Generate Report</span>
               </label>
 
               
@@ -155,6 +155,10 @@ export default {
   },
 
   methods:{
+
+   // https://churchmsbackend.onrender.com
+
+
     isFormValid() {
       return (
         this.form.firstname &&
@@ -207,8 +211,8 @@ export default {
 
         try {
           const response = await axios.post('https://churchmsbackend.onrender.com/auth/create_user', {
-            firstname: this.form.firstname,
-            lastname: this.form.lastname,
+            firstName: this.form.firstname,
+            lastName: this.form.lastname,
             email: this.form.email,
             phoneNumber: this.form.phoneNumber,
             password: this.form.password,
@@ -461,6 +465,7 @@ form .button input:hover {
     border-radius: 10px;
     border-color: black;
     background-color: white;
+    text-align: center;
 
 
 }
@@ -485,6 +490,7 @@ form .button input:hover {
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align: center;
 
 
 }
@@ -747,6 +753,26 @@ form .button input:hover {
   color: aqua; /* Text color */
   left: 500px;
   top: 400px;
+  position: fixed;
+}
+
+
+.privilege6 {
+  margin-right: 10px; /* Adjust the space between the checkbox and the text */
+  left: 470px;
+  top: 440px;
+  position: fixed;
+  height: 33px;
+    width: 20px;
+
+
+}
+
+.privilege6-text {
+  font-size: 20px; /* Adjust the font size if needed */
+  color: aqua; /* Text color */
+  left: 500px;
+  top: 440px;
   position: fixed;
 }
 

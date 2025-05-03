@@ -100,7 +100,7 @@
             </label>
           </div>
 
-          <button class = "updateb"  @click="updateUserDetails">Save Changes</button>
+          <button class = "updateb"  @click="updateUserDetails">Save</button>
           <button class = "cancelb"  @click="showEditModal = false">Cancel</button>
         </div>
       </div>
@@ -141,7 +141,7 @@ export default {
 
   methods: {
 
-
+// https://churchmsbackend.onrender.com/
     async fetchSummaryData() {
       this.loading = true; 
       try {
@@ -166,7 +166,7 @@ export default {
         console.info("user list", response.data)
         if (response.data !== 'No user data exists') {
           this.usersList = response.data.map(users => ({
-          name: users.firstname + ' ' + users.lastname ,
+          name: users.firstName + ' ' + users.lastName ,
           email: users.email,
           role: users.role,
           user_id: users.id,
@@ -201,8 +201,8 @@ export default {
 
           // Populate the form with fetched user details
           this.form = {
-            firstname: user.firstname || "",
-            lastname: user.lastname || "",
+            firstname: user.firstName || "",
+            lastname: user.lastName || "",
             email: user.email || "",
             phoneNumber: user.phoneNumber || "",
             password:user.password || "", // Leave password empty for security reasons
@@ -274,8 +274,8 @@ export default {
 
         try {
           const response = await axios.patch(`https://churchmsbackend.onrender.com/auth/update_individual_user_fields/${this.user_id}`, {
-            firstname: this.form.firstname,
-            lastname: this.form.lastname,
+            firstName: this.form.firstname,
+            lastName: this.form.lastname,
             email: this.form.email,
             phoneNumber: this.form.phoneNumber,
             password: this.form.password,
@@ -767,6 +767,7 @@ select{
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    color: black;
 }
 
 .cancelb{
@@ -778,6 +779,7 @@ select{
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    color: black;
 }
 
 

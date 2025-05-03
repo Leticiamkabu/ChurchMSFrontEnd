@@ -21,50 +21,64 @@
       </section>
 
       <section class="row_view">
-        <button class="memberButton"   > Schedule Message</button>
+        <button class="broadcastButton" @click="toggleFilters"  > Broadcast Message </button>
       </section>
 
       <section class="row_view">
-        <button class="broadcastButton"   > Broadcast Message </button>
+        <button class="scheduleButton"  @click="toggleComingSoonCard"  > Schedule Message</button>
       </section>
 
       <section class="row_view">
-        <button class="scheduledsButton"   > Manage Scheduleds </button>
+        <button class="scheduledsButton"  @click="toggleComingSoonCard"  > Manage Scheduleds </button>
       </section>
 
 
-      <!-- Attendance Popup Modal -->
-    <div v-if="showAttendanceFilters" class="attendancePopUP">
+  <!-- Coming soon Popup Modal -->
+    <div v-if="comingSoonCard" class="comingSoonPopUP">
       <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="filterOptionText">Filter Options</h2>
 
-          <button @click="showAttendanceFilters = false" class="cancleButton">&times;</button>
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="comingSoonText1">Stay tuned!</h2>
+          <p class="comingSoonText2">We're working on something exciting </p>
+
+          <button @click="comingSoonCard = false " class="comingSooncancleButton">&times;</button>
+        </div>
+
+      </div>
+    </div>
+
+
+
+      <!-- Notification Popup Modal -->
+    <div v-if="showNotificationCard" class="notificationPopUP">
+      <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="filterOptionText">Send Message</h2>
+
+          <button @click="showNotificationCard = false ; form = { recipient: '', message: '', notificationType: '' }" class="cancleButton">&times;</button>
         </div>
 
         <!-- Filter Options -->
         <div class="grid grid-cols-2 gap-4 mb-4">
-          <div>
-            <label for="date" class="dateFilterLabel">Date</label>
-            <input
-              v-model="filters.date"
-              type="date"
-              id="date"
-              class="dateFilter"
-            />
-          </div>
 
           <div>
-            <label for="status" class="statusFilterLabel">Status</label>
+            <label for="notificationType" class="notificationFilterLabel">Notification Type</label>
             <select
-              v-model="filters.status"
-              id="status"
-              class="statusFilter">
-              <option value="">All</option>
-              <option value="Present">Attendees</option>
-              <option value="Absent">Absentees</option>
+              v-model="form.notificationType"
+              id="notificationType"
+              class="notificationFilter">
+              <option disabled value="">Select Notification Type</option>
+              <option value="SMS">SMS</option>
+              <option value="BULK_SMS">Bulk SMS</option>
             </select>
           </div>
+
+          <label class = "label_recipient" for="recipient">Recipient</label>
+          <input class = "recipient" type="text" v-model="form.recipient" id="recipient" placeholder=" Recipient( ',' for seperation)"  />
+
+          <!-- <label class = "label_message" for="message">Message </label> -->
+          <textarea class="message" v-model="form.message" id="message" placeholder=" Message"></textarea>
         </div>
 
         <!-- Buttons -->
@@ -72,12 +86,59 @@
           <button @click="showAttendanceFilters = false" class="cancleButton2">
             Cancel
           </button>
-          <button @click="getAttendanceFetch" class="applyFilterButton">
-            Apply Filters
+          <button @click="getMessage" class="sendMessageButton">
+            Send Message
           </button>
         </div>
       </div>
     </div>
+
+
+
+<!-- Schedued message Popup Modal -->
+    <div v-if="showScheduledMessageCard" class="notificationPopUP">
+      <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="filterOptionText">Send Message</h2>
+
+          <button @click="showScheduledMessageCard = false ; scheduledMessageForm = { recipient: '', message: '', duration: '' }" class="scheduleCancleButton1">&times;</button>
+        </div>
+
+        <!-- Filter Options -->
+        <div class="grid grid-cols-2 gap-4 mb-4">
+
+          <div>
+
+            <label class="durationLabel" for="duration">Message Schedule</label>
+            <input
+                class="duration"
+                type="datetime-local"
+                v-model="scheduledMessageForm.duration"
+                id="duration"
+                placeholder="Message Schedule"
+              />
+          </div>
+
+          <label class = "label_scheduled_recipient" for="recipient">Recipient</label>
+          <input class = "scheduled_recipient" type="text" v-model="scheduledMessageForm.recipient" id="recipient" placeholder=" Recipient( ',' for seperation)"  />
+
+          <!-- <label class = "label_schduled_message" for="message">Message </label> -->
+          <textarea class="schduled_message" v-model="scheduledMessageForm.message" id="message" placeholder=" Message"></textarea>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-2">
+          <button @click="showScheduledMessageCard = false" class="scheduleCancleButton">
+            Cancel
+          </button>
+          <button @click="getScheduledMessage" class="sendScheduleMessageButton">
+            Send Message
+          </button>
+        </div>
+      </div>
+    </div>
+
 
 
 
@@ -167,7 +228,7 @@
       <!-- general  Table -->
       <div class="table-container">
 
-        <button @click="getAttendanceReport" class="downloadAttendanceButton">
+        <button @click="toggleComingSoonCard" class="downloadAttendanceButton">
             Download
         </button>
 
@@ -217,12 +278,17 @@ export default {
   data() {
     return {
       loading: false,
+      showNotificationCard: false,
+      comingSoonCard: false,
 
-      showAttendanceFilters: false,
-      filters: {
-        date: "",
-        status: "",
-      },
+      showScheduledMessageCard : false,
+      scheduledMessageForm: {
+        recipient: '',
+        message: '',
+        notificationType: '',
+        duration: '',
+        },
+
 
       showMembersFilters: false,
       memberFilters: {
@@ -233,6 +299,12 @@ export default {
       },
 
       attendanceList: [],
+
+      form: {
+        recipient: '',
+        message: '',
+        notificationType: '',
+        }
 
     };
   },
@@ -249,57 +321,162 @@ computed: {
   methods: {
 
     toggleFilters() {
-      this.showAttendanceFilters = true;
+      this.showNotificationCard = true;
+    },
+
+    toggleScheduleMessagePopoup() {
+      this.showScheduledMessageCard = true;
     },
 
     toggleMemberFilters() {
       this.showMembersFilters = true;
     },
 
-    async getAttendanceFetch() {
-      this.loading = true;
-      console.info('status :', this.filters.status)
-      if (this.filters.status == ""){
-        this.filters.status = "All";
-      }
-      
-      console.info('getting attendance report fetch')
-      console.info('date :', this.filters.date)
-      console.info('status :', this.filters.status)
-
-       try {
-        const response = await axios.get(`https://churchmsbackend.onrender.com/attendance/report_fetch/${this.filters.date}/${this.filters.status}`,{
-          
-        });
-        
-        console.info("Attendance report data : ", response.data)
-
-        if (response.data.detail !== "No attendance data exists with date specified" && response.data.detail !== "No attendance data exists with status specified" ) {
-
-          console.info("Populating Attendance List")
-          this.attendanceList = response.data;
-          this.showAttendanceFilters = false;
-
-          
-          
-        } else if (response.data.detail) {
-          alert(response.data.detail); 
-        }
-
-        else{
-          alert("Error getting Attendance Data for preview");
-        }
-
-      } catch (error) {
-        console.error('Error getting Attendance Data :', error);
-      }
-      finally {
-        this.showAttendanceFilters = false;
-        this.loading = false; // Hide loading screen
-      }
-
+    toggleComingSoonCard() {
+      this.comingSoonCard = true;
     },
 
+    async getMessage() {
+      this.loading = true;
+      console.info('notification type :', this.form.notificationType)
+      
+      if (this.form.notificationType == "SMS"){
+
+        console.info('Sending a single message')
+      
+        const formattedData = {
+          notificationType: this.form.notificationType,
+          to: this.form.receipient,
+          message: this.form.message,
+          
+        }
+
+        try {
+          const response = await axios.post('https://churchmsbackend.onrender.com/notification/send/individual_sms',formattedData);
+          
+        
+        
+          console.info("Attendance report data : ", response.data)
+
+          if (response.data.message !== "SMS Message not sent") {
+
+            console.info("Message sent")
+            alert(response.data.message); 
+            this.showNotificationCard = false;
+            this.form = {
+              recipient: '',
+              message: '',
+              notificationType: ''
+            };
+
+          
+          } else {
+            alert(response.data.message); 
+          }
+
+
+        } catch (error) {
+          console.error('Error Sending Message :', error);
+        }
+
+        finally {
+          this.showNotificationCard = false;
+          this.loading = false; // Hide loading screen
+          this.form = {
+              recipient: '',
+              message: '',
+              notificationType: ''
+            };
+        }
+
+
+      }
+      else{
+
+        console.info('Sending bulk message')
+      
+        const formattedData = {
+          recipient: this.form.recipient.split(',').map(num => num.trim()),
+          message: this.form.message,
+          notificationType: this.form.notificationType,
+          
+        }
+
+        console.info(formattedData)
+        try {
+          const response = await axios.post('https://churchmsbackend.onrender.com/notification/send/bulk_sms',formattedData);
+          
+        
+        
+          console.info("Attendance report data : ", response.data)
+
+          if (response.data.message !== "SMS Message not sent") {
+
+            console.info("Message sent")
+            alert(
+            `${response.data.message}\n\n` +
+            `Recipients: ${response.data.recipients.join(', ')}\n` +
+            `Total number of recipients: ${response.data.total_recipients}`
+          );
+            this.showNotificationCard = false;
+
+          
+          } else {
+            alert(response.data.message); 
+          }
+
+
+        } catch (error) {
+          console.error('Error Sending Message :', error);
+        }
+
+        finally {
+          this.showNotificationCard = false;
+          this.loading = false; // Hide loading screen
+        }
+
+
+      }
+      
+    },
+
+    async getScheduledMessage() {
+      this.loading = true;
+
+      console.info("Sending Scheduled Message")
+
+      const formattedData = {
+          notificationType: "SCHEDULE_MESSAGE",
+          receipient: this.scheduledMessageForm.recipient.split(',').map(num => num.trim()),
+          message: this.scheduledMessageForm.message,
+          scheduledTime: this.scheduledMessageForm.duration,
+        }
+
+        console.info("time :", this.scheduledMessageForm.duration)
+        try {
+          const response = await axios.post('https://churchmsbackend.onrender.com/notification/store-message',formattedData);
+          
+          console.info("Scheduled Message data : ", response.data)
+
+          if (response.data.message !== "Message stored and sorted by scheduled time") {
+              alert("Schedued message saved");
+          }
+
+         } catch (error) {
+          console.error('Error Sending Scheduled Message :', error);
+        }
+
+        finally {
+          this.showScheduledMessageCard = false;
+          this.loading = false; // Hide loading screen
+          this.scheduledMessageForm = {
+              recipient: '',
+              message: '',
+              notificationType: '',
+              duration: '',
+            };
+        } 
+    },
 
     async getAttendanceReport() {
       this.loading = true;
@@ -904,19 +1081,44 @@ input {
     
 }
 
-.filterOptionText{
-    top: 172px;
-    left: 610px;
+.notificationPopUP{
+    top: 200px;
+    left: 470px;
+    width: 600px;
+    height: 400px;
     position: fixed;
-    /* background-color: #00ffd9 !important; */
+    background-color: #92c1c0;
+    z-index: 9999;
+    padding: 20px; /* Optional padding for spacing */
+    border-radius: 10px; /* Optional styling for a rounded look */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3)
+    
+}
+
+.filterOptionText{
+    top: 202px;
+    left: 680px;
+    position: fixed;
     color: black;
+    font-size: medium;
     
     
 }
 
 .cancleButton{
-  top: 150px;
-    left: 860px;
+    top: 170px;
+    left: 1040px;
+    position: fixed;
+    background-color: #7ab9b9 !important;
+    color: black;
+    border-radius: 10px;
+    
+    
+}
+
+.scheduleCancleButton1{
+    top: 170px;
+    left: 1040px;
     position: fixed;
     background-color: #7ab9b9 !important;
     color: black;
@@ -946,9 +1148,9 @@ input {
 }
 
 
-.statusFilterLabel{
-      top: 280px;
-    left: 520px;
+.durationLabel{
+   top: 220px;
+    left: 495px;
     position: fixed;
     color: black;
    
@@ -956,9 +1158,9 @@ input {
     
 }
 
-.statusFilter{
-    top: 272px;
-    left: 580px;
+.notificationFilterLabel{
+    top: 232px;
+    left: 505px;
     position: fixed;
     color: black;
    
@@ -966,10 +1168,61 @@ input {
     
 }
 
+
+.notificationFilter{
+   top: 260px;
+    left: 495px;
+    position: fixed;
+    color: black;
+   
+    
+    
+}
+
+.duration{
+    top: 252px;
+    left: 505px;
+    position: fixed;
+    color: black;
+
+}
 
 .cancleButton2{
-    top: 350px;
-    left: 530px;
+    top: 540px;
+    left: 650px;
+    position: fixed;
+    background-color: #f4f7f7 !important;
+    color: black;
+    border-radius: 10px;
+    
+    
+}
+
+.scheduleCancleButton{
+    top: 540px;
+    left: 650px;
+    position: fixed;
+    background-color: #f4f7f7 !important;
+    color: black;
+    border-radius: 10px;
+    
+    
+}
+
+.sendScheduleMessageButton{
+    top: 540px;
+    left: 500px;
+    position: fixed;
+    background-color: #f4f7f7 !important;
+    color: black;
+    border-radius: 10px;
+    
+    
+}
+
+.sendMessageButton{
+    top: 540px;
+    left: 500px;
     position: fixed;
     background-color: #f4f7f7 !important;
     color: black;
@@ -979,19 +1232,7 @@ input {
 }
 
 
-.applyFilterButton{
-    top: 350px;
-    left: 630px;
-    position: fixed;
-    background-color: #f4f7f7 !important;
-    color: black;
-    border-radius: 10px;
-    
-    
-}
-
-
-.memberButton {
+.broadcastButton {
   padding: 10px;
   border: none;
   border-radius: 4px;
@@ -1091,7 +1332,7 @@ input {
 }
 
 
-.broadcastButton {
+.scheduleButton {
   padding: 10px;
   border: none;
   border-radius: 4px;
@@ -1100,7 +1341,7 @@ input {
   cursor: pointer;
   margin-right: 10px;
   top: -30px;
-  left: 635px;
+  left: 640px;
   position: relative;
 }
 
@@ -1114,13 +1355,92 @@ input {
   cursor: pointer;
   margin-right: 10px;
   top: -80px;
-  left: 810px;
+  left: 802px;
   position: relative;
 }
 
 
 
+.label_recipient{
+      color: #161515;
+    position: fixed;
+    top: 225px;
+    left: 820px;
+    font-size: 18px;
+}
 
+.recipient{
+  background-color: white;
+    position: fixed;
+        top: 260px;
+    left: 750px;
+    border-radius: 10px;
+    height: 30px;
+    border-color: aqua;
+}
+
+
+.label_scheduled_recipient{
+      color: #161515;
+    position: fixed;
+    top: 225px;
+    left: 820px;
+    font-size: 18px;
+}
+
+.scheduled_recipient{
+  background-color: white;
+    position: fixed;
+        top: 260px;
+    left: 750px;
+    border-radius: 10px;
+    height: 30px;
+    border-color: aqua;
+}
+
+
+.label_message{
+  color: #010808;
+    position: fixed;
+    top: 290px;
+    left: 500px;
+    font-size: 20px;
+}
+
+.message{
+  background-color: white;
+    position: fixed;
+    top: 320px;
+    left: 500px;
+    border-radius: 10px;
+    height: 215px;
+    width: 535px;
+    border-color: aqua;
+    text-align: left;
+    
+}
+
+
+.label_schduled_message{
+  color: #010808;
+    position: fixed;
+    top: 290px;
+    left: 500px;
+    font-size: 20px;
+}
+
+.schduled_message{
+  background-color: white;
+    position: fixed;
+    top: 320px;
+    left: 500px;
+    border-radius: 10px;
+    height: 215px;
+    width: 535px;
+    border-color: aqua;
+    text-align: left;
+    
+}
 
 
 
@@ -1207,5 +1527,57 @@ th, td {
 /* Main Content Styles */
 .content {
   padding: 20px;
+}
+
+
+
+
+
+
+/*Coming soon card*/
+
+
+.comingSoonPopUP{
+    top: 200px;
+    left: 470px;
+    width: 400px;
+    height: 200px;
+    position: fixed;
+    background-color: #92c1c0;
+    z-index: 9999;
+    padding: 20px; /* Optional padding for spacing */
+    border-radius: 10px; /* Optional styling for a rounded look */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3)
+    
+}
+
+.comingSoonText1{
+    top: 300px;
+    left: 610px;
+    position: fixed;
+    color: black;
+    font-size: large;
+    
+    
+}
+.comingSoonText2{
+    top: 270px;
+    left: 525px;
+    position: fixed;
+    color: black;
+    font-size: medium;
+    
+    
+}
+
+.comingSooncancleButton{
+    top: 170px;
+    left: 840px;
+    position: fixed;
+    background-color: #7ab9b9 !important;
+    color: black;
+    border-radius: 10px;
+    
+    
 }
 </style>

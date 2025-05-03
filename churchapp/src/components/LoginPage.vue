@@ -105,6 +105,8 @@ export default {
         console.error("Login error:", error);
         alert("An error occurred during login. Please try again.");
       }finally {
+		//this.email = "";
+		//this.password = "";
         this.loading = false; // Hide loading screen
       }
 
@@ -127,8 +129,9 @@ export default {
 
 
 .login-B {
-	background: linear-gradient(135deg, #71b7e6, #9b59b6);
-  height: 649px;
+	//background: linear-gradient(135deg, #71b7e6, #9b59b6);
+	background :#e7f2fd;
+  height: 615px;
  
 }
 
@@ -136,19 +139,20 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	min-height: 100vh;
+	min-height: 80vh;
+	width: 35%;
   position: fixed;
-  top: 0px;
-  left: 300px;
+  top: 65px;
+  left: 440px;
   background-color: white;
 }
 
 .screen {		
-	background: linear-gradient(90deg, #5D54A4, #7C78B8);		
+	background: linear-gradient(90deg,rgb(84, 164, 157),rgb(120, 174, 184));		
 	position: relative;	
-	height: 600px;
+	height: 450px;
 	width: 360px;	
-	box-shadow: 0px 0px 24px #5C5696;
+	box-shadow: 0px 0px 24px rgb(86, 130, 150);
 }
 
 .screen__content {
@@ -185,7 +189,7 @@ export default {
 .screen__background__shape2 {
 	height: 220px;
 	width: 220px;
-	background: #6C63AC;	
+	background:rgb(142, 226, 222);	
 	top: -172px;
 	right: 0;	
 	border-radius: 32px;
@@ -194,7 +198,7 @@ export default {
 .screen__background__shape3 {
 	height: 540px;
 	width: 190px;
-	background: linear-gradient(270deg, #5D54A4, #6A679E);
+	background: linear-gradient(270deg,rgb(84, 148, 164),rgb(87, 214, 208));
 	top: -24px;
 	right: 0;	
 	border-radius: 32px;
@@ -203,7 +207,7 @@ export default {
 .screen__background__shape4 {
 	height: 400px;
 	width: 200px;
-	background: #7E7BB9;	
+	background:rgb(142, 226, 222);	
 	top: 420px;
 	right: 50px;	
 	border-radius: 60px;
@@ -256,8 +260,8 @@ export default {
 	display: flex;
 	align-items: center;
 	width: 100%;
-	color: #4C489D;
-	box-shadow: 0px 2px 2px #5C5696;
+	color: #05919d;
+	box-shadow: 0px 2px 2px #05919d;
 	cursor: pointer;
 	transition: .2s;
 }

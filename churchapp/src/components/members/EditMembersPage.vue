@@ -76,13 +76,13 @@
           </select>
 
           <label class = "label_fn" for="firstName">First Name</label>
-          <input class = "fn" type="text" v-model="form.firstname" id="firstName" placeholder="First Name" />
+          <input class = "fn" type="text" v-model="form.firstName" id="firstName" placeholder="First Name" />
 
           <label class = "label_mn" for="middleName">Middle Name</label>
-          <input class = "mn" type="text" v-model="form.middlename" id="middleName" placeholder="Middle Name"  />
+          <input class = "mn" type="text" v-model="form.middleName" id="middleName" placeholder="Middle Name"  />
 
           <label class = "label_ln" for="lastName">Last Name</label>
-          <input  class = "ln" type="text" v-model="form.lastname" id="lastName" placeholder="Last Name"  />
+          <input  class = "ln" type="text" v-model="form.lastName" id="lastName" placeholder="Last Name"  />
 
           <label class = "label_dobs" for="dob">Date of Birth</label>
           <input class = "dobs" type="date" v-model="form.dateOfBirth" id="dob" placeholder="Date of Birth"  />
@@ -352,9 +352,9 @@ export default {
 
       form: {
         title: '',
-        firstname: '',
-        middlename: '',
-        lastname: '',
+        firstName: '',
+        middleName: '',
+        lastName: '',
         dateOfBirth: '',
         gender: '',
         phoneNumber: '',
@@ -404,6 +404,8 @@ export default {
 
   methods: {
 
+    //https://churchmsbackend.onrender.com
+
     async getMembers() {
         this.loading = true; 
         try {
@@ -416,7 +418,7 @@ export default {
 
             this.memberList = response.data.map(members => ({
 
-            name: [members.firstname, members.middlename, members.lastname]
+            name: [members.firstName, members.middleName, members.lastName]
                 .map(name => name?.trim()) // Trim each name to remove extra spaces
                 .filter(name => name) // Remove empty or undefined values
                 .join(' '),
@@ -451,7 +453,7 @@ export default {
       //console.log("Searching for:", this.name);
       this.loading = true; 
         try {
-          // https://churchmsbackend.onrender.com
+          
           const response = await axios.get(`https://churchmsbackend.onrender.com/members/get_member_by_words/${this.name}`);
           console.info(response); 
 
@@ -466,7 +468,7 @@ export default {
               this.memberList = []; 
             
               this.memberList = response.data.map(members => ({
-                name: members.firstname + ' ' + members.lastname ,
+                name: members.firstName + ' ' + members.lastName ,
                 phoneNumber: members.phoneNumber,
                 memberStatus: members.memberStatus,
                 member_id: members.id,
@@ -566,9 +568,9 @@ export default {
           // Populate the form with fetched member details
           this.form = {
             title: member.title || "",
-            firstname: member.firstname || "",
-            middlename: member.middlename || "",
-            lastname: member.lastname || "",
+            firstname: member.firstName || "",
+            middlename: member.middleName || "",
+            lastname: member.lastName || "",
             dateOfBirth:member.dateOfBirth || "",
             age:member.age || "",
             gender: member.gender || "",
@@ -677,9 +679,9 @@ export default {
     isFormValid() {
       return (
         this.form.title &&
-        this.form.firstname &&
-        this.form.middlename &&
-        this.form.lastname &&
+        this.form.firstName &&
+        this.form.middleName &&
+        this.form.lastName &&
         this.form.dateOfBirth &&
         this.form.age &&
         this.form.gender &&
@@ -749,9 +751,9 @@ export default {
         // Prepare data payload for backend
         const payload = {
           title: this.form.title,
-          firstname: this.form.firstname,
-          middlename: this.form.middlename,
-          lastname: this.form.lastname,
+          firstName: this.form.firstName,
+          middleName: this.form.middleName,
+          lastName: this.form.lastName,
           dateOfBirth: this.form.dateOfBirth,
           age: this.form.age,
           gender: this.form.gender,
@@ -797,9 +799,9 @@ export default {
         try {
           const response = await axios.patch(`https://churchmsbackend.onrender.com/members/update_individual_member_fields/${this.member_id}`, {
             title: this.form.title,
-          firstname: this.form.firstname,
-          middlename: this.form.middlename,
-          lastname: this.form.lastname,
+          firstName: this.form.firstName,
+          middleName: this.form.middleName,
+          lastName: this.form.lastName,
           dateOfBirth: this.form.dateOfBirth,
           age: this.form.age,
           gender: this.form.gender,
@@ -851,7 +853,7 @@ export default {
               const formData = new FormData();
 
             // Construct the fullname by concatenating the form fields.
-            let fullname = [this.form.firstname, this.form.middlename, this.form.lastname]
+            let fullname = [this.form.firstName, this.form.middleName, this.form.lastName]
                 .map(name => name?.trim()) // Trim each name to remove extra spaces
                 .filter(name => name) // Remove empty or undefined values
                 .join(' ');
