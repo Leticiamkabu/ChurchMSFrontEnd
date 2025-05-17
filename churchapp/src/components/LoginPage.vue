@@ -73,8 +73,8 @@ export default {
 		this.loading = true; 
 
 		if (this.email == "guest" && this.password == "guest"){
-			localStorage.setItem('isAuthenticated', 'True');
-			localStorage.setItem('userRole', "GUEST");
+			sessionStorage.setItem('isAuthenticated', 'True');
+			sessionStorage.setItem('userRole', "GUEST");
 			this.$router.push('/adminOverView');
 			this.loading = false;
 		}
@@ -88,8 +88,12 @@ export default {
 		console.info(response.data)
         if (response.data.message === 'User login successful') {
           // Save token if your backend sends one for future authenticated requests
-          localStorage.setItem('isAuthenticated', 'True');
-			localStorage.setItem('userRole', response.data.data.role);
+          sessionStorage.setItem('isAuthenticated', 'True');
+			sessionStorage.setItem('userRole', response.data.data.role);
+			sessionStorage.setItem('userId', response.data.data.role);
+			sessionStorage.setItem('username', response.data.data.firstName + " " +response.data.data.lastName);
+			sessionStorage.setItem('privilage', response.data.data.privileges);
+
 
 			if (response.data.data.role === "ADMIN"){
 				this.$router.push('/adminOverView'); // Navigate to home page upon successful login
@@ -123,16 +127,13 @@ export default {
 * {
 	box-sizing: border-box;
 	margin: 0;
-	padding: 0;	
+	padding: 0;
 	font-family: Raleway, sans-serif;
 }
 
-
 .login-B {
-	//background: linear-gradient(135deg, #71b7e6, #9b59b6);
-	background :#e7f2fd;
-  height: 615px;
- 
+	background: #e7f2fd;
+	height: 100vh; /* Set the full height for the background */
 }
 
 .container {
@@ -140,28 +141,33 @@ export default {
 	align-items: center;
 	justify-content: center;
 	min-height: 80vh;
-	width: 35%;
-  position: fixed;
-  top: 65px;
-  left: 440px;
-  background-color: white;
+	width: 100%;
+	max-width: 360px; /* Set max width for the container */
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); /* Center container */
+	background-color: white;
+	border-radius: 12px; /* Optional: rounded corners */
 }
 
-.screen {		
-	background: linear-gradient(90deg,rgb(84, 164, 157),rgb(120, 174, 184));		
-	position: relative;	
+.screen {
+	background: linear-gradient(90deg,rgb(84, 164, 157),rgb(120, 174, 184));
+	position: relative;
+	width: 100%;
+	max-width: 360px; /* Max width to prevent over-expanding */
 	height: 450px;
-	width: 360px;	
 	box-shadow: 0px 0px 24px rgb(86, 130, 150);
+	border-radius: 12px; /* Optional: rounded corners */
 }
 
 .screen__content {
 	z-index: 1;
-	position: relative;	
+	position: relative;
 	height: 100%;
 }
 
-.screen__background {		
+.screen__background {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -169,7 +175,7 @@ export default {
 	bottom: 0;
 	z-index: 0;
 	-webkit-clip-path: inset(0 0 0 0);
-	clip-path: inset(0 0 0 0);	
+	clip-path: inset(0 0 0 0);
 }
 
 .screen__background__shape {
@@ -180,18 +186,18 @@ export default {
 .screen__background__shape1 {
 	height: 520px;
 	width: 520px;
-	background: #FFF;	
+	background: #FFF;
 	top: -50px;
-	right: 120px;	
+	right: 120px;
 	border-radius: 0 72px 0 0;
 }
 
 .screen__background__shape2 {
 	height: 220px;
 	width: 220px;
-	background:rgb(142, 226, 222);	
+	background:rgb(142, 226, 222);
 	top: -172px;
-	right: 0;	
+	right: 0;
 	border-radius: 32px;
 }
 
@@ -200,28 +206,28 @@ export default {
 	width: 190px;
 	background: linear-gradient(270deg,rgb(84, 148, 164),rgb(87, 214, 208));
 	top: -24px;
-	right: 0;	
+	right: 0;
 	border-radius: 32px;
 }
 
 .screen__background__shape4 {
 	height: 400px;
 	width: 200px;
-	background:rgb(142, 226, 222);	
+	background:rgb(142, 226, 222);
 	top: 420px;
-	right: 50px;	
+	right: 50px;
 	border-radius: 60px;
 }
 
 .login {
-	width: 320px;
+	width: 100%;
 	padding: 30px;
 	padding-top: 156px;
 }
 
 .login__field {
-	padding: 20px 0px;	
-	position: relative;	
+	padding: 20px 0px;
+	position: relative;
 }
 
 .login__icon {
@@ -237,7 +243,7 @@ export default {
 	padding: 10px;
 	padding-left: 24px;
 	font-weight: 700;
-	width: 75%;
+	width: 100%; /* Full width */
 	transition: .2s;
 }
 
@@ -279,7 +285,7 @@ export default {
 	color: #7875B5;
 }
 
-.social-login {	
+.social-login {
 	position: absolute;
 	height: 140px;
 	width: 160px;
@@ -298,58 +304,83 @@ export default {
 .social-login__icon {
 	padding: 20px 10px;
 	color: #fff;
-	text-decoration: none;	
+	text-decoration: none;
 	text-shadow: 0px 0px 8px #7875B5;
 }
 
 .social-login__icon:hover {
-	transform: scale(1.5);	
+	transform: scale(1.5);
 }
-
-
 
 /* Loading Screen Styles */
 .loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
 }
 
 .loading-screen .spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #3498db;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+	width: 50px;
+	height: 50px;
+	border: 5px solid #f3f3f3;
+	border-top: 5px solid #3498db;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
 }
 
 .loading-screen p {
-  color: #fff;
-  font-size: 18px;
-  margin-top: 10px;
+	color: #fff;
+	font-size: 18px;
+	margin-top: 10px;
 }
 
 /* Spinner Animation */
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
 }
 
-/* Main Content Styles */
-.content {
-  padding: 20px;
+/* Responsive Styles */
+@media (max-width: 768px) {
+	.container {
+		width: 90%;
+		left: 5%;
+		position: relative;
+		top: auto;
+	}
+
+	.screen {
+		width: 100%;
+		height: auto;
+		box-shadow: none;
+	}
+
+	.login {
+		width: 100%;
+		padding: 20px;
+		padding-top: 120px;
+	}
+
+	.login__input {
+		width: 100%;
+	}
+
+	.social-login {
+		position: static;
+		width: 100%;
+		margin-top: 20px;
+	}
 }
 </style>

@@ -21,26 +21,26 @@
         <div v-if="step === 1" class = "first_info">
           
           <h2 class = "step1_first_h2"> User Registeration</h2>
-          <label class = "label_fn" for="firstName">First Name</label>
+          <label class = "label_fn" for="firstName">First Name <span class="required-star">*</span> </label>
           <input class = "fn" type="text" v-model="form.firstname" id="firstName" placeholder=" First Name" required />
 
-          <label class = "label_ln" for="lastName">Last Name</label>
+          <label class = "label_ln" for="lastName">Last Name <span class="required-star">*</span> </label>
           <input  class = "ln" type="text" v-model="form.lastname" id="lastName" placeholder=" Last Name" required />
          
-          <label class = "label_ea" for="email">Email</label>
+          <label class = "label_ea" for="email">Email <span class="required-star">*</span> </label>
           <input class = "ea" type="email" v-model="form.email" id="email" placeholder=" Email" required />
 
-          <label class = "label_pn" for="phoneNumber">Phone Number</label>
+          <label class = "label_pn" for="phoneNumber">Phone Number <span class="required-star">*</span> </label>
           <input class = "pn" type="text" v-model="form.phoneNumber" id="phoneNumber" placeholder=" Phone Number" required />
 
-          <label class = "label_pw" for="password">Password</label>
+          <label class = "label_pw" for="password">Password <span class="required-star">*</span> </label>
           <input class = "pw" type="password" v-model="form.password" id="password" placeholder=" Password" required />
 
-          <label class = "label_cpw" for="confirmPassword">Confirm password</label>
+          <label class = "label_cpw" for="confirmPassword">Confirm password <span class="required-star">*</span> </label>
           <input  class = "cpw" type="password" v-model="form.confirmPassword" id="confirmPassword" placeholder=" Confirm password" required />
-          <p v-if="passwordMismatch" class="error">Passwords do not match</p>
+          <p v-if="passwordMismatch" class="error">Password does not match</p>
 
-          <label class = "label_role" for="role">Role</label>
+          <label class = "label_role" for="role">Role <span class="required-star">*</span> </label>
           <select class = "role" v-model="form.role" id="role"  required>
             <option disabled value="">Select Role </option>
             <option v-for="role in roles" :key="role" :value="role">
@@ -56,7 +56,7 @@
           <h2 class = "step2_first_h2"> Privileges</h2>
 
                       
-              <label class="label_heading">Users Privileges</label>
+              <label class="label_heading">Users Privileges <span class="required-star">*</span> </label>
               
               <label for="privilege1">
                 <input class="privilege1" type="checkbox" id="privilege1" value="Add members" v-model="form.privileges"> 
@@ -174,6 +174,18 @@ export default {
     },
     
     nextStep() {
+      if (
+      !this.form.firstname ||
+      !this.form.lastname ||
+      !this.form.email ||
+      !this.form.phoneNumber ||
+      !this.form.password ||
+      !this.form.confirmPassword ||
+      !this.form.role
+    ) {
+      alert("Please fill in all required fields.");
+      return;
+    }
       if (this.step < 3) {
         this.step++;
       }
@@ -187,9 +199,14 @@ export default {
 
     async register() {
       
-       if(localStorage.getItem('userRole') == "GUEST"){
+       if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
+
+      if (!this.form.privileges) {
+      alert("Please fill in all required fields.");
+      return;
+    }
       this.loading = true; 
       if (this.isFormValid) {
         console.info("in the registeration function")
@@ -226,6 +243,8 @@ export default {
             // On success, move to the completion step
             this.step = 3;
             
+          } else if (response.data == "Email already exist"){
+            alert("Email already exists, Try registering with a new email");
 
           } else {
             console.info("error response for registeration ",response)
@@ -251,9 +270,9 @@ export default {
 
    mounted() {
     // Clear local storage when the tab or window is closed
-    window.addEventListener("beforeunload", () => {
-      localStorage.clear();
-    });
+    //window.addEventListener("beforeunload", () => {
+     // localStorage.clear();
+    //});
   }
 
   
@@ -264,7 +283,9 @@ export default {
 
 
 <style scope>
-
+.required-star {
+    color: #00d9ff;
+  }
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 * {
@@ -423,7 +444,7 @@ form .button input:hover {
 
 .registration-form {
    
-    height: 515px;
+    height: 455px;
     width: 720px;
     margin: 20px;
     position: fixed;
@@ -512,6 +533,7 @@ form .button input:hover {
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align: center;
 
 
 }
@@ -535,6 +557,7 @@ form .button input:hover {
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align: center;
 
 
 }
@@ -559,7 +582,7 @@ form .button input:hover {
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
-
+    text-align: center;
 
 }
 
@@ -582,7 +605,7 @@ form .button input:hover {
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
-
+    text-align: center;
 
 }
 
@@ -597,7 +620,7 @@ form .button input:hover {
 
 .error{
    position: fixed;
-    left: 460px;
+    left: 830px;
     top: 490px;
     font-size: 20px;
     color: aqua;
@@ -607,7 +630,7 @@ form .button input:hover {
 .role{
     position: fixed;
     left: 440px;
-    top: 560px;
+    top: 535px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -618,7 +641,7 @@ form .button input:hover {
 .label_role{
    position: fixed;
     left: 460px;
-    top: 530px;
+    top: 500px;
     font-size: 20px;
     color: aqua;
 
@@ -779,7 +802,7 @@ form .button input:hover {
 .first_info .s2nextBut{
     position: fixed;
     left: 970px;
-    top: 580px;
+    top: 535px;
     height: 30px;
     width: 100px;
     color: #010808;
@@ -792,7 +815,7 @@ form .button input:hover {
 .s2submitBut{
    position: fixed;
     left: 970px;
-    top: 580px;
+    top: 535px;
     height: 30px;
     width: 100px;
     color: #010808;
@@ -805,7 +828,7 @@ form .button input:hover {
 .s2preveBut{
    position: fixed;
     left: 850px;
-    top: 580px;
+    top: 535px;
     height: 30px;
     width: 100px;
     color: #010808;

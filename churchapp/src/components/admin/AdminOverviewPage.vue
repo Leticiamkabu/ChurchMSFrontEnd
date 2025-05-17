@@ -178,9 +178,9 @@ export default {
     this.fetchMembersSummaryData();
     
     // Clear local storage when the tab or window is closed
-    window.addEventListener("beforeunload", () => {
-      localStorage.clear();
-    });
+   // window.addEventListener("beforeunload", () => {
+   //   localStorage.clear();
+   // });
 
     
   }
@@ -670,5 +670,86 @@ th {
 /* Main Content Styles */
 .content {
   padding: 20px;
+}
+
+/* Media queries for responsiveness */
+
+/* Large tablets and small desktops */
+@media (max-width: 1200px) {
+  .dashboard-content {
+    flex-direction: column;
+  }
+  
+  .section1 {
+    width: 100%;
+    min-height: auto;
+    padding-top: 120px;
+    margin-bottom: 20px;
+  }
+  
+  .user-stats-card {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .user-role-card {
+    width: 80%;
+    max-width: 200px;
+  }
+  
+  .stats-row {
+    justify-content: center;
+  }
+  
+  .small-stats-row {
+    justify-content: center;
+  }
+}
+
+/* Medium tablets */
+@media (max-width: 992px) {
+  .attendance-page {
+    flex-direction: column;
+  }
+  
+  .attendance-stats-container {
+    margin-top: 20px;
+  }
+}
+
+/* Small tablets and large phones */
+@media (max-width: 768px) {
+  .stats-card {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .small-stats-card {
+    width: 45%;
+    max-width: 140px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 576px) {
+  .main-content {
+    padding: 10px;
+  }
+  
+  .dashboard-content {
+    gap: 15px;
+  }
+  
+  .stats-row, .small-stats-row {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .stats-card, .small-stats-card {
+    width: 100%;
+    max-width: 220px;
+  }
 }
 </style>

@@ -38,7 +38,7 @@
       <!-- Attendance List -->
       <h2>Attendance List</h2>
 
-      <div class="table-container" >
+      `<div class="table-container" >`
         <table>
           <thead>
             <tr>
@@ -46,20 +46,20 @@
               <th>Date</th>
               <th>Attendance Status</th>
               <th>Service Type</th>
+              <th>Marked By</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(record, index) in attendanceList" :key="index" @click="populateName(record.name, record.membersId, record.attendanceStatus, record.atttendanceID)">
+            <tr v-for="(record, index) in attendanceList" :key="index" @click="populateName(record.name, record.membersId, record.attendanceStatus, record.attendanceIDS )">
               <td>{{ record.name }}</td>
               <td>{{ record.date }}</td>
               <td>{{ record.attendanceStatus }}</td>
               <td>{{ record.serviceType }}</td>
+              <td>{{ record.markedBy }}</td>
             </tr>
           </tbody>
         </table>
-      </div>ingAttendance: false,ingAttendance: false,ingAttendance: false,
-ingAttendance: false,
-ingAttendance: false,
+      </div>
 
 
 
@@ -83,7 +83,8 @@ export default {
   data() {
     return {
       loading: false,
-
+      activeUser: sessionStorage.getItem("username")
+,
       services: ['First Service', 'Second Service', 'Third Service'],
       selectedService : '',
       name: '',
@@ -93,13 +94,13 @@ export default {
       attendanceList: [],
       members_ID : '',
       currentStatus : '',
-      attendanceID : '',
+      attendanceIDS : '',
     };
   },
 
   computed: {
     isAdmin() {
-      return localStorage.getItem("userRole") === 'ADMIN';
+      return sessionStorage.getItem("userRole") === 'ADMIN';
     }
   },
 
@@ -141,27 +142,30 @@ export default {
             let attendance = 'Not Marked'; // Default to 'ABSENT'
             let attendanceId = '';
             let service_type = '';
+            let markedBy = '';
 
             if (attendanceResponse.data.detail !== 'Attendance with the given member ID does not exist') {
               console.info('member attendance found')
               attendance = attendanceResponse.data.status;
-              attendanceId = attendanceResponse.data.id
-              this.attendanceID = attendanceResponse.data.id
-              service_type = attendanceResponse.data.serviceType
+              attendanceId = attendanceResponse.data.id;
+              this.attendanceIDS = attendanceResponse.data.id;
+              service_type = attendanceResponse.data.serviceType;
+              markedBy = attendanceResponse.data.markedBy;
             }
             else{
               console.info('member attendance not found')
               attendance = 'Not Marked';
-              service_type = 'Not Indicated'
+              service_type = 'Not Indicated';
+              markedBy = 'Not Indicated';
             }
 
             let firstname = member.firstName || "";
-            let othername = member.otherName || "";
+            let othername = member.middleName || "";
             let lastname = member.lastName || "";
 
             const today = new Date().toLocaleDateString();
             const name = `${firstname} ${othername} ${lastname}`;
-            this.attendanceList.push({ name: name, date: today, attendanceStatus: attendance, membersId : member.id, attendanceIDS : attendanceId, serviceType: service_type});
+            this.attendanceList.push({ name: name, date: today, attendanceStatus: attendance, membersId : member.id, attendanceIDS : attendanceId, serviceType: service_type, markedBy:markedBy});
           } catch (attendanceError) {
             console.error("Error fetching attendance:", attendanceError);
           }
@@ -190,7 +194,7 @@ export default {
 
 
   async markAttendance() {
-      if(localStorage.getItem('userRole') == "GUEST"){
+      if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
       if (this.isSearching) {
@@ -216,18 +220,18 @@ export default {
     name : this.name,
     status: 'PRESENT',
     serviceType: this.selectedService || "",
+    markedBy : this.activeUser,
       }
       );
 
+    if (this.members_ID !== ""){
       try {
-          const response = await axios.post('https://churchmsbackend.onrender.com/attendance/create_attendance',{
+          const response = await axios.post('http://127.0.0.1:8000/attendance/create_attendance',{
             memberID: this.members_ID,
             name : this.name,
             status: 'PRESENT',
             serviceType : this.selectedService || "",
-            
-
-
+            markedBy : this.activeUser,
           
       });
 
@@ -235,8 +239,14 @@ export default {
         if (response.data.message === 'Attendance creation successful') {
 
           console.info("Attendance list is being updated")
+          
           this.attendanceList = [];
-          this.attendanceList.push({ name: response.data.Attendance.fullname, date: response.data.Attendance.date , attendanceStatus: response.data.Attendance.status, serviceType: response.data.Attendance.serviceType, attendanceID : response.data.Attendance.id});
+          this.attendanceList.push({ name: response.data.Attendance.fullName, 
+            date: response.data.Attendance.date , 
+            attendanceStatus: response.data.Attendance.status, 
+            serviceType: response.data.Attendance.serviceType, 
+            attendanceIDS : response.data.Attendance.id, 
+            markedBy : response.data.Attendance.markedBy});
           this.name = '';
 
           setTimeout(() => {
@@ -279,13 +289,18 @@ export default {
       finally {
         this.loading = false; // Hide loading screen
       }
-      
+    }else{
+      alert("Member not found. Please press Enter to search for the name before marking attendance.");
+      this.loading = false;
+      this.name = '';
+      this.isMarkingAttendance = false;
+    }
       
   }},
 
     async editAttendance() {
 
-       if(localStorage.getItem('userRole') == "GUEST"){
+       if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
       if (this.isSearching) return;
@@ -296,6 +311,7 @@ export default {
 
       console.info("Editing Attendance")
 
+if (this.attendanceIDS !== ""){
       let nowStatus = '' ;
       if (this.currentStatus !== 'NotMarked'){
           console.info("in if ")
@@ -308,11 +324,12 @@ export default {
       this.loading = true;
         try {
           console.info("with editing endpoint")
-          console.info("id : ", this.attendanceID )
-          const response = await axios.patch(`https://churchmsbackend.onrender.com/attendance/update_individual_attendance_fields/${this.attendanceID}`, {
+          console.info("id : ", this.attendanceIDS )
+          const response = await axios.patch(`https://churchmsbackend.onrender.com/attendance/update_individual_attendance_fields/${this.attendanceIDS}`, {
             // Include the fields and new values you want to update
             status: nowStatus,
             serviceType : this.selectedService,
+            markedBy : this.activeUser,
             
           });
       
@@ -323,7 +340,7 @@ export default {
           console.info("pass the if")
           console.info("Attendance list is being updated")
           this.attendanceList = [];
-          this.attendanceList.push({ name: response.data.fullname, date: response.data.date , attendanceStatus: response.data.status, serviceType: response.data.serviceType, attendanceID : response.data.id});
+          this.attendanceList.push({ name: response.data.fullName, date: response.data.date , attendanceStatus: response.data.status, serviceType: response.data.serviceType, attendanceID : response.data.id, markedBy:response.data.markedBy});
           console.info("this is now the new id", this.attendanceIDS), 
           this.name = '';
 
@@ -346,18 +363,26 @@ export default {
 
 
       }
+}else{
+  alert("Member not found. Please press Enter to search for the name before marking attendance.");
+      this.loading = false;
+      this.name = '';
+      this.isEditingAttendance = false;
+}
   
     }},
 
    
 
 
-    populateName(selectedName, member_ids,status, attendanceId ) {
+    populateName(selectedName, member_ids,status, attendanceId) {
       console.info("am here too paste")
       this.name = selectedName;
       this.members_ID = member_ids;
+      console.info("Member_ID: ",this.members_ID )
       this.currentStatus = status;
       this.attendanceIDS = attendanceId;
+      console.info("ID: ",this.attendanceIDS )
     }
 
 
@@ -365,9 +390,9 @@ export default {
 
    mounted() {
     // Clear local storage when the tab or window is closed
-    window.addEventListener("beforeunload", () => {
-      localStorage.clear();
-    });
+    //window.addEventListener("beforeunload", () => {
+     // localStorage.clear();
+   // });
   }
 
 

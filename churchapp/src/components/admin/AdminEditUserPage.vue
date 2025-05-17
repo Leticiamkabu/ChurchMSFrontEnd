@@ -7,7 +7,6 @@
       <p>Loading, please wait...</p>
     </div>
 
-
     <!-- Sidebar -->
     <Sidebar />
 
@@ -24,15 +23,16 @@
       <!-- User Table -->
       <div class="table-container">
         <table>
+
           <thead>
             <tr>
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>
-              <th>Actions</th>
-              
+              <th>Actions</th>  
             </tr>
           </thead>
+
           <tbody>
             <tr v-for="(record, index) in usersList" :key="index" >
               <td>{{ record.name }}</td>
@@ -43,9 +43,8 @@
                   <button class = "delete" @click="deleteUser(record)">Delete</button>
               </td>
             </tr>
-          </tbody>
+          </tbody>  
         </table>
-
       </div>
 
       <!-- Modal to edit user details -->
@@ -110,38 +109,41 @@
 </template>
 
 <script>
-import Sidebar from '@/components/GlobalNavbar.vue';
-import Navbar from '@/components/admin/AdminSidebar.vue';
-import axios from 'axios';
+  import Sidebar from '@/components/GlobalNavbar.vue';
+  import Navbar from '@/components/admin/AdminSidebar.vue';
+  import axios from 'axios';
 
-export default {
-  components: {
-    Sidebar,
-    Navbar
-  },
-  data() {
-    return {
-      loading: false,
-      showEditModal: false,
-      user_id: '',
-      usersList: [],
-      roles :['ADMIN', 'DATA CLERK', 'ADMINISTRATOR'],
-      form: {
-      firstname: '',
-      lastname: '',
-      email: '',
-      phoneNumber: '',
-      password: '',
-      confirmPassword: '',
-      role: '',
-      privileges: [],
+  export default {
+    components: {
+      Sidebar,
+      Navbar
+    },
+
+    data() {
+      return {
+        loading: false,
+        showEditModal: false,
+        user_id: '',
+        usersList: [],
+        roles :['ADMIN', 'DATA CLERK', 'ADMINISTRATOR'],
+        form: {
+        firstname: '',
+        lastname: '',
+        email: '',
+        phoneNumber: '',
+        password: '',
+        confirmPassword: '',
+        role: '',
+        privileges: [],
       },
+
     };
+
   },
 
   methods: {
 
-// https://churchmsbackend.onrender.com/
+    // https://churchmsbackend.onrender.com/
     async fetchSummaryData() {
       this.loading = true; 
       try {
@@ -170,68 +172,67 @@ export default {
           email: users.email,
           role: users.role,
           user_id: users.id,
-        
-    }));
-    } else {this.attendanceList = response.data;
+          }));
+
+        } else {this.attendanceList = response.data;
         this.usersList = [];  // Clear the list if no data is found
-    }
+        }
 
       } catch (error) {
         console.error('Error fetching user list:', error);
       }
+
       finally {
         this.loading = false; // Hide loading screen
       }
     },
 
-  async editUser(record) {
-    if(localStorage.getItem('userRole') == "GUEST"){
-      alert("You are not allowed to perform this action"); 
-    }else{
-      this.loading = true; 
-      console.error('getting details to update')
+    async editUser(record) {
+      if(sessionStorage.getItem('userRole') == "GUEST"){
+        alert("You are not allowed to perform this action"); 
 
-       try {
-        const response = await axios.get(`https://churchmsbackend.onrender.com/auth/get_user_by_id/${record.user_id}`);
-        
-        console.info("user data", response.data)
+      }else{
+        this.loading = true; 
+        console.error('getting details to update')
 
-        if (response.data) {
-          const user = response.data;
+        try {
+          const response = await axios.get(`https://churchmsbackend.onrender.com/auth/get_user_by_id/${record.user_id}`);
+          
+          console.info("user data", response.data)
 
-          // Populate the form with fetched user details
-          this.form = {
-            firstname: user.firstName || "",
-            lastname: user.lastName || "",
-            email: user.email || "",
-            phoneNumber: user.phoneNumber || "",
-            password:user.password || "", // Leave password empty for security reasons
-            role: user.role || "",
-            privileges: user.privileges ? user.privileges.split(",") : []
+          if (response.data) {
+            const user = response.data;
+
+            // Populate the form with fetched user details
+            this.form = {
+              firstname: user.firstName || "",
+              lastname: user.lastName || "",
+              email: user.email || "",
+              phoneNumber: user.phoneNumber || "",
+              password:user.password || "", // Leave password empty for security reasons
+              role: user.role || "",
+              privileges: user.privileges ? user.privileges.split(",") : []
+            }
+          
+            // Mask the password for display
+            this.maskedPassword = "*****";
+            this.user_id = user.id
+            this.showEditModal = true;
+
+          } else {
+            alert("Error getting user data"); 
           }
-        
-        // Mask the password for display
-        this.maskedPassword = "*****";
-        this.user_id = user.id
-        this.showEditModal = true;
 
-        } else {
-          alert("Error getting user data"); 
+        } catch (error) {
+          console.error('Error fetching user data:', error);
         }
 
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-      finally {
-        this.loading = false; // Hide loading screen
-      }
-    }
-    
-
-      
-
-      
+        finally {
+          this.loading = false; // Hide loading screen
+        }
+      }   
     },
+
     isFormValid() {
       return (
         this.form.firstname &&
@@ -248,82 +249,77 @@ export default {
 
     async updateUserDetails() {
       
-      if (localStorage.getItem('userRole') == "GUEST") {
-    alert("You are not allowed to perform this action"); 
-      }
-      else{
+      if (sessionStorage.getItem('userRole') == "GUEST") {
+        alert("You are not allowed to perform this action"); 
+
+      }else{
 
         this.loading = true; 
         if (this.isFormValid) {
-        console.info("in the registeration function")
+          console.info("in the registeration function")
         
-        
-
-        // Prepare data payload for backend
-        const payload = {
-          firstname: this.form.firstname,
-          lastname: this.form.lastname,
-          email: this.form.email,
-          phoneNumber: this.form.phoneNumber,
-          password: this.form.password,
-          role: this.form.role,
-          privileges: this.form.privileges,
-        };
-
-        console.log("Form is valid. Proceeding with user update...", payload);
-
-        try {
-          const response = await axios.patch(`https://churchmsbackend.onrender.com/auth/update_individual_user_fields/${this.user_id}`, {
-            firstName: this.form.firstname,
-            lastName: this.form.lastname,
+          // Prepare data payload for backend
+          const payload = {
+            firstname: this.form.firstname,
+            lastname: this.form.lastname,
             email: this.form.email,
             phoneNumber: this.form.phoneNumber,
             password: this.form.password,
             role: this.form.role,
             privileges: this.form.privileges,
-          });
+          };
 
-          console.info(response)
-          if (response.data ) {
-           
-            alert("User updated successfully");
-            this.showEditModal = true;
+          console.log("Form is valid. Proceeding with user update...", payload);
 
-          } else {
-            console.info("error response for registeration ",response)
-            alert("User details update failed");
+          try {
+            const response = await axios.patch(`https://churchmsbackend.onrender.com/auth/update_individual_user_fields/${this.user_id}`, {
+              firstName: this.form.firstname,
+              lastName: this.form.lastname,
+              email: this.form.email,
+              phoneNumber: this.form.phoneNumber,
+              password: this.form.password,
+              role: this.form.role,
+              privileges: this.form.privileges,
+            });
+
+            console.info(response)
+            if (response.data ) {
+            
+              alert("User updated successfully");
+              this.showEditModal = true;
+
+            } else {
+              console.info("error response for registeration ",response)
+              alert("User details update failed");
+            }
+
+          } catch (error) {
+            console.error("Registeration error:", error);
+            alert("An error occurred during registeration. Please try again.");
           }
-        } catch (error) {
-        console.error("Registeration error:", error);
-        alert("An error occurred during registeration. Please try again.");
-        }
-        finally {
-        this.loading = false; // Hide loading screen
-      }
-        
-        
 
-      } else {
-        console.log("Form is invalid");
-        alert("Form is invalid. Please try again.");
-      }
+          finally {
+            this.loading = false; // Hide loading screen
+          }
+          
+        } else {
+          console.log("Form is invalid");
+          alert("Form is invalid. Please try again.");
+        }
 
       }
       
     },
 
     
-
-    
-
-    
     async deleteUser(record) {
       
-      if(localStorage.getItem('userRole') == "GUEST"){
-      alert("You are not allowed to perform this action"); 
-    }else{
-      this.loading = true; 
-      console.info("this is the current record: ", record)
+      if(sessionStorage.getItem('userRole') == "GUEST"){
+        alert("You are not allowed to perform this action"); 
+
+      }else{
+        this.loading = true; 
+        console.info("this is the current record: ", record)
 
       try {
         console.info("user_id: ", record.user_id)
@@ -365,9 +361,9 @@ export default {
     this.fetchSummaryData();
 
     // Clear local storage when the tab or window is closed
-    window.addEventListener("beforeunload", () => {
-      localStorage.clear();
-    });
+    //window.addEventListener("beforeunload", () => {
+    //  localStorage.clear();
+    //});
   }
 
 
@@ -378,15 +374,15 @@ export default {
 <style scoped>
 
 h1{
-      position: fixed;
-    top: 100px;
-    left: 600px;
+  position: fixed;
+  top: 100px;
+  left: 600px;
 }
 
 h2{
-      position: fixed;
-    top: 260px;
-    left: 550px;
+  position: fixed;
+  top: 260px;
+  left: 550px;
 }
 
 
@@ -407,10 +403,6 @@ select{
   border-radius: 4px;
 }
 
-
-
-
-
 .button4 {
   padding: 10px;
   border: none;
@@ -426,60 +418,55 @@ select{
 }
 
 .edit {
-      padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #92c1c0;
-    color: black;
-    cursor: pointer;
-    margin-right: 7px;
-    width: 60px;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #92c1c0;
+  color: black;
+  cursor: pointer;
+  margin-right: 7px;
+  width: 60px;
 }
 
 
 .delete {
-      padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #92c1c0;
-    color: black;
-    cursor: pointer;
-    width: 60px;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #92c1c0;
+  color: black;
+  cursor: pointer;
+  width: 60px;
 }
-
-
-
-
-
 
 .total_attendance {
   width: 180px;
-    height: 100px;
-    position: fixed;
-    top: 120px;
-    left: 1090px;
-    border-radius: 10px;
-    background-color: #d7e6e7;
-    color: #100f0f;
-    display: flex;
+  height: 100px;
+  position: fixed;
+  top: 120px;
+  left: 1090px;
+  border-radius: 10px;
+  background-color: #d7e6e7;
+  color: #100f0f;
+  display: flex;
     
 }
 
 .total_attendance p{
-      position: fixed;
-    top: 145px;
-    left: 1102px;
-    color: #100f0f;
-    font-size: large;
+  position: fixed;
+  top: 145px;
+  left: 1102px;
+  color: #100f0f;
+  font-size: large;
 }
 
 .total_attendance h5{
-      position: fixed;
-        top: 185px;
-    left: 1172px;
-    color: #100f0f;
-    font-size: large;
-    text-align: center;
+  position: fixed;
+  top: 185px;
+  left: 1172px;
+  color: #100f0f;
+  font-size: large;
+  text-align: center;
 }
 
 .total_present{

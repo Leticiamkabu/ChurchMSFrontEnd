@@ -312,16 +312,23 @@ export default {
 
 computed: {
     isAdmin() {
-      return localStorage.getItem("userRole") === 'ADMIN';
+      return sessionStorage.getItem("userRole") === 'ADMIN';
     }
   },
 
 
   
   methods: {
+    closeAllModels(){
+      this.comingSoonCard = false;
+      this.showNotificationCard = false;
+    },
 
     toggleFilters() {
+      this.loading = true;
+      this.closeAllModels();
       this.showNotificationCard = true;
+      this.loading = false;
     },
 
     toggleScheduleMessagePopoup() {
@@ -333,7 +340,10 @@ computed: {
     },
 
     toggleComingSoonCard() {
+      this.loading = true;
+      this.closeAllModels();
       this.comingSoonCard = true;
+      this.loading = false;
     },
 
     async getMessage() {

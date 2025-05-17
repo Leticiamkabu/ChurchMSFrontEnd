@@ -49,24 +49,28 @@
       </div>
 
       <!-- Attendance Table -->
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Date</th>
-            <th>Attendance Status</th>
-            <th>Service Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(record, index) in attendanceList" :key="index" @click="populateName(record)">
-            <td>{{ record.name }}</td>
-            <td>{{ record.date }}</td>
-            <td>{{ record.attendanceStatus }}</td>
-            <td>{{ record.serviceType }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-container" >
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Date</th>
+              <th>Attendance Status</th>
+              <th>Service Type</th>
+              <th>Marked By</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(record, index) in attendanceList" :key="index" @click="populateName(record)">
+              <td>{{ record.name }}</td>
+              <td>{{ record.date }}</td>
+              <td>{{ record.attendanceStatus }}</td>
+              <td>{{ record.serviceType }}</td>
+              <td>{{ record.markedBy }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -97,7 +101,7 @@ export default {
 
   computed: {
     isAdmin() {
-      return localStorage.getItem("userRole") === 'ADMIN';
+      return sessionStorage.getItem("userRole") === 'ADMIN';
     }
   },
 
@@ -125,17 +129,21 @@ export default {
       try {
         const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_attendance_data');
         this.attendanceList = response.data;
+
         console.info("attendance list", response.data)
         if (response.data !== 'No data found') {
-    this.attendanceList = response.data.map(attendant => ({
-        name: attendant.fullname,
-        date: attendant.date,
-        attendanceStatus: attendant.status,
-        serviceType: attendant.serviceType
-    }));
-    } else {
-        this.attendanceList = [];  // Clear the list if no data is found
-    }
+          this.attendanceList = response.data.map(attendant => ({
+              name: attendant.fullName,
+              date: attendant.date,
+              attendanceStatus: attendant.status,
+              serviceType: attendant.serviceType,
+              markedBy: attendant.markedBy,
+              
+          }));
+          } else {
+              this.attendanceList = [];  // Clear the list if no data is found
+              this.noData = true;
+          }
 
       } catch (error) {
         console.error('Error fetching attendance list:', error);
@@ -154,16 +162,18 @@ export default {
 
         console.info("present attendance list", response.data)
         if (response.data !== 'No data found') {
-    this.attendanceList = response.data.map(attendant => ({
-        name: attendant.fullname,
-        date: attendant.date,
-        attendanceStatus: attendant.status,
-        serviceType: attendant.serviceType
-    }));
-    } else {
-        this.attendanceList = [];  // Clear the list if no data is found
-        
-    }
+          this.attendanceList = response.data.map(attendant => ({
+              name: attendant.fullName,
+              date: attendant.date,
+              attendanceStatus: attendant.status,
+              serviceType: attendant.serviceType,
+              markedBy: attendant.markedBy,
+          }));
+        } else {
+            this.attendanceList = [];  // Clear the list if no data is found
+            this.noData = true;
+            
+        }
 
 
       } catch (error) {
@@ -185,10 +195,11 @@ export default {
         console.info("present attendance list", response.data)
         if (response.data !== 'No data found') {
     this.attendanceList = response.data.map(attendant => ({
-        name: attendant.fullname,
+        name: attendant.fullName,
         date: attendant.date,
         attendanceStatus: attendant.status,
-        serviceType: attendant.serviceType
+        serviceType: attendant.serviceType,
+        markedBy: attendant.markedBy,
     }));
     } else {
         this.attendanceList = [];  // Clear the list if no data is found
@@ -207,7 +218,7 @@ export default {
     async downloadAttendance() {
   console.info("In the download attendance function");
 
-   if(localStorage.getItem('userRole') == "GUEST"){
+   if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
 
@@ -263,9 +274,9 @@ export default {
     this.fetchSummaryData();
 
     // Clear local storage when the tab or window is closed
-    window.addEventListener("beforeunload", () => {
-      localStorage.clear();
-    });
+    //window.addEventListener("beforeunload", () => {
+     // localStorage.clear();
+   // });
   }
 };
 </script>
@@ -313,7 +324,7 @@ select{
   margin-right: 10px;
   position: fixed;
   left: 1173px;
-    top: 435px;
+    top: 395px;
 }
 
 .button2 {
@@ -326,7 +337,18 @@ select{
   margin-right: 10px;
   position: fixed;
   left: 1090px;
-    top: 485px;
+    top: 445px;
+}
+
+.table-container {
+ max-height: 320px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    position: fixed;
+    top: 155px;
+    left: 275px;
+    width: 790px;
 }
 
 .button3 {
@@ -339,7 +361,7 @@ select{
   margin-right: 10px;
   position: fixed;
   left: 1180px;
-    top: 530px;
+    top: 490px;
 
 }
 
@@ -353,20 +375,17 @@ select{
   margin-right: 10px;
   position: fixed;
   left: 1090px;
-    top: 580px;
+    top: 540px;
 
 }
 table {
-  width: 60%;
-  border-collapse: collapse;
-  position: fixed;
-  top: 160px;
-  left:280px;
+  width: 100%; /* Ensure the table takes up the full width of the container */
+  border-collapse: collapse; /* Ensure no gaps between table cells */
 }
 
 .left_view {
   width: 200px;
-  height: 530px;
+  height: 500px;
   position: fixed;  /* Fixes .left_view at specific screen coordinates */
   left: 1080px;
   top: 100px;

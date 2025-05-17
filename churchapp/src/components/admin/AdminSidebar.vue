@@ -1,229 +1,194 @@
 <template>
-<router-view></router-view>
+  <router-view></router-view>
 
   <!-- sidebar -->
-    <nav class="sidebar">
-      <div class="menu_content">
-        <ul class="menu_items">
-          <div class="menu_title menu_dahsboard"></div>
+  <nav class="sidebar">
+    <div class="menu_content">
+      <ul class="menu_items">
+        <div class="menu_title menu_dashboard"></div>
 
-          <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
-          <!-- start -->
-          <li class="item">
-            <router-link to="/adminOverView" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bx-grid-alt"></i>
-              </span>
-              
-              <span class="navlink">Overview</span>
-              
-        
-            </router-link>
-            
-          </li>
-          <!-- end -->
-        
-        <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
-          <!-- start -->
-          <li class="item">
+        <!-- start -->
+        <li class="item">
+          <router-link to="/adminOverView" class="nav_link submenu_item">
+            <span class="navlink_icon">
+              <i class="bx bx-grid-alt"></i>
+            </span>
+            <span class="navlink">Overview</span>
+          </router-link>
+        </li>
+        <!-- end -->
+
+        <!-- start -->
+        <li class="item">
           <router-link to="" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bx-user"></i>
-              </span>
-              <span class="navlink">Users</span>
-              <i class="bx bx-chevron-right arrow-left"></i>
-            
-            </router-link>
+            <span class="navlink_icon">
+              <i class="bx bx-user"></i>
+            </span>
+            <span class="navlink">Users</span>
+            <i class="bx bx-chevron-right arrow-left"></i>
+          </router-link>
 
-            <ul class="menu_items submenu">
-              <router-link to="/register" class="nav_link submenu_item">
+          <ul class="menu_items submenu">
+            <router-link to="/register" class="nav_link submenu_item">
               <i class="bx bx-user-plus"></i>
               <a href="#" class="nav_link sublink">Add Users</a>
-              </router-link>
-
-              <router-link to="/editUser" class="nav_link submenu_item">
-              <i class='bx bxs-user-detail'></i>
-              <a href="#" class="nav_link sublink">Edit Users</a>
-              </router-link>
-
-              
-            </ul>
-          </li>
-          <!-- end -->
-
-
-        <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
-          <!-- start -->
-          <li class="item">
-
-            <div href="#" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bx-check-circle"></i>
-              </span>
-              <span class="navlink">Attendance</span>
-              <i class="bx bx-chevron-right arrow-left"></i>
-            
-            </div>
-
-            <ul class="menu_items submenu">
-              <router-link to="/attendance" class="nav_link submenu_item">
-              <i class='bx bx-task'></i>
-              <a href="#" class="nav_link sublink"> Take Attendance</a>
-              </router-link>
-
-              <router-link to="/attendanceOverview" class="nav_link submenu_item">
-              <i class='bx bx-grid-small'></i>
-              <a href="#" class="nav_link sublink">Overview</a>
-              </router-link>
-
-              
-            </ul>
-          </li>
-          <!-- end -->
-        
-        <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
-          <!-- start -->
-          
-          <li class="item">
-            <router-link to="" class="nav_link submenu_item">
-
-              <span class="navlink_icon">
-                <i class="bx bx-group"></i>
-              </span>
-              <span class="navlink">Members</span>
-              <i class="bx bx-chevron-right arrow-left"></i>
-            
             </router-link>
 
-            <ul class="menu_items submenu">
-              <router-link to="/members" class="nav_link submenu_item">
+            <router-link to="/editUser" class="nav_link submenu_item">
+              <i class="bx bxs-user-detail"></i>
+              <a href="#" class="nav_link sublink">Edit Users</a>
+            </router-link>
+          </ul>
+        </li>
+        <!-- end -->
+
+        <!-- start -->
+        <li class="item">
+          <div href="#" class="nav_link submenu_item">
+            <span class="navlink_icon">
+              <i class="bx bx-check-circle"></i>
+            </span>
+            <span class="navlink">Attendance</span>
+            <i class="bx bx-chevron-right arrow-left"></i>
+          </div>
+
+          <ul class="menu_items submenu">
+            <router-link to="/attendance" class="nav_link submenu_item">
+              <i class="bx bx-task"></i>
+              <a href="#" class="nav_link sublink">Take Attendance</a>
+            </router-link>
+
+            <router-link to="/attendanceOverview" class="nav_link submenu_item">
+              <i class="bx bx-grid-small"></i>
+              <a href="#" class="nav_link sublink">Overview</a>
+            </router-link>
+          </ul>
+        </li>
+        <!-- end -->
+
+        <!-- start -->
+        <li class="item">
+          <router-link to="" class="nav_link submenu_item">
+            <span class="navlink_icon">
+              <i class="bx bx-group"></i>
+            </span>
+            <span class="navlink">Members</span>
+            <i class="bx bx-chevron-right arrow-left"></i>
+          </router-link>
+
+          <ul class="menu_items submenu">
+            <router-link to="/members" class="nav_link submenu_item">
               <i class="bx bx-user-plus"></i>
-              <a href="#" class="nav_link sublink">Add members</a>
-              </router-link>
+              <a href="#" class="nav_link sublink">Add Members</a>
+            </router-link>
 
-              <router-link to="/editMemberPage" class="nav_link submenu_item">
-              <i class='bx bxs-user-detail'></i>
-              <a href="#" class="nav_link sublink">Edit members</a>
-              </router-link>
+            <router-link to="/editMemberPage" class="nav_link submenu_item">
+              <i class="bx bxs-user-detail"></i>
+              <a href="#" class="nav_link sublink">Edit Members</a>
+            </router-link>
 
-              <router-link to="" class="nav_link submenu_item">
-              <a href="#" class="nav_link sublink">Members actions</a>
-              </router-link>
+            <router-link to="" class="nav_link submenu_item">
+              <a href="#" class="nav_link sublink">Member Actions</a>
+            </router-link>
+          </ul>
+        </li>
+        <!-- end -->
 
-              
-            </ul>
-          </li>
-          <!-- end -->
-
-
-          <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
-          <!-- start -->
-          <li class="item">
-            <div href="#" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bx-file"></i>
-              </span>
-              <span class="navlink">Reports</span>
-              <i class="bx bx-chevron-right arrow-left"></i>
-            </div>
-            <ul class="menu_items submenu">
+        <!-- start -->
+        <li class="item">
+          <div href="#" class="nav_link submenu_item">
+            <span class="navlink_icon">
+              <i class="bx bx-file"></i>
+            </span>
+            <span class="navlink">Reports</span>
+            <i class="bx bx-chevron-right arrow-left"></i>
+          </div>
+          <ul class="menu_items submenu">
             <router-link to="/reportPage" class="nav_link submenu_item">
-              <i class='bx bxs-user-detail'></i>
+              <i class="bx bxs-user-detail"></i>
               <a href="#" class="nav_link sublink">Attendance</a>
-              </router-link>
+            </router-link>
+          </ul>
+        </li>
+        <!-- end -->
 
-              
-            </ul>
-          </li>
-          <!-- end -->
-
-
-
-          <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
-          <!-- start -->
-          <li class="item">
-            <div href="#" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bx-file"></i>
-              </span>
-              <span class="navlink">Notifications</span>
-              <i class="bx bx-chevron-right arrow-left"></i>
-            </div>
-            <ul class="menu_items submenu">
+        <!-- start -->
+        <li class="item">
+          <div href="#" class="nav_link submenu_item">
+            <span class="navlink_icon">
+              <i class="bx bx-file"></i>
+            </span>
+            <span class="navlink">Notifications</span>
+            <i class="bx bx-chevron-right arrow-left"></i>
+          </div>
+          <ul class="menu_items submenu">
             <router-link to="/smsNotificationPage" class="nav_link submenu_item">
-              <i class='bx bxs-user-detail'></i>
+              <i class="bx bxs-user-detail"></i>
               <a href="#" class="nav_link sublink">SMS</a>
-              </router-link>
+            </router-link>
+          </ul>
+        </li>
+        <!-- end -->
 
-              
-            </ul>
-          </li>
-          <!-- end -->
+      </ul>
 
-
-
-        </ul>
-        
-        <!-- Sidebar Open / Close -->
-        <div class="bottom_content">
-          <div class="bottom expand_sidebar">
-            <span> Expand</span>
-            <i class='bx bx-log-in' ></i>
-          </div>
-          <div class="bottom collapse_sidebar">
-            <span> Collapse</span>
-            <i class='bx bx-log-out'></i>
-          </div>
+      <!-- Sidebar Open / Close -->
+      <div class="bottom_content">
+        <div class="bottom expand_sidebar">
+          <span>Expand</span>
+          <i class="bx bx-log-in"></i>
+        </div>
+        <div class="bottom collapse_sidebar">
+          <span>Collapse</span>
+          <i class="bx bx-log-out"></i>
         </div>
       </div>
-    </nav>
+    </div>
+  </nav>
 </template>
 
 <script>
 export default {
   mounted() {
     const sidebar = document.querySelector(".sidebar");
-const submenuItems = document.querySelectorAll(".submenu_item");
-const sidebarOpen = document.querySelector("#sidebarOpen");
-const sidebarClose = document.querySelector(".collapse_sidebar");
-const sidebarExpand = document.querySelector(".expand_sidebar");
-sidebarOpen.addEventListener("click", () => sidebar.classList.toggle("close"));
-sidebarClose.addEventListener("click", () => {
-  sidebar.classList.add("close", "hoverable");
-});
-sidebarExpand.addEventListener("click", () => {
-  sidebar.classList.remove("close", "hoverable");
-});
-sidebar.addEventListener("mouseenter", () => {
-  if (sidebar.classList.contains("hoverable")) {
-    sidebar.classList.remove("close");
-  }
-});
-sidebar.addEventListener("mouseleave", () => {
-  if (sidebar.classList.contains("hoverable")) {
-    sidebar.classList.add("close");
-  }
-});
+    const submenuItems = document.querySelectorAll(".submenu_item");
+    const sidebarOpen = document.querySelector("#sidebarOpen");
+    const sidebarClose = document.querySelector(".collapse_sidebar");
+    const sidebarExpand = document.querySelector(".expand_sidebar");
 
-
-submenuItems.forEach((item, index) => {
-  item.addEventListener("click", () => {
-    item.classList.toggle("show_submenu");
-    submenuItems.forEach((item2, index2) => {
-      if (index !== index2) {
-        item2.classList.remove("show_submenu");
+    sidebarOpen.addEventListener("click", () => sidebar.classList.toggle("close"));
+    sidebarClose.addEventListener("click", () => {
+      sidebar.classList.add("close", "hoverable");
+    });
+    sidebarExpand.addEventListener("click", () => {
+      sidebar.classList.remove("close", "hoverable");
+    });
+    sidebar.addEventListener("mouseenter", () => {
+      if (sidebar.classList.contains("hoverable")) {
+        sidebar.classList.remove("close");
       }
     });
-  });
-});
+    sidebar.addEventListener("mouseleave", () => {
+      if (sidebar.classList.contains("hoverable")) {
+        sidebar.classList.add("close");
+      }
+    });
 
+    submenuItems.forEach((item, index) => {
+      item.addEventListener("click", () => {
+        item.classList.toggle("show_submenu");
+        submenuItems.forEach((item2, index2) => {
+          if (index !== index2) {
+            item2.classList.remove("show_submenu");
+          }
+        });
+      });
+    });
   }
 };
 </script>
 
-<style >
-/* Include only sidebar-related styles */
-
+<style>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
 .sidebar {
@@ -268,7 +233,7 @@ submenuItems.forEach((item, index) => {
   white-space: nowrap;
 }
 
-.menu_dahsboard::before {
+.menu_dashboard::before {
   content: "Dashboard";
 }
 
@@ -419,9 +384,9 @@ submenuItems.forEach((item, index) => {
   display: none;
 }
 
-.submenu i{
-    position: relative;
-    left: 40px;
+.submenu i {
+  position: relative;
+  left: 40px;
 }
 
 @media screen and (max-width: 768px) {

@@ -33,8 +33,8 @@ const routes = [
 
   // user
   { path: '/home', component: HomePage },
-  { path: '/attendance', component: AttendancePage },
-  { path: '/attendanceOverview', component: AttendanceOverviewPage },
+  { path: '/attendance', component: AttendancePage, meta: { requiresMarkAttendancePrivilege: true } },
+  { path: '/attendanceOverview', component: AttendanceOverviewPage, meta: { requiresMarkAttendancePrivilege: true } },
   { path: '/members', component: MembersPage },
 
 ]
@@ -43,5 +43,21 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
+
+
+router.beforeEach((to, from, next) => {
+  const user = sessionStorage.getItem('privilage')
+  const privileges = user ? user.split(',') : []
+
+  if (to.meta.requiresMarkAttendancePrivilege) {
+    if (!privileges || !privileges.includes("Take Attendance")) {
+      alert("You do not have permission to access the attendance page.")
+      return next(from.fullPath || '/') // Or redirect to an "Access Denied" page
+    }
+  }
+
+  next()
+})
+
 
 export default router

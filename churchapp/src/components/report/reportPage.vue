@@ -232,7 +232,7 @@ export default {
 
   computed: {
     isAdmin() {
-      return localStorage.getItem("userRole") === 'ADMIN';
+      return sessionStorage.getItem("userRole") === 'ADMIN';
     }
   },
 
@@ -242,10 +242,12 @@ export default {
 
     toggleFilters() {
       this.showAttendanceFilters = true;
+      this.showMembersFilters = false;
     },
 
     toggleMemberFilters() {
       this.showMembersFilters = true;
+      this.showAttendanceFilters = false;
     },
 
     async getAttendanceFetch() {
@@ -295,7 +297,7 @@ export default {
 
     async getAttendanceReport() {
 
-       if(localStorage.getItem('userRole') == "GUEST"){
+       if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
       this.loading = true;

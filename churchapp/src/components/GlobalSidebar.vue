@@ -191,7 +191,7 @@ submenuItems.forEach((item, index) => {
 
   methods: {
     getDashboardRoute() {
-      const userRole = localStorage.getItem('userRole'); // Or use Vuex if roles are managed there
+      const userRole = sessionStorage.getItem('userRole'); // Or use Vuex if roles are managed there
 
       switch (userRole) {
         case 'ADMIN':

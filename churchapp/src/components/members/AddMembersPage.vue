@@ -17,259 +17,259 @@
       <Navbar />
 
       <h1>Membership Registration</h1>
-      
-      <form @submit.prevent="submitRegistration" class="registration-form">
-        <!-- User Details -->
-        <div v-if="step === 1" class = "first_info">
-          <h2>Basic Information</h2>
 
-          <label class = "label_tt" for="title">Title</label>
-          <select class = "tt" v-model="form.title" id="title"  >
-            <option disabled value="">Select Title</option>
-            <option v-for="title in titles" :key="title" :value="title">
-              {{ title }}
-            </option>
-          </select>
+        <form @submit.prevent="submitRegistration" class="registration-form">
+          <!-- User Details -->
+          <div v-if="step === 1" class = "first_info">
+            <h2>Basic Information</h2>
 
-          <label class = "label_fn" for="firstName">First Name</label>
-          <input class = "fn" type="text" v-model="form.firstName" id="firstName" placeholder="First Name" />
+            <label class = "label_tt" for="title">Title</label>
+            <select class = "tt" v-model="form.title" id="title"  >
+              <option disabled value="">Select Title</option>
+              <option v-for="title in titles" :key="title" :value="title">
+                {{ title }}
+              </option>
+            </select>
 
-          <label class = "label_mn" for="middleName">Middle Name</label>
-          <input class = "mn" type="text" v-model="form.middleName" id="middleName" placeholder="Middle Name"  />
+            <label class = "label_fn" for="firstName">First Name <span class="required-star">*</span> </label>
+            <input class = "fn" type="text" v-model="form.firstName" id="firstName" placeholder="First Name" />
 
-          <label class = "label_ln" for="lastName">Last Name</label>
-          <input  class = "ln" type="text" v-model="form.lastName" id="lastName" placeholder="Last Name"  />
+            <label class = "label_mn" for="middleName">Middle Name</label>
+            <input class = "mn" type="text" v-model="form.middleName" id="middleName" placeholder="Middle Name"  />
 
-          <label class = "label_dobs" for="dob">Date of Birth</label>
-          <input class = "dobs" type="date" v-model="form.dateOfBirth" id="dob" placeholder="Date of Birth"  />
+            <label class = "label_ln" for="lastName">Last Name <span class="required-star">*</span> </label>
+            <input  class = "ln" type="text" v-model="form.lastName" id="lastName" placeholder="Last Name"  />
 
-          <label class = "label_gn" for="gender">Gender</label>
-          <select class = "gn" v-model="form.gender" id="gender" >
-            <option disabled value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
+            <label class = "label_dobs" for="dob">Date of Birth</label>
+            <input class = "dobs" type="date" v-model="form.dateOfBirth" id="dob" placeholder="Date of Birth"  />
 
-          <label class = "label_pn" for="phoneNumber">Phone Number</label>
-          <input class = "pn" type="text" v-model="form.phoneNumber" id="phoneNumber" placeholder="Phone Number"  />
+            <label class = "label_gn" for="gender">Gender <span class="required-star">*</span> </label>
+            <select class = "gn" v-model="form.gender" id="gender" >
+              <option disabled value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
 
-          <label class = "label_ea" for="email">Email</label>
-          <input class = "ea" type="email" v-model="form.email" id="email" placeholder="Email" />
+            <label class = "label_pn" for="phoneNumber">Phone Number <span class="required-star">*</span> </label>
+            <input class = "pn" type="text" v-model="form.phoneNumber" id="phoneNumber" placeholder="Phone Number"  />
 
-          <label class = "label_ny" for="nationality">Nationality</label>
-          <input class = "ny" type="text" v-model="form.nationality" id="nationality" placeholder="Nationality"  />
+            <label class = "label_ea" for="email">Email</label>
+            <input class = "ea" type="email" v-model="form.email" id="email" placeholder="Email" />
 
-          <label class = "label_ht" for="homeTown">Home Town</label>
-          <input  class = "ht" type="text" v-model="form.homeTown" id="homeTown" placeholder="Home Town"  />
+            <label class = "label_ny" for="nationality">Nationality</label>
+            <input class = "ny" type="text" v-model="form.nationality" id="nationality" placeholder="Nationality"  />
 
-          <label class = "label_ha" for="homeAddress">Home Address</label>
-          <input class = "ha" type="text" v-model="form.homeAddress" id="homeAddress" placeholder="Home Address"  />
+            <label class = "label_ht" for="homeTown">Home Town</label>
+            <input  class = "ht" type="text" v-model="form.homeTown" id="homeTown" placeholder="Home Town"  />
 
-          <button type="button" @click="nextStep">Next</button>
-        </div>
+            <label class = "label_ha" for="homeAddress">Home Address <span class="required-star">*</span> </label>
+            <input class = "ha" type="text" v-model="form.homeAddress" id="homeAddress" placeholder="Home Address"  />
 
-
-        <div v-if="step === 2">
-
-          <h2 class = "step2_first_h2"> Professional Background</h2>
-
-          <label class = "label_auw" for="auw">Are you working</label>
-          <select class = "auw" v-model="form.workingStatus" id="auw"  >
-            <option disabled value="">Select Working Status</option>
-            <option v-for="work in working" :key="work" :value="work">
-              {{ work }}
-            </option>
-          </select>
-
-          <label class = "label_op" for="occupation">Occupation</label>
-          <input class = "op" type="text" v-model="form.occupation" id="occupation" placeholder="Occupation"  />
-
-          <label class = "label_qf" for="qualification">Qualification</label>
-          <input class = "qf" type="text" v-model="form.qualification" id="qualification" placeholder="Qualification"  />
-
-          <label class = "label_in" for="institutionName">Institution Name</label>
-          <input  class = "in" type="text" v-model="form.institutionName" id="institutionName" placeholder="Institution Name"  />
-
-          <h2 class = "step2_second_h2" >Family & Emergency Contact Information</h2>
-
-          <label class = "label_man" for="dob">Mothers Name</label>
-          <input class = "man" type="text" v-model="form.mothersName" id="mothersName" placeholder="Mothers name" />
-
-          <label class = "label_fan" for="fathersName">Fathers Name</label>
-          <input class = "fan" type="text" v-model="form.fathersName" id="fathersName" placeholder="Fathers name"  />
-
-          <label class = "label_nok" for="nextOfKin">Next of kin</label>
-          <input class = "nok" type="text" v-model="form.nextOfKin" id="nextOfKin" placeholder="Next of kin"  />
-
-          <label class = "label_nokp" for="nextOfKinPhone">Next Of Kin Phone</label>
-          <input class = "nokp" type="text" v-model="form.nextOfKinPhoneNumber" id="nextOfKinPhone" placeholder="Next Of Kin Phone"  />
-
-          
-          <button class = "s2preveBut" type="button" @click="prevStep">Previous</button>
-          <button class = "s2nextBut" type="button" @click="nextStep">Next</button>
-        </div>
-
-        <div v-if="step === 3">
-
-          <h2 class = "step3_first_h2"> Family & Emergency Contact Information 2</h2>
-
-          <label class = "label_mariSta" for="maritalStatus">Marital Status</label>
-          <select class = "mariSta" v-model="form.maritalStatus" id="maritalStatus"  >
-            <option disabled value="">Select Marital Status</option>
-            <option v-for= "marital in maritalS" :key="marital" :value="marital">
-              {{ marital }}
-            </option>
-          </select>
-
-          <label class = "label_spcon" for="spouseContact">Spouse contact</label>
-          <input class = "spcon" type="text" v-model="form.spouseContact" id="spouseContact" placeholder="Spouse Contact"  />
-
-          <label class = "label_spnam" for="spouseName">Spouse Name </label>
-          <input class = "spnam" type="text" v-model="form.spouseName" id="spouseName" placeholder="Spouse Name" />
-
-          <label class = "label_noch" for="numberOfChildren">Number of children</label>
-          <input  class = "noch" type="text" v-model="form.numberOfChildren" id="numberOfChildren" placeholder="Number of children"  />
-
-          <h2 class = "step3_second_h2" > Church Details </h2>
-
-          <label class = "label_meT" for="memeberType">Member Type</label>
-          <select class = "meT" v-model="form.memberType" id="memberType"  >
-            <option disabled value="">Select Member Type</option>
-            <option v-for="member in memberT" :key="member" :value="member">
-              {{ member }}
-            </option>
-          </select>
-
-          <label class = "label_zone" for="cell">Cell</label>
-          <select class = "zone" v-model="form.cell" id="cell"  >
-            <option disabled value="">Select Cell</option>
-            <option v-for="cell in cells" :key="cell" :value="cell">
-              {{ cell }}
-            </option>
-          </select>
-
-
-          <label class = "label_dapNa" for="departmentName">cell</label>
-          <select class = "dapNa" v-model="form.departmentName" id="departmentName"  >
-            <option disabled value="">Select Department Name</option>
-            <option v-for="departmentName in departmentNames" :key="departmentName" :value="departmentName">
-              {{ departmentName }}
-            </option>
-          </select>
-
-
-          <label class = "label_datJo" for="datejoined">DateJoined</label>
-          <input class = "datJo" type="date" v-model="form.dateJoined" id="dateJoined" placeholder="dateJoined"  />
-
-          <label class = "label_claSelec" for="classSelection">Class Selection</label>
-          <select class = "claSelec" v-model="form.classSelection" id="classSelection"  >
-            <option disabled value="">Select Class Selection</option>
-            <option v-for="classsel in classsels" :key="classsel" :value="classsel">
-              {{ classsel }}
-            </option>
-          </select>
-          
-          <button class = "s3preveBut" type="button" @click="prevStep">Previous</button>
-          <button class = "s3nextBut" type="button" @click="nextStep">Next</button>
-
-        </div>
-
-        <div v-if="step === 4">
-
-          <h2 class = "step4_first_h2"> Church Details 2</h2>
-
-          <label class = "label_spGi" for="spiritualGift">Spiritual Gift(s)</label>
-          <input class = "spGi" type="text" v-model="form.spiritualGift" id="spiritualGift" placeholder="Spiritual Gift"  />
-
-          <label class = "label_posi" for="position">Position</label>
-          <select class = "posi" v-model="form.position" id="position" >
-            <option disabled value="">Select Position</option>
-            <option v-for="position in positions" :key="position" :value="position">
-              {{ position }}
-            </option>
-          </select>
-
-          <label class = "label_waterBa" for="waterBa">Water Baptised</label>
-          <select class = "waterBa" v-model="form.waterBaptised" id="waterBaptised"  >
-            <option disabled value="">Select option</option>
-            <option v-for="waterBap in waterBaps" :key="waterBap" :value="waterBap">
-              {{ waterBap }}
-            </option>
-          </select>
-
-          <label class = "label_batby" for="baptisedBy">Babtised By </label>
-          <input class = "batby" type="text" v-model="form.baptisedBy" id="baptisedBy" placeholder="Baptised By"  />
-
-          <label class = "label_dateBapt" for="dateBaptised">Date Baptised</label>
-          <input  class = "dateBapt" type="date" v-model="form.dateBaptised" id="dateBaptised" placeholder="Date Baptised"  />
-
-          <label class = "label_bbths" for="bbths">Baptised by the Holy Spirit</label>
-          <select class = "bbths" v-model="form.baptisedBy" id="baptisedByTheHolySpirit"  required>
-            <option disabled value="">Select option</option>
-            <option v-for="baptisedBy in baptisedBys" :key="baptisedBy" :value="baptisedBy">
-              {{ baptisedBy }}
-            </option>
-          </select>
-
-          <label class = "label_memberSta" for="memeberStatus">Member Status </label>
-          <select class = "memberSta" v-model="form.memberStatus " id="memberStatus"  >
-            <option disabled value="">Select Member Status</option>
-            <option v-for="memberSta in memberStatuses" :key="memberSta" :value="memberSta">
-              {{ memberSta }}
-            </option>
-          </select>
-
-
-          
-          <button class = "s4preveBut" type="button" @click="prevStep">Previous</button>
-          <button class = "s4nextBut" type="button" @click="nextStep">Next</button>
-
-        </div>
-        <div v-if="step === 5">
-
-          <h2 class = "step5_first_h2"> Other Info</h2>
-
-          <label class = "label_datDece" for="dateDeceased">Date Deceased</label>
-          <input class = "datDece" type="date" v-model="form.dateDeceased" id="dateDeceased" placeholder="DateDeceased" />
-
-          <label class = "label_datBur" for="dateBuried">Date Buried</label>
-          <input class = "datBur" type="date" v-model="form.dateBuried" id="dateburied" placeholder="Date Buried" />
-
-          <label class = "label_confirm" for="confirmed">Confirmed</label>
-          <select class = "confirm" v-model="form.ctoggleFiltersonfirmed" id="confirmed"  >
-            <option disabled value="">Select confirmed</option>
-            <option v-for="confirmed in confirmeds" :key="confirmed" :value="confirmed">
-              {{ confirmed }}
-            </option>
-          </select>
-
-          <label class = "label_dateConfir" for="dateConfirmed">Date Confirmed</label>
-          <input class = "dateConfir" type="date" v-model="form.dateConfirmed" id="dateConfirmed" placeholder="Date Comfired" />
-
-          <label class = "label_comment" for="comment">Comment</label>
-          <textarea class="comment" v-model="form.comment" id="comment" placeholder="Write your comment here..." ></textarea>
-
-         
-          <input class = "label_image" type="file" @change="handleImageUpload" />
-          <div class = "image_container">
-          <img  v-if="imageUrl" :src="imageUrl" alt="Image Preview" class="images" />
+            <button type="button" @click="nextStep">Next</button>
           </div>
 
-          <button class = "s5nextBut" type="button" @click="prevStep">Previous</button>
-          <button class = "s5resetBut" type="button" @click="nextStep">Reset</button>
-          <button class = "s5SaveBut" type="submit">Submit</button>
 
-        </div>
+          <div v-if="step === 2">
 
-        <div v-if="step === 6">
-        <h2 class = "step6_first_h21"> Member creation complete !!!</h2>
-        <h2 class = "step6_first_h22">  If you have not added the members image, remember to add it. </h2>
-        <h2 class = "step6_first_h23">  To access the member details, go to member sublinks. </h2>
-        
+            <h2 class = "step2_first_h2"> Professional Background</h2>
 
-        </div>
-      </form>
+            <label class = "label_auw" for="auw">Are you working</label>
+            <select class = "auw" v-model="form.workingStatus" id="auw"  >
+              <option disabled value="">Select Working Status</option>
+              <option v-for="work in working" :key="work" :value="work">
+                {{ work }}
+              </option>
+            </select>
+
+            <label class = "label_op" for="occupation">Occupation</label>
+            <input class = "op" type="text" v-model="form.occupation" id="occupation" placeholder="Occupation"  />
+
+            <label class = "label_qf" for="qualification">Qualification</label>
+            <input class = "qf" type="text" v-model="form.qualification" id="qualification" placeholder="Qualification"  />
+
+            <label class = "label_in" for="institutionName">Institution Name</label>
+            <input  class = "in" type="text" v-model="form.institutionName" id="institutionName" placeholder="Institution Name"  />
+
+            <h2 class = "step2_second_h2" >Family & Emergency Contact Information</h2>
+
+            <label class = "label_man" for="dob">Mothers Name</label>
+            <input class = "man" type="text" v-model="form.mothersName" id="mothersName" placeholder="Mothers name" />
+
+            <label class = "label_fan" for="fathersName">Fathers Name</label>
+            <input class = "fan" type="text" v-model="form.fathersName" id="fathersName" placeholder="Fathers name"  />
+
+            <label class = "label_nok" for="nextOfKin">Next of kin <span class="required-star">*</span> </label>
+            <input class = "nok" type="text" v-model="form.nextOfKin" id="nextOfKin" placeholder="Next of kin"  />
+
+            <label class = "label_nokp" for="nextOfKinPhone">Next Of Kin Phone <span class="required-star">*</span> </label>
+            <input class = "nokp" type="text" v-model="form.nextOfKinPhoneNumber" id="nextOfKinPhone" placeholder="Next Of Kin Phone"  />
+
+            
+            <button class = "s2preveBut" type="button" @click="prevStep">Previous</button>
+            <button class = "s2nextBut" type="button" @click="nextStep">Next</button>
+          </div>
+
+          <div v-if="step === 3">
+
+            <h2 class = "step3_first_h2"> Family & Emergency Contact Information 2</h2>
+
+            <label class = "label_mariSta" for="maritalStatus">Marital Status</label>
+            <select class = "mariSta" v-model="form.maritalStatus" id="maritalStatus"  >
+              <option disabled value="">Select Marital Status</option>
+              <option v-for= "marital in maritalS" :key="marital" :value="marital">
+                {{ marital }}
+              </option>
+            </select>
+
+            <label class = "label_spcon" for="spouseContact">Spouse contact</label>
+            <input class = "spcon" type="text" v-model="form.spouseContact" id="spouseContact" placeholder="Spouse Contact"  />
+
+            <label class = "label_spnam" for="spouseName">Spouse Name </label>
+            <input class = "spnam" type="text" v-model="form.spouseName" id="spouseName" placeholder="Spouse Name" />
+
+            <label class = "label_noch" for="numberOfChildren">Number of children</label>
+            <input  class = "noch" type="text" v-model="form.numberOfChildren" id="numberOfChildren" placeholder="Number of children"  />
+
+            <h2 class = "step3_second_h2" > Church Details </h2>
+
+            <label class = "label_meT" for="memeberType">Member Type <span class="required-star">*</span> </label>
+            <select class = "meT" v-model="form.memberType" id="memberType"  >
+              <option disabled value="">Select Member Type</option>
+              <option v-for="member in memberT" :key="member" :value="member">
+                {{ member }}
+              </option>
+            </select>
+
+            <label class = "label_zone" for="cell">Cell</label>
+            <select class = "zone" v-model="form.cell" id="cell"  >
+              <option disabled value="">Select Cell</option>
+              <option v-for="cell in cells" :key="cell" :value="cell">
+                {{ cell }}
+              </option>
+            </select>
+
+
+            <label class = "label_dapNa" for="departmentName">Department Name</label>
+            <select class = "dapNa" v-model="form.departmentName" id="departmentName"  >
+              <option disabled value="">Select Department Name</option>
+              <option v-for="departmentName in departmentNames" :key="departmentName" :value="departmentName">
+                {{ departmentName }}
+              </option>
+            </select>
+
+
+            <label class = "label_datJo" for="datejoined">Date Joined <span class="required-star">*</span> </label>
+            <input class = "datJo" type="date" v-model="form.dateJoined" id="dateJoined" placeholder="dateJoined"  />
+
+            <label class = "label_claSelec" for="classSelection">Class Selection</label>
+            <select class = "claSelec" v-model="form.classSelection" id="classSelection"  >
+              <option disabled value="">Select Class Selection</option>
+              <option v-for="classsel in classsels" :key="classsel" :value="classsel">
+                {{ classsel }}
+              </option>
+            </select>
+            
+            <button class = "s3preveBut" type="button" @click="prevStep">Previous</button>
+            <button class = "s3nextBut" type="button" @click="nextStep">Next</button>
+
+          </div>
+
+          <div v-if="step === 4">
+
+            <h2 class = "step4_first_h2"> Church Details 2</h2>
+
+            <label class = "label_spGi" for="spiritualGift">Spiritual Gift(s)</label>
+            <input class = "spGi" type="text" v-model="form.spiritualGift" id="spiritualGift" placeholder="Spiritual Gift"  />
+
+            <label class = "label_posi" for="position">Position</label>
+            <select class = "posi" v-model="form.position" id="position" >
+              <option disabled value="">Select Position</option>
+              <option v-for="position in positions" :key="position" :value="position">
+                {{ position }}
+              </option>
+            </select>
+
+            <label class = "label_waterBa" for="waterBa">Water Baptised</label>
+            <select class = "waterBa" v-model="form.waterBaptised" id="waterBaptised"  >
+              <option disabled value="">Select option</option>
+              <option v-for="waterBap in waterBaps" :key="waterBap" :value="waterBap">
+                {{ waterBap }}
+              </option>
+            </select>
+
+            <label class = "label_batby" for="baptisedBy">Babtised By </label>
+            <input class = "batby" type="text" v-model="form.baptisedBy" id="baptisedBy" placeholder="Baptised By"  />
+
+            <label class = "label_dateBapt" for="dateBaptised">Date Baptised</label>
+            <input  class = "dateBapt" type="date" v-model="form.dateBaptised" id="dateBaptised" placeholder="Date Baptised"  />
+
+            <label class = "label_bbths" for="bbths">Baptised by the Holy Spirit</label>
+            <select class = "bbths" v-model="form.baptisedBy" id="baptisedByTheHolySpirit"  required>
+              <option disabled value="">Select option</option>
+              <option v-for="baptisedBy in baptisedBys" :key="baptisedBy" :value="baptisedBy">
+                {{ baptisedBy }}
+              </option>
+            </select>
+
+            <label class = "label_memberSta" for="memeberStatus">Member Status </label>
+            <select class = "memberSta" v-model="form.memberStatus " id="memberStatus"  >
+              <option disabled value="">Select Member Status</option>
+              <option v-for="memberSta in memberStatuses" :key="memberSta" :value="memberSta">
+                {{ memberSta }}
+              </option>
+            </select>
+
+
+            
+            <button class = "s4preveBut" type="button" @click="prevStep">Previous</button>
+            <button class = "s4nextBut" type="button" @click="nextStep">Next</button>
+
+          </div>
+          <div v-if="step === 5">
+
+            <h2 class = "step5_first_h2"> Other Info</h2>
+
+            <label class = "label_datDece" for="dateDeceased">Date Deceased</label>
+            <input class = "datDece" type="date" v-model="form.dateDeceased" id="dateDeceased" placeholder="DateDeceased" />
+
+            <label class = "label_datBur" for="dateBuried">Date Buried</label>
+            <input class = "datBur" type="date" v-model="form.dateBuried" id="dateburied" placeholder="Date Buried" />
+
+            <label class = "label_confirm" for="confirmed">Confirmed</label>
+            <select class = "confirm" v-model="form.confirmed" id="confirmed"  >
+              <option disabled value="">Select confirmed</option>
+              <option v-for="confirmed in confirmeds" :key="confirmed" :value="confirmed">
+                {{ confirmed }}
+              </option>
+            </select>
+
+            <label class = "label_dateConfir" for="dateConfirmed">Date Confirmed</label>
+            <input class = "dateConfir" type="date" v-model="form.dateConfirmed" id="dateConfirmed" placeholder="Date Comfired" />
+
+            <label class = "label_comment" for="comment">Comment</label>
+            <textarea class="comment" v-model="form.comment" id="comment" placeholder="Write your comment here..." ></textarea>
+
+          
+            <input class = "label_image" type="file" @change="handleImageUpload" />
+            <div class = "image_container">
+            <img  v-if="imageUrl" :src="imageUrl" alt="Image Preview" class="images" />
+            </div>
+
+            <button class = "s5nextBut" type="button" @click="prevStep">Previous</button>
+            <button class = "s5resetBut" type="button" @click="refreshStep">Reset</button>
+            <button class = "s5SaveBut" type="submit">Submit</button>
+
+          </div>
+
+          <div v-if="step === 6">
+          <h2 class = "step6_first_h21"> Member creation complete !!!</h2>
+          <h2 class = "step6_first_h22">  If you have not added the members image, remember to add it. </h2>
+          <h2 class = "step6_first_h23">  To access the member details, go to member sublinks. </h2>
+          
+
+          </div>
+        </form>
 
       <div class="progress-bar">
         <div :style="{ width: (step - 1) * 33 + '%' }" class="progress"></div>
@@ -360,7 +360,7 @@ export default {
 
   computed: {
     isAdmin() {
-      return localStorage.getItem("userRole") === 'ADMIN';
+      return sessionStorage.getItem("userRole") === 'ADMIN';
     }
   },
 
@@ -378,6 +378,9 @@ export default {
         this.step--;
       }
     },
+    refreshStep() {
+     window.location.reload();
+    },
     
      handleImageUpload(event) {
       const file = event.target.files[0];
@@ -392,9 +395,26 @@ export default {
 
 
     async submitRegistration() {
-       if(localStorage.getItem('userRole') == "GUEST"){
+
+       if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
+
+      if (
+      !this.form.firstName ||
+      !this.form.lastName ||
+      !this.form.email ||
+      !this.form.gender ||
+      !this.form.phoneNumber ||
+      !this.form.homeAddress ||
+      !this.form.nextOfKin ||
+      !this.form.nextOfKinPhoneNumber ||
+      !this.form.memberType ||
+      !this.form.dateJoined
+    ) {
+      alert("Please fill in all required fields.");
+      return;
+    }
       console.info("in submit")
       
       console.info("image", this.selectedImage)
@@ -534,9 +554,9 @@ export default {
 
 
     // Clear local storage when the tab or window is closed
-    window.addEventListener("beforeunload", () => {
-      localStorage.clear();
-    });
+    //window.addEventListener("beforeunload", () => {
+    //  localStorage.clear();
+    //});
     
     }
 
@@ -545,9 +565,14 @@ export default {
 </script>
 
 <style scoped>
+
+.required-star {
+    color: #00d9ff;
+  }
+
 .registration-form {
    
-      height: 515px;
+      height: 465px;
     width: 720px;
     margin: 20px;
     position: fixed;
@@ -563,7 +588,7 @@ export default {
 .first_info button{
         position: fixed;
     left: 990px;
-    top: 600px;
+    top: 540px;
     height: 30px;
     width: 100px;
     color: black;
@@ -576,18 +601,19 @@ export default {
 .ha{
     position: fixed;
     left: 431px;
-    top: 595px;
+    top: 545px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align:center;
 
 }
 .label_ha{
    position: fixed;
     left: 440px;
-    top: 565px;
+    top: 520px;
     font-size: 20px;
     color: aqua;
 
@@ -597,12 +623,13 @@ export default {
 .ht{
         position: fixed;
     left: 790px;
-    top: 520px;
+    top: 475px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align:center;
 
 
 }
@@ -610,7 +637,7 @@ export default {
 .label_ht{
    position: fixed;
     left: 800px;
-    top: 490px;
+    top: 450px;
     font-size: 20px;
     color: aqua;
 
@@ -619,12 +646,13 @@ export default {
 .ny{
     position: fixed;
     left: 431px;
-    top: 520px;
+    top: 475px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align:center;
 
 
 }
@@ -632,7 +660,7 @@ export default {
 .label_ny{
    position: fixed;
     left: 440px;
-    top: 490px;
+    top: 450px;
     font-size: 20px;
     color: aqua;
 
@@ -641,12 +669,13 @@ export default {
 .ea{
     position: fixed;
     left: 790px;
-    top: 445px;
+    top: 405px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -654,7 +683,7 @@ export default {
 .label_ea{
    position: fixed;
     left: 800px;
-    top: 415px;
+    top: 380px;
     font-size: 20px;
     color: aqua;
 
@@ -663,12 +692,13 @@ export default {
 .pn{
     position: fixed;
     left: 431px;
-    top: 445px;
+    top: 405px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -676,7 +706,7 @@ export default {
 .label_pn{
    position: fixed;
     left: 440px;
-    top: 415px;
+    top: 380px;
     font-size: 20px;
     color: aqua;
 
@@ -685,12 +715,13 @@ export default {
 .gn{
     position: fixed;
     left: 790px;
-    top: 370px;
+    top: 330px;
     height: 33px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -698,7 +729,7 @@ export default {
 .label_gn{
    position: fixed;
     left: 800px;
-    top: 335px;
+    top: 306px;
     font-size: 20px;
     color: aqua;
 
@@ -707,12 +738,13 @@ export default {
 .dobs{
     position: fixed;
     left: 431px;
-    top: 370px;
+    top: 330px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -720,7 +752,7 @@ export default {
 .label_dobs{
    position: fixed;
     left: 440px;
-    top: 335px;
+    top: 306px;
     font-size: 20px;
     color: aqua;
 
@@ -729,12 +761,13 @@ export default {
 .ln{
     position: fixed;
     left: 790px;
-    top: 295px;
+    top: 260px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -742,7 +775,7 @@ export default {
 .label_ln{
    position: fixed;
     left: 800px;
-    top: 255px;
+    top: 236px;
     font-size: 20px;
     color: aqua;
 }
@@ -750,12 +783,13 @@ export default {
 .mn{
     position: fixed;
     left: 431px;
-    top: 290px;
+    top: 260px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align:center;
 
 
 }
@@ -763,7 +797,7 @@ export default {
 .label_mn{
    position: fixed;
     left: 440px;
-    top: 255px;
+    top: 236px;
     font-size: 20px;
     color: aqua;
 
@@ -772,12 +806,13 @@ export default {
 .fn{
     position: fixed;
     left: 790px;
-    top: 210px;
+    top: 190px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -785,7 +820,7 @@ export default {
 .label_fn{
    position: fixed;
     left: 800px;
-    top: 175px;
+    top: 158px;
     font-size: 20px;
     color: aqua;
 
@@ -794,12 +829,13 @@ export default {
 .tt{
     position: fixed;
     left: 430px;
-    top: 210px;
+    top: 190px;
     height: 33px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align:center;
 
 
 }
@@ -807,7 +843,7 @@ export default {
 .label_tt{
   position: fixed;
     left: 440px;
-    top: 175px;
+    top: 158px;
     font-size: 20px;
     color: aqua;
 
@@ -817,10 +853,11 @@ h2{
 
   position: fixed;
     left: 420px;
-    top: 135px;
+    top: 130px;
     height: 10px;
     width: 300px;
     color: #43edd7;
+    font-size:20px;
 }
 
 
@@ -831,7 +868,7 @@ h2{
 .step2_first_h2{
   position: fixed;
     left: 420px;
-    top: 155px;
+    top: 145px;
     height: 10px;
     width: 500px;
     color: #43edd7;
@@ -841,12 +878,13 @@ h2{
 .in{
     position: fixed;
     left: 800px;
-    top: 320px;
+    top: 295px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align:center;
 
 
 }
@@ -854,7 +892,7 @@ h2{
 .label_in{
    position: fixed;
     left: 820px;
-    top: 285px;
+    top: 265px;
     font-size: 20px;
     color: aqua;
 }
@@ -862,12 +900,13 @@ h2{
 .qf{
     position: fixed;
     left: 440px;
-    top: 320px;
+    top: 295px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align:center;
 
 
 }
@@ -875,21 +914,23 @@ h2{
 .label_qf{
    position: fixed;
     left: 455px;
-    top: 285px;
+    top: 265px;
     font-size: 20px;
     color: aqua;
+    
 
 }
 
 .op{
     position: fixed;
     left: 800px;
-    top: 240px;
+    top: 215px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align:center;
 
 
 }
@@ -897,7 +938,7 @@ h2{
 .label_op{
    position: fixed;
     left: 820px;
-    top: 205px;
+    top: 185px;
     font-size: 20px;
     color: aqua;
 
@@ -906,12 +947,13 @@ h2{
 .auw{
     position: fixed;
     left: 440px;
-    top: 240px;
+    top: 215px;
     height: 33px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -919,7 +961,7 @@ h2{
 .label_auw{
   position: fixed;
     left: 455px;
-    top: 205px;
+    top: 185px;
     font-size: 20px;
     color: aqua;
 
@@ -929,7 +971,7 @@ h2{
 .step2_second_h2{
   position: fixed;
     left: 420px;
-    top: 390px;
+    top: 360px;
     height: 10px;
     width: 800px;
     color: #43edd7;
@@ -939,12 +981,13 @@ h2{
 .nokp{
     position: fixed;
     left: 800px;
-    top: 555px;
+    top: 515px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align:center;
 
 
 }
@@ -952,7 +995,7 @@ h2{
 .label_nokp{
    position: fixed;
     left: 820px;
-    top: 520px;
+    top: 485px;
     font-size: 20px;
     color: aqua;
 
@@ -961,12 +1004,13 @@ h2{
 .nok{
     position: fixed;
     left: 440px;
-    top: 555px;
+    top: 515px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align:center;
 
 
 }
@@ -974,7 +1018,7 @@ h2{
 .label_nok{
    position: fixed;
     left: 455px;
-    top: 520px;
+    top: 485px;
     font-size: 20px;
     color: aqua;
 
@@ -983,12 +1027,13 @@ h2{
 .fan{
     position: fixed;
     left: 800px;
-    top: 470px;
+    top: 435px;
     height: 33px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align:center;
 
 
 }
@@ -996,7 +1041,7 @@ h2{
 .label_fan{
    position: fixed;
     left: 820px;
-    top: 435px;
+    top: 405px;
     font-size: 20px;
     color: aqua;
 
@@ -1005,12 +1050,13 @@ h2{
 .man{
     position: fixed;
     left: 440px;
-    top: 470px;
+    top: 435px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align:center;
 
 
 }
@@ -1018,7 +1064,7 @@ h2{
 .label_man{
    position: fixed;
     left: 455px;
-    top: 435px;
+    top: 405px;
     font-size: 20px;
     color: aqua;
 
@@ -1028,7 +1074,7 @@ h2{
 .s2preveBut{
         position: fixed;
     left: 870px;
-    top: 600px;
+    top: 550px;
     height: 30px;
     width: 100px;
     color: black;
@@ -1041,7 +1087,7 @@ h2{
 .s2nextBut{
         position: fixed;
     left: 990px;
-    top: 600px;
+    top: 550px;
     height: 30px;
     width: 100px;
     color: black;
@@ -1058,7 +1104,7 @@ h2{
 .step3_first_h2{
   position: fixed;
     left: 420px;
-    top: 155px;
+    top: 140px;
     height: 10px;
     width: 800px;
     color: #43edd7;
@@ -1067,12 +1113,13 @@ h2{
 .mariSta{
     position: fixed;
     left: 440px;
-    top: 230px;
+    top: 205px;
     height: 33px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1080,7 +1127,7 @@ h2{
 .label_mariSta{
   position: fixed;
     left: 455px;
-    top: 195px;
+    top: 175px;
     font-size: 20px;
     color: aqua;
 
@@ -1090,12 +1137,13 @@ h2{
 .spcon{
     position: fixed;
     left: 800px;
-    top: 230px;
+    top: 205px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1103,7 +1151,7 @@ h2{
 .label_spcon{
    position: fixed;
     left: 820px;
-    top: 195px;
+    top: 175px;
     font-size: 20px;
     color: aqua;
 
@@ -1112,12 +1160,13 @@ h2{
 .spnam{
     position: fixed;
     left: 440px;
-    top: 300px;
+    top: 280px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1125,7 +1174,7 @@ h2{
 .label_spnam{
    position: fixed;
     left: 455px;
-    top: 267px;
+    top: 250px;
     font-size: 20px;
     color: aqua;
 
@@ -1135,12 +1184,13 @@ h2{
 .noch{
     position: fixed;
     left: 800px;
-    top: 300px;
+    top: 280px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1148,7 +1198,7 @@ h2{
 .label_noch{
    position: fixed;
     left: 820px;
-    top: 267px;
+    top: 250px;
     font-size: 20px;
     color: aqua;
 }
@@ -1156,7 +1206,7 @@ h2{
 .step3_second_h2{
   position: fixed;
     left: 420px;
-    top: 360px;
+    top: 340px;
     height: 10px;
     width: 800px;
     color: #43edd7;
@@ -1165,12 +1215,13 @@ h2{
 .meT{
     position: fixed;
     left: 440px;
-    top: 430px;
+    top: 400px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1178,7 +1229,7 @@ h2{
 .label_meT{
    position: fixed;
     left: 455px;
-    top: 395px;
+    top: 370px;
     font-size: 20px;
     color: aqua;
 
@@ -1187,12 +1238,13 @@ h2{
 .zone{
     position: fixed;
     left: 800px;
-    top: 430px;
+    top: 400px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1200,7 +1252,7 @@ h2{
 .label_zone{
    position: fixed;
     left: 820px;
-    top: 395px;
+    top: 370px;
     font-size: 20px;
     color: aqua;
 
@@ -1209,12 +1261,13 @@ h2{
 .dapNa{
     position: fixed;
     left: 440px;
-    top: 510px;
+    top: 470px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1222,7 +1275,7 @@ h2{
 .label_dapNa{
    position: fixed;
     left: 455px;
-    top: 475px;
+    top: 445px;
     font-size: 20px;
     color: aqua;
 
@@ -1232,12 +1285,13 @@ h2{
 .datJo{
     position: fixed;
     left: 800px;
-    top: 510px;
+    top: 470px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1245,9 +1299,10 @@ h2{
 .label_datJo{
    position: fixed;
     left: 820px;
-    top: 475px;
+    top: 445px;
     font-size: 20px;
     color: aqua;
+    
 
 }
 
@@ -1255,12 +1310,13 @@ h2{
 .claSelec{
     position: fixed;
     left: 440px;
-    top: 590px;
+    top: 545px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1268,7 +1324,7 @@ h2{
 .label_claSelec{
    position: fixed;
     left: 455px;
-    top: 555px;
+    top: 520px;
     font-size: 20px;
     color: aqua;
 
@@ -1279,7 +1335,7 @@ h2{
 .s3preveBut{
         position: fixed;
     left: 870px;
-    top: 600px;
+    top: 550px;
     height: 30px;
     width: 100px;
     color: black;
@@ -1292,7 +1348,7 @@ h2{
 .s3nextBut{
         position: fixed;
     left: 990px;
-    top: 600px;
+    top: 550px;
     height: 30px;
     width: 100px;
     color: black;
@@ -1323,6 +1379,7 @@ h2{
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1345,6 +1402,7 @@ h2{
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1368,6 +1426,7 @@ h2{
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1391,6 +1450,7 @@ h2{
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1415,6 +1475,7 @@ h2{
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1439,6 +1500,8 @@ h2{
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
+
 
 
 }
@@ -1463,6 +1526,7 @@ h2{
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1480,7 +1544,7 @@ h2{
 .s4preveBut{
         position: fixed;
     left: 870px;
-    top: 600px;
+    top: 550px;
     height: 30px;
     width: 100px;
     color: black;
@@ -1493,7 +1557,7 @@ h2{
 .s4nextBut{
         position: fixed;
     left: 990px;
-    top: 600px;
+    top: 550px;
     height: 30px;
     width: 100px;
     color: black;
@@ -1526,6 +1590,7 @@ h2{
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1550,6 +1615,7 @@ h2{
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1574,6 +1640,7 @@ h2{
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1598,6 +1665,7 @@ h2{
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1621,6 +1689,7 @@ h2{
     border-radius: 10px;
     border-color: aqua;
     background-color: white;
+    text-align : center;
 
 
 }
@@ -1665,7 +1734,7 @@ h2{
     position: fixed;
     left: 440px;
     top: 400px;
-    height: 230px;
+    height: 185px;
     width: 300px;
     border-radius: 8px;
     border-color: white;
@@ -1678,7 +1747,7 @@ h2{
 .s5SaveBut{
         position: fixed;
     left: 770px;
-    top: 600px;
+    top: 550px;
     color: black;
     height: 30px;
     width: 100px;
@@ -1691,7 +1760,7 @@ h2{
 .s5resetBut{
         position: fixed;
     left: 880px;
-    top: 600px;
+    top: 550px;
     color: black;
     height: 30px;
     width: 100px;
@@ -1704,7 +1773,7 @@ h2{
 .s5nextBut{
         position: fixed;
     left: 990px;
-    top: 600px;
+    top: 550px;
     height: 30px;
     color: black;
     width: 100px;

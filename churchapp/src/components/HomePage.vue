@@ -23,9 +23,9 @@ export default {
 
  mounted() {
     // Clear local storage when the tab or window is closed
-    window.addEventListener("beforeunload", () => {
-      localStorage.clear();
-    });
+   // window.addEventListener("beforeunload", () => {
+     // localStorage.clear();
+   // });
   }
 };
 

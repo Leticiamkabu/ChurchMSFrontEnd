@@ -398,7 +398,7 @@ export default {
 
   computed: {
     isAdmin() {
-      return localStorage.getItem("userRole") === 'ADMIN';
+      return sessionStorage.getItem("userRole") === 'ADMIN';
     }
   },
 
@@ -498,7 +498,7 @@ export default {
 
   async downloadMembers() {
 
- if(localStorage.getItem('userRole') == "GUEST"){
+ if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
         console.info("In the download attendance function");
@@ -550,7 +550,7 @@ export default {
 
 
     async editMember(record) {
-       if(localStorage.getItem('userRole') == "GUEST"){
+       if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
     this.loading = true;
@@ -738,7 +738,7 @@ export default {
     },
 
      async updateMemberDetails() {
- if(localStorage.getItem('userRole') == "GUEST"){
+ if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
       this.loading = true; 
@@ -953,7 +953,7 @@ export default {
 
 
     async deleteMember(record) {
-       if(localStorage.getItem('userRole') == "GUEST"){
+       if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
       this.loading = true; 
