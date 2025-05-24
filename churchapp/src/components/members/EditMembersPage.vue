@@ -27,10 +27,24 @@
 
       <!-- Button Actions -->
       <section class="left_view">
-        <button class="button4" @click="getMembers">Get Members</button>
+        <button class="button1" @click="getMembers">Get Members</button>
       </section>
+
       <section class="left_view">
-        <button class="button5" @click="downloadMembers">Download Members</button>
+        <button class="button2" @click="toggleDownloadDropdown" >Download Members</button>
+        <ul v-if="showDownloadDropdown" class="download-dropdown-menu" >
+          <li @click="downloadMembers('Excel')" >Download as Excel</li>
+          
+        </ul>
+      </section>
+
+      <section class="left_view">
+        <input  type="file" ref="fileInput" @change="handleFileUpload" style="display: none;" />
+        <button class="button4" @click="openFileDialog">Upload Data</button>
+      </section>
+
+      <section class="left_view">
+        <button class="button3" @click="downloadSampleData">Download Sample File </button>
       </section>
 
       <!-- User Table -->
@@ -332,6 +346,8 @@ export default {
       //image :'',
       imageUrl: { url: "" },
       selectedImage : '',
+      showDownloadDropdown: false,
+      selectedFile: null,
 
       showEditModal: false,
       member_id: '',
@@ -402,11 +418,37 @@ export default {
     }
   },
 
+  directives: {
+    clickOutside: {
+      beforeMount(el, binding) {
+        el.clickOutsideEvent = function (event) {
+          if (!(el === event.target || el.contains(event.target))) {
+            binding.value(event);
+          }
+        };
+        document.body.addEventListener('click', el.clickOutsideEvent);
+      },
+      unmounted(el) {
+        document.body.removeEventListener('click', el.clickOutsideEvent);
+      },
+    },
+  },
+
+
   methods: {
+
+    toggleDownloadDropdown() {
+      this.showDownloadDropdown = !this.showDownloadDropdown;
+    },
+
+    closeDropdown() {
+    this.showDownloadDropdown = true;
+  },
 
     //https://churchmsbackend.onrender.com
 
     async getMembers() {
+        this.showDownloadDropdown = false;
         this.loading = true; 
         try {
           const response = await axios.get('https://churchmsbackend.onrender.com/members/get_all_members');
@@ -443,8 +485,69 @@ export default {
         
     },
 
+    openFileDialog() {
+      this.showDownloadDropdown = false;
+      this.$refs.fileInput.click();
+
+    },
+
+    handleFileUpload(event) {
+      this.selectedFile = event.target.files[0];
+      this.uploadMemberData();
+    },
+
+    async uploadMemberData() {
+      this.showDownloadDropdown = false;
+        this.loading = true; 
+
+        if (!this.selectedFile) {
+        alert('Please select a file first.');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', this.selectedFile); 
+
+        try {
+          const response = await axios.post('https://churchmsbackend.onrender.com/members/upload-docx', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        
+          console.info("response from member data upload : " ,response )
+
+          if (response.message == "Members added successfully"){
+              alert(response.message , ". ", "Total number of users added = ",response.total_members);
+
+              if (response.skiped_members !== []){
+                alert("Data has been skipped")
+              }
+
+              //CLEAN DATA FUNCTION HERE
+
+
+          }
+          else if (response.data.detail == "Error processing document: list index out of range"){
+            alert("Please make sure your document contains data");
+
+          }
+          else{
+            alert(response.detail);
+          }
+        } catch (error) {
+        console.error("Uploading member data error: ", error);
+        alert("An error occurred during member data upload. Please try again.");
+        }
+
+        finally {
+          this.loading = false; // Hide loading screen
+        }
+    },
+
 
     async checkName() {
+      this.showDownloadDropdown = false;
       console.info("About to check name");
       // If marking attendance is in progress, skip search
       //if (this.isMarkingAttendance) return;
@@ -495,8 +598,59 @@ export default {
             //   }, 10);
     },
 
+   async downloadSampleData() {
+    this.showDownloadDropdown = false;
 
-  async downloadMembers() {
+    console.info("In the download sample data function");
+
+        try {
+          // Fetch the file from the backend
+          const response = await axios.get(`https://churchmsbackend.onrender.com/members/download_sample_upload_data_document`, {
+            responseType: 'blob', // Specify response type as blob
+          });
+
+          console.info("Response:", response);
+
+          // Create a Blob from the response
+          const blob = new Blob([response.data], {
+            type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          });
+
+          console.info("File response converted:", blob);
+
+          // Create a download link
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+
+          // Use the filename provided by the backend or set a default one
+          const contentDisposition = response.headers['content-disposition'];
+          let fileName = 'CTC_Member_Sample_document.docx';
+          if (contentDisposition) {
+            const match = contentDisposition.match(/filename="(.+)"/);
+            if (match && match[1]) {
+              fileName = match[1];
+            }
+          }
+
+          a.download = fileName;
+          document.body.appendChild(a); // Append the link to the body
+          a.click();
+          document.body.removeChild(a); // Remove the link after clicking
+
+          console.info("File is downloaded");
+
+          // Cleanup
+          window.URL.revokeObjectURL(url);
+        } catch (error) {
+          console.error("Error downloading the file:", error);
+        }}
+    
+    
+    },
+
+  async downloadMembers(documentFormat) {
+    this.showDownloadDropdown = false;
 
  if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
@@ -505,7 +659,7 @@ export default {
 
         try {
           // Fetch the file from the backend
-          const response = await axios.get('https://churchmsbackend.onrender.com/members/download_member_data', {
+          const response = await axios.get(`https://churchmsbackend.onrender.com/members/download_member_data/${documentFormat}`, {
             responseType: 'blob', // Specify response type as blob
           });
 
@@ -525,7 +679,7 @@ export default {
 
           // Use the filename provided by the backend or set a default one
           const contentDisposition = response.headers['content-disposition'];
-          let fileName = 'attendance_data.xlsx';
+          let fileName = 'CTC_Members_data.xlsx';
           if (contentDisposition) {
             const match = contentDisposition.match(/filename="(.+)"/);
             if (match && match[1]) {
@@ -550,6 +704,7 @@ export default {
 
 
     async editMember(record) {
+      this.showDownloadDropdown = false;
        if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
@@ -738,6 +893,7 @@ export default {
     },
 
      async updateMemberDetails() {
+      this.showDownloadDropdown = false;
  if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
@@ -953,6 +1109,7 @@ export default {
 
 
     async deleteMember(record) {
+      this.showDownloadDropdown = false;
        if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
@@ -991,12 +1148,9 @@ export default {
 
 
 
-
-
-
   }
 
-}
+
 </script>
 
 
@@ -1035,9 +1189,8 @@ select{
 
 
 
-
-.button4 {
-  padding: 10px;
+.button1 {
+  padding: 14px;
   border: none;
   border-radius: 4px;
   background-color: #92c1c0;
@@ -1045,12 +1198,12 @@ select{
   cursor: pointer;
   margin-right: 10px;
   position: fixed;
-  left: 1160px;
-  top: 100px;
+  left: 90%;
+  top: 27%;
 
 }
 
-.button5 {
+.button2 {
   padding: 10px;
   border: none;
   border-radius: 4px;
@@ -1059,8 +1212,36 @@ select{
   cursor: pointer;
   margin-right: 10px;
   position: fixed;
-  left: 1160px;
-  top: 150px;
+  left: 90%;
+  top: 40%;
+
+}
+
+.button3 {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #92c1c0;
+  color: black;
+  cursor: pointer;
+  margin-right: 10px;
+  position: fixed;
+  left: 90%;
+  top: 54%;
+
+}
+
+.button4 {
+  padding: 17px;
+  border: none;
+  border-radius: 4px;
+  background-color: #92c1c0;
+  color: black;
+  cursor: pointer;
+  margin-right: 10px;
+  position: fixed;
+  left: 90%;
+  top: 68%;
 
 }
 
@@ -2691,4 +2872,33 @@ th, td {
 .content {
   padding: 20px;
 }
+
+download-dropdown-menu
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.download-dropdown-menu{
+  position: absolute;
+  background-color: #92c1c0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 4px;
+  z-index: 1000;
+      left: 78%;
+    top: 47%;
+}
+.download-dropdown-menu li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.download-dropdown-menu li:hover {
+  background-color:rgb(88, 189, 187);
+}
+
+
 </style>

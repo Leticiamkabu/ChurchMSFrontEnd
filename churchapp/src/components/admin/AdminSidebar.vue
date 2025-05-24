@@ -87,8 +87,31 @@
               <a href="#" class="nav_link sublink">Edit Members</a>
             </router-link>
 
-            <router-link to="" class="nav_link submenu_item">
-              <a href="#" class="nav_link sublink">Member Actions</a>
+          
+          </ul>
+        </li>
+        <!-- end -->
+
+
+        <!-- start -->
+        <li class="item">
+          <router-link to="" class="nav_link submenu_item">
+            <span class="navlink_icon">
+              <i class="bx bx-group"></i>
+            </span>
+            <span class="navlink">First Timers</span>
+            <i class="bx bx-chevron-right arrow-left"></i>
+          </router-link>
+
+          <ul class="menu_items submenu">
+            <router-link to="/firstTimers" class="nav_link submenu_item">
+              <i class="bx bx-user-plus"></i>
+              <a href="#" class="nav_link sublink">Add First Timers</a>
+            </router-link>
+
+            <router-link to="/editFirstTimers" class="nav_link submenu_item">
+              <i class="bx bxs-user-detail"></i>
+              <a href="#" class="nav_link sublink">Edit First Timers</a>
             </router-link>
           </ul>
         </li>

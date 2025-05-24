@@ -14,6 +14,9 @@ import AdminMemberActionPage from '../components/admin/AdminMemberActionPage.vue
 import EditMemberPage from '../components/members/EditMembersPage.vue';
 import ReportPage from '../components/report/reportPage.vue';
 import SMSNotificationPage from '../components/notification/smsNotificationPage.vue';
+import FirstTimersPage from '../components/firstTimers/AddFirstTimersPage.vue';
+import EditFirstTimersPage from '../components/firstTimers/EditFirstTimersPage.vue';
+
 
 
 const routes = [
@@ -36,6 +39,8 @@ const routes = [
   { path: '/attendance', component: AttendancePage, meta: { requiresMarkAttendancePrivilege: true } },
   { path: '/attendanceOverview', component: AttendanceOverviewPage, meta: { requiresMarkAttendancePrivilege: true } },
   { path: '/members', component: MembersPage },
+  { path: '/firstTimers', component: FirstTimersPage },
+  { path: '/editFirstTimers', component: EditFirstTimersPage },
 
 ]
 
