@@ -226,7 +226,7 @@ export default {
 
     if (this.members_ID !== ""){
       try {
-          const response = await axios.post('http://127.0.0.1:8000/attendance/create_attendance',{
+          const response = await axios.post('https://churchmsbackend.onrender.com/attendance/create_attendance',{
             memberID: this.members_ID,
             name : this.name,
             status: 'PRESENT',
