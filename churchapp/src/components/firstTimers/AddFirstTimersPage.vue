@@ -52,7 +52,7 @@
               </option>
             </select>
 
-            <label class = "label_contact_hours" for="contactHours"> Contact Hours <span class="required-star">*</span> </label>
+            <label class = "label_contact_hours" for="contactHours"> Contact Hours  </label>
             <input class = "contact_hours" type="text" v-model="form.contactHours" id="contactHours" placeholder="Contact Hours"  />
 
             <label class = "label_special_prayer_or_counseling" for="auw">Special Prayer Or Counseling</label>
@@ -162,8 +162,7 @@ export default {
       !this.form.name ||
       !this.form.phoneNumber ||
       !this.form.houseLocation ||
-      !this.form.purposeOfComing ||
-      !this.form.contactHours
+      !this.form.purposeOfComing 
     ) {
       alert("Please fill in all required fields.");
       this.step = 1;

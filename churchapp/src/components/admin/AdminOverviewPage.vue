@@ -52,6 +52,31 @@
 
       </section>
 
+      <section class="section2">
+
+      <div class="table-container" >
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Role</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(record, index) in attendanceList" :key="index" @click="populateName(record.name, record.membersId, record.attendanceStatus, record.attendanceIDS )">
+              <td>{{ record.name }}</td>
+              <td>{{ record.date }}</td>
+              <td>{{ record.attendanceStatus }}</td>
+              <td>{{ record.serviceType }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      </section>
+
       
 
       <!-- Summary Data Display -->
@@ -751,5 +776,70 @@ th {
     width: 100%;
     max-width: 220px;
   }
+}
+
+
+.section2 {
+        width: 400px;
+    height: 200px;
+    position: fixed;
+    left: 550px;
+    top: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    border-color: #d1cfcd;
+    border-style: solid;
+    background-color: white;
+    padding-top: 150px;
+}
+
+.table-container {
+  max-height: 190px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    position: fixed;
+    top: 360px;
+    left: 560px;
+    width: 380px;
+    height: 57px;
+}
+
+table {
+  width: 28.4%; /* Ensure the table takes up the full width of the container */
+  border-collapse: collapse; /* Ensure no gaps between table cells */
+  top: 365px;
+  left : 565px;
+  background-color: #d7e6e7;
+
+}
+   
+
+th, td {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+  width :60px;
+  
+}
+
+/* Optional: Style the scrollbar */
+.table-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+th {
+  width: 800px;
 }
 </style>

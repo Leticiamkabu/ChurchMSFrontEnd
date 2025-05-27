@@ -57,6 +57,32 @@
               <option value="Absent">Absentees</option>
             </select>
           </div>
+
+          <div>
+            <label for="status" class="statusFilterLabel">Status</label>
+            <select
+              v-model="filters.status"
+              id="status"
+              class="statusFilter">
+              <option value="">ALL</option>
+              <option value="PRESENT">Attendees</option>
+              <option value="ABSCENT">Absentees</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="department" class="departmentFilterLabel">Department</label>
+            <select
+              v-model="filters.department"
+              id="department"
+              class="departmentFilter">
+             <option disabled value="">Select Department Name</option>
+              <option v-for="departmentName in departmentNames" :key="departmentName" :value="departmentName">
+                {{ departmentName }}
+              </option>
+            </select>
+          </div>
+
         </div>
 
         <!-- Buttons -->
@@ -134,10 +160,10 @@
               v-model="memberFilters.department"
               id="department"
               class="departmentFilter">
-              <option value="Music">Music</option>
-              <option value="Ushering">Ushering</option>
-              <option value="Evangelism">Evangelism</option>
-              <option value="Preaching">Preaching</option>
+              <option disabled value="">Select Department Name</option>
+              <option v-for="departmentName in departmentNames" :key="departmentName" :value="departmentName">
+                {{ departmentName }}
+              </option>
             </select>
           </div>
 
@@ -214,6 +240,7 @@ export default {
       filters: {
         date: "",
         status: "",
+        department: "",
       },
 
       showMembersFilters: false,
@@ -225,6 +252,8 @@ export default {
       },
 
       attendanceList: [],
+      departmentNames: ['Men Ministries', 'Women Ministries', 'Youth Ministry', 'Joy Ministry', 'Missionnettes', 'Pathfinders', 'Royal Rangers', 'Youth Singles', 'Missions', 'Protocol/Ushering', 'Children Ministry', 'Music', 'Sanctuary Keepers'],
+
 
     };
   },
@@ -254,41 +283,72 @@ export default {
       this.loading = true;
       console.info('status :', this.filters.status)
       if (this.filters.status == ""){
-        this.filters.status = "All";
+        this.filters.status = "ALL";
+      }
+
+      if (this.filters.date == ""){
+        const date = new Date();
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-based
+        const year = date.getFullYear();
+
+        this.today = `${day}-${month}-${year}`; // DD-MM-YYYY
+        this.filters.date = `${year}-${month}-${day}`;
+      }
+
+      if (this.filters.department == ""){
+        this.filters.department = "Not Added";
       }
       
       console.info('getting attendance report fetch')
       console.info('date :', this.filters.date)
       console.info('status :', this.filters.status)
+      console.info('department :', this.filters.department)
 
        try {
-        const response = await axios.get(`https://churchmsbackend.onrender.com/attendance/report_fetch/${this.filters.date}/${this.filters.status}`,{
+        const response = await axios.get(`https://churchmsbackend.onrender.com/attendance/report_fetch/${this.filters.date}/${this.filters.status}/${this.filters.department}`,{
           
         });
         
         console.info("Attendance report data : ", response.data)
 
-        if (response.data.detail !== "No attendance data exists with date specified" && response.data.detail !== "No attendance data exists with status specified" ) {
+        if (response.data.detail !== "No attendance data exists with date specified" && response.data.detail !== "No attendance data exists with status specified" && response.data.detail !== "No attendance data exists with department specified" && response.data.detail !== "No attendance data exists") {
 
           console.info("Populating Attendance List")
           this.attendanceList = response.data;
           this.showAttendanceFilters = false;
+          this.filters.date = "";
+          this.filters.status = "";
+          this.filters.department = "";
 
           
           
         } else if (response.data.detail) {
           alert(response.data.detail); 
+          this.filters.date = "";
+          this.filters.status = "";
+          this.filters.department = "";
+          
         }
 
         else{
           alert("Error getting Attendance Data for preview");
+          this.filters.date = "";
+          this.filters.status = "";
+          this.filters.department = "";
         }
 
       } catch (error) {
         console.error('Error getting Attendance Data :', error);
+        this.filters.date = "";
+          this.filters.status = "";
+          this.filters.department = "";
       }
       finally {
         this.showAttendanceFilters = false;
+        this.filters.date = "";
+          this.filters.status = "";
+          this.filters.department = "";
         this.loading = false; // Hide loading screen
       }
 
@@ -392,26 +452,41 @@ export default {
           
         });
         
-        console.info("Attendance report data : ", response.data)
+        console.info("Member report data : ", response.data)
 
         if (response.data.detail !== "No attendance data exists with date specified" && response.data.detail !== "No attendance data exists with status specified" ) {
 
           console.info("Populating Attendance List")
           this.attendanceList = response.data;
           this.showAttendanceFilters = false;
-
+          this.memberFilters.age = "";
+          this.memberFilters.ageRange = "";
+          this.memberFilters.birthMonth = "";
+          this.memberFilters.department = "";
           
           
         } else if (response.data.detail) {
           alert(response.data.detail); 
+          this.memberFilters.age = "";
+          this.memberFilters.ageRange = "";
+          this.memberFilters.birthMonth = "";
+          this.memberFilters.department = "";
         }
 
         else{
           alert("Error getting Attendance Data for preview");
+          this.memberFilters.age = "";
+          this.memberFilters.ageRange = "";
+          this.memberFilters.birthMonth = "";
+          this.memberFilters.department = "";
         }
 
       } catch (error) {
         console.error('Error getting Attendance Data :', error);
+        this.memberFilters.age = "";
+        this.memberFilters.ageRange = "";
+        this.memberFilters.birthMonth = "";
+        this.memberFilters.department = "";
       }
       finally {
         this.showMembersFilters = false;
@@ -945,8 +1020,8 @@ input {
 
 
 .statusFilterLabel{
-      top: 280px;
-    left: 520px;
+    top: 328px;
+    left: 720px;
     position: fixed;
     color: black;
    
@@ -955,8 +1030,8 @@ input {
 }
 
 .statusFilter{
-    top: 272px;
-    left: 580px;
+        top: 320px;
+    left: 780px;
     position: fixed;
     color: black;
    
@@ -1023,15 +1098,15 @@ input {
 }
 
 .ageRangeFilterLabel{
-    top: 270px;
-    left: 775px;
+    top: 330px;
+    left: 670px;
     position: fixed;
     color: black;
      
 }
 
 .ageRangeFilter{
-    top: 300px;
+    top: 325px;
     left: 765px;
     position: fixed;
     color: black;
@@ -1108,7 +1183,7 @@ input {
 }
 
 table {
-  width: 100%; /* Ensure the table takes up the full width of the container */
+  width: 600%; /* Ensure the table takes up the full width of the container */
   border-collapse: collapse; /* Ensure no gaps between table cells */
 }
 

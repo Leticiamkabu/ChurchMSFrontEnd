@@ -76,23 +76,23 @@
       <!-- Modal to edit member details -->
       <div v-if="showEditModal" @submit.prevent="updateMemberDetails" class="modal-overlay">
         <div class="modal-card">
-        
+        <button @click="showEditModal = false" class="cancleButton">&times;</button>
         <div v-if="step === 1" class = "first_info">
             <h2>First Timer Edit Model</h2>
 
-            <label class = "label_name" for="name">Name <span class="required-star">*</span> </label>
+            <label class = "label_name" for="name">Name </label>
             <input class = "name" type="text" v-model="form.name" id="name" placeholder="Name" />
 
             <label class = "label_popular_name" for="middleName">Popular Name</label>
             <input class = "popular_name" type="text" v-model="form.popularName" id="middleName" placeholder="Middle Name"  />
 
-            <label class = "label_phone_number" for="phoneNumber">Phone Number <span class="required-star">*</span> </label>
+            <label class = "label_phone_number" for="phoneNumber">Phone Number </label>
             <input  class = "phone_number" type="text" v-model="form.phoneNumber" id="phoneNumber" placeholder="Phone Number"  />
 
             <label class = "label_whatsapp_number" for="whatAppNumber">WhatsApp Number </label>
             <input  class = "whatsapp_number" type="text" v-model="form.whatAppNumber" id="whatAppNumber" placeholder="WhatApp Number"  />
 
-            <label class = "label_house_location" for="houseLocation">House Location <span class="required-star">*</span> </label>
+            <label class = "label_house_location" for="houseLocation">House Location  </label>
             <input class = "house_location" type="text" v-model="form.houseLocation" id="houseLocation" placeholder="House Location"  />
 
             <button  type="button" @click="nextStep">Next</button>
@@ -101,19 +101,19 @@
 
           <div v-if="step === 2">
 
-            <label class = "label_purpose_of_coming" for="auw">Purpose Of Coming <span class="required-star">*</span> </label>
-            <select class = "purpose_of_coming" v-model="form.purposeOfComing" id="auw"  >
+            <label class = "label_purpose_of_coming" for="purposeOfComing">Purpose Of Coming </label>
+            <select class = "purpose_of_coming" v-model="form.purposeOfComing" id="purposeOfComing"  >
               <option disabled value="">Select Purpose Of Coming</option>
               <option v-for="purpose in purposeOfComing" :key="purpose" :value="purpose">
                 {{ purpose }}
               </option>
             </select>
 
-            <label class = "label_contact_hours" for="contactHours"> Contact Hours <span class="required-star">*</span> </label>
+            <label class = "label_contact_hours" for="contactHours"> Contact Hours  </label>
             <input class = "contact_hours" type="text" v-model="form.contactHours" id="contactHours" placeholder="Contact Hours"  />
 
-            <label class = "label_special_prayer_or_counseling" for="auw">Special Prayer Or Counseling</label>
-            <select class = "special_prayer_or_counseling" v-model="form.specialPrayerOrCounseling" id="auw"  >
+            <label class = "label_special_prayer_or_counseling" for="specialPrayerOrCounseling">Special Prayer Or Counseling</label>
+            <select class = "special_prayer_or_counseling" v-model="form.specialPrayerOrCounseling" id="specialPrayerOrCounseling"  >
               <option disabled value="">Select Special Prayer Or Counseling</option>
               <option v-for="special in specialPrayerOrCounseling" :key="special" :value="special">
                 {{ special }}
@@ -126,6 +126,23 @@
 
             <label class = "label_date" for="date">Date</label>
             <input  class = "date" type="date" v-model="form.date" id="institutionName" placeholder="Date"  />
+
+            <label class = "label_ftClass" for="ftClass">Class</label>
+            <select class = "ftClass" v-model="form.ftClass" id="ftClass"  >
+              <option disabled value="">Class</option>
+              <option v-for="FTClass in ftClass" :key="FTClass" :value="FTClass">
+                {{ FTClass }}
+              </option>
+            </select>
+
+            <label class = "label_ftStatus" for="status">Status</label>
+            <select class = "ftStatus" v-model="form.status" id="status"  >
+              <option disabled value="">Status</option>
+              <option v-for="FTStatus in status" :key="FTStatus" :value="FTStatus">
+                {{ FTStatus }}
+              </option>
+            </select>
+
 
             <button class = "s2preveBut" type="button" @click="prevStep">Previous</button>
             <button class = "s2nextBut" type="button" @click="updateFirstTimersDetails">Submit</button>
@@ -167,6 +184,8 @@ export default {
 
       purposeOfComing: ['VISIT', 'MEMBERSHIP', 'REDEDICATION' ] ,
       specialPrayerOrCounseling: ['BUSINESS', 'HEALTH', 'DELIVERANCE', 'MARITAL', 'EDUCATIONAL', 'OTHERS' ], 
+      status: ['VISITOR', 'MEMBER'], 
+      ftClass: ['NEW CONVERT', 'NEW MEMBERS', 'DISCIPLESHIP', 'BAPTISM'], 
       
 
       form: {
@@ -180,6 +199,8 @@ export default {
         specialPrayerOrCounseling: '',
         counselor: '',
         date: '',
+        ftClass: '',
+        status: '',
       
       },
     };
@@ -474,6 +495,7 @@ export default {
       alert("You are not allowed to perform this action"); 
     }else{
     this.loading = true;
+    this.step = 1;
     this.showEditModal = true;
       console.error('getting first timer details to update')
 
@@ -497,6 +519,8 @@ export default {
             specialPrayerOrCounseling: first_timer.specialPrayerOrCounseling || "",
             counselor: first_timer.counselor || "",
             date: first_timer.date || "",
+            ftClass: first_timer.ftClass || "",
+            status: first_timer.status || ""
            
             
           }
@@ -585,7 +609,8 @@ export default {
           specialPrayerOrCounseling: this.form.specialPrayerOrCounseling,
           counselor: this.form.counselor,
           date: this.form.date,
-          
+          ftClass: this.form.ftClass,
+          status: this.form.status,
         };
 
         console.log("Form is valid. Proceeding with first timer update...", payload);
@@ -603,6 +628,8 @@ export default {
           specialPrayerOrCounseling: this.form.specialPrayerOrCounseling,
           counselor: this.form.counselor,
           date: this.form.date,
+          ftClass: this.form.ftClass,
+          status: this.form.status,
           });
 
           
@@ -612,10 +639,19 @@ export default {
            
             alert("User updated successfully");
             this.step = 1;
+            this.loading = false;
             this.showEditModal =  false;
             
 
-          }else{
+          }else if (response.data.message === 'First Timer is now a member'){
+            this.loading = false;
+            this.step = 1;
+            this.showEditModal =  false;
+            this.getFirstTimers();
+
+            // clean member data base and remove all null values
+          }
+          else{
             alert(response);
             this.step = 1;
             this.showEditModal =  false;
@@ -625,14 +661,17 @@ export default {
 
 
         } catch (error) {
-              console.error("Member data update error:", error);
+              console.error("First timers data update error:", error);
               alert("An error occurred during member data update . Please try again.");
+              this.step = 1;
+              this.loading = false;
               this.showEditModal =  false;
               }
       
 
         finally {
         this.loading = false;
+        this.step = 1;
         this.showEditModal =  false; // Hide loading screen
         }
         
@@ -2454,7 +2493,7 @@ download-dropdown-menu
 .date{
     position: fixed;
     left: 33%;
-    top: 80%;
+    top: 74%;
     height: 45px;
     width: 300px;
     border-radius: 10px;
@@ -2468,7 +2507,7 @@ download-dropdown-menu
 .label_date{
    position: fixed;
     left: 34%;
-    top: 73%;
+    top: 67%;
     font-size: 20px;
     color: aqua;
 
@@ -2477,7 +2516,7 @@ download-dropdown-menu
 .counselor{
     position: fixed;
     left: 60%;
-    top: 60%;
+    top: 55%;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -2491,7 +2530,7 @@ download-dropdown-menu
 .label_counselor{
    position: fixed;
     left: 62%;
-    top: 53%;
+    top: 47%;
     font-size: 20px;
     color: aqua;
 }
@@ -2499,7 +2538,7 @@ download-dropdown-menu
 .special_prayer_or_counseling{
     position: fixed;
     left: 33%;
-    top: 60%;
+    top: 54%;
     height: 45px;
     width: 300px;
     border-radius: 10px;
@@ -2513,7 +2552,7 @@ download-dropdown-menu
 .label_special_prayer_or_counseling{
    position: fixed;
     left: 34%;
-    top: 53%;
+    top: 47%;
     font-size: 20px;
     color: aqua;
     
@@ -2523,7 +2562,7 @@ download-dropdown-menu
 .contact_hours{
     position: fixed;
     left: 60%;
-    top: 41.2%;
+    top: 36.2%;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -2537,7 +2576,7 @@ download-dropdown-menu
 .label_contact_hours{
    position: fixed;
     left: 62%;
-    top: 33%;
+    top: 29%;
     font-size: 20px;
     color: aqua;
 
@@ -2546,7 +2585,7 @@ download-dropdown-menu
 .purpose_of_coming{
     position: fixed;
     left: 33%;
-    top: 40%;
+    top: 35%;
     height: 45px;
     width: 300px;
     border-radius: 10px;
@@ -2560,7 +2599,7 @@ download-dropdown-menu
 .label_purpose_of_coming{
   position: fixed;
     left: 34%;
-    top: 33%;
+    top: 29%;
     font-size: 20px;
     color: aqua;
 
@@ -2689,6 +2728,69 @@ h2{
     width: 300px;
     color: #43edd7;
     font-size:20px;
+}
+
+
+.cancleButton{
+  top: 100px;
+    left: 1085px;
+    position: fixed;
+    background-color: #7ab9b9 !important;
+    color: black;
+    border-radius: 10px;
+    width: 55px;
+    
+    
+}
+
+
+.ftClass{
+    position: fixed;
+    left: 60%;
+    top: 74%;
+    height: 45px;
+    width: 300px;
+    border-radius: 10px;
+    border-color: aqua;
+    background-color: white;
+    text-align:center;
+
+
+}
+
+.label_ftClass{
+   position: fixed;
+    left: 62%;
+    top: 67%;
+    font-size: 20px;
+    color: aqua;
+    
+
+}
+
+
+.ftStatus{
+    position: fixed;
+    left: 40%;
+    top: 85%;
+    height: 45px;
+    width: 200px;
+    border-radius: 10px;
+    border-color: aqua;
+    background-color: white;
+    text-align:center;
+
+
+}
+
+.label_ftStatus{
+   position: fixed;
+    left: 33%;
+    top: 86%;
+    font-size: 20px;
+    color: aqua;
+    
+
 }
 
 

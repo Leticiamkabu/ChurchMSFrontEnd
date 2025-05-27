@@ -38,7 +38,7 @@
       <!-- Attendance List -->
       <h2>Attendance List</h2>
 
-      `<div class="table-container" >`
+      <div class="table-container" >
         <table>
           <thead>
             <tr>
@@ -47,6 +47,7 @@
               <th>Attendance Status</th>
               <th>Service Type</th>
               <th>Marked By</th>
+              <th>Time Marked</th>
             </tr>
           </thead>
           <tbody>
@@ -56,6 +57,7 @@
               <td>{{ record.attendanceStatus }}</td>
               <td>{{ record.serviceType }}</td>
               <td>{{ record.markedBy }}</td>
+              <td>{{ record.timeMarked }}</td>
             </tr>
           </tbody>
         </table>
@@ -143,6 +145,7 @@ export default {
             let attendanceId = '';
             let service_type = '';
             let markedBy = '';
+            let timeMarked = '';
 
             if (attendanceResponse.data.detail !== 'Attendance with the given member ID does not exist') {
               console.info('member attendance found')
@@ -151,12 +154,14 @@ export default {
               this.attendanceIDS = attendanceResponse.data.id;
               service_type = attendanceResponse.data.serviceType;
               markedBy = attendanceResponse.data.markedBy;
+              timeMarked = attendanceResponse.data.createdOn;
             }
             else{
               console.info('member attendance not found')
               attendance = 'Not Marked';
               service_type = 'Not Indicated';
               markedBy = 'Not Indicated';
+              timeMarked = 'Not Indicated';
             }
 
             let firstname = member.firstName || "";
@@ -165,7 +170,7 @@ export default {
 
             const today = new Date().toLocaleDateString();
             const name = `${firstname} ${othername} ${lastname}`;
-            this.attendanceList.push({ name: name, date: today, attendanceStatus: attendance, membersId : member.id, attendanceIDS : attendanceId, serviceType: service_type, markedBy:markedBy});
+            this.attendanceList.push({ name: name, date: today, attendanceStatus: attendance, membersId : member.id, attendanceIDS : attendanceId, serviceType: service_type, markedBy:markedBy,timeMarked: timeMarked});
           } catch (attendanceError) {
             console.error("Error fetching attendance:", attendanceError);
           }
@@ -240,7 +245,8 @@ export default {
 
           console.info("Attendance list is being updated")
           
-          this.attendanceList = [];
+         // this.attendanceList = [];
+         this.attendanceList = this.attendanceList.filter(item => item.membersId !== this.members_ID );
           this.attendanceList.push({ name: response.data.Attendance.fullName, 
             date: response.data.Attendance.date , 
             attendanceStatus: response.data.Attendance.status, 
@@ -339,8 +345,8 @@ if (this.attendanceIDS !== ""){
         if (response.data ) {
           console.info("pass the if")
           console.info("Attendance list is being updated")
-          this.attendanceList = [];
-          this.attendanceList.push({ name: response.data.fullName, date: response.data.date , attendanceStatus: response.data.status, serviceType: response.data.serviceType, attendanceID : response.data.id, markedBy:response.data.markedBy});
+          this.attendanceList = this.attendanceList.filter(item => item.membersId !== this.members_ID );
+          this.attendanceList.push({ name: response.data.fullName, date: response.data.date , attendanceStatus: response.data.status, serviceType: response.data.serviceType, attendanceID : response.data.id, markedBy:response.data.markedBy,timeMarked:response.data.updatedOn });
           console.info("this is now the new id", this.attendanceIDS), 
           this.name = '';
 
