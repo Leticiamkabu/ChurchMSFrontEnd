@@ -54,26 +54,28 @@
 
       <section class="section2">
 
-      <div class="table-container" >
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Status</th>
-              <th>Role</th>
-              <th>Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(record, index) in attendanceList" :key="index" @click="populateName(record.name, record.membersId, record.attendanceStatus, record.attendanceIDS )">
-              <td>{{ record.name }}</td>
-              <td>{{ record.date }}</td>
-              <td>{{ record.attendanceStatus }}</td>
-              <td>{{ record.serviceType }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <div class="table-container" >
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Role</th>
+                <th>LoginTime</th>
+                <th>LogOutTime</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(record, index) in trackerList" :key="index" @click="populateName(record.name, record.membersId, record.attendanceStatus, record.attendanceIDS )">
+                <td>{{ record.name }}</td>
+                <td>{{ record.status }}</td>
+                <td>{{ record.role }}</td>
+                <td>{{ record.logInTime }}</td>
+                <td>{{ record.logOutTime }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
       </section>
 
@@ -131,6 +133,8 @@ export default {
 
       totalMembers: 0,
 
+     trackerList : [],
+
     };
   },
 
@@ -146,6 +150,9 @@ export default {
         this.totalAttendance = response.data.total_attendance;
         this.totalPresent = response.data.present_attendance;
         this.totalAbsent = response.data.absent_attendance;
+
+
+
         
       } catch (error) {
         console.error('Error fetching Attendance summary data:', error);
@@ -165,6 +172,7 @@ export default {
         this.totalAdministrators = response.data.administrator;
         this.totalDepartmentalLeaders = response.data.departmentLeaders;
         this.totalAdmin = response.data.admin;
+
 
       } catch (error) {
         console.error('Error fetching user summary data:', error);
@@ -190,18 +198,50 @@ export default {
       }
     },
 
+     async fetchUserTrackerData() {
+      this.loading = true; 
+
+
+        try {
+        const feedBack = await axios.get('https://churchmsbackend.onrender.com/auth/get_all_user_tracking');
+
+        console.info('Users tracking data:',feedBack.data );
+
+        this.trackerList = feedBack.data.map(user => ({
+              name: user.firstName + " " + user.lastName,
+              status: user.status,
+              role: user.role,
+              logInTime: user.logInTime,
+              logOutTime: user.logOutTime,
+          }));
+
+
+        if(feedBack.data.detail === 'User tracker with id does not exist'){
+            console.error(feedBack.data.detail);
+        }
+
+        
+
+        } catch (error) {
+        console.error('Error fetching user tracker data:', error);
+      }
+        this.loading = false; 
+      
+      }
+
 
     
 
     
   },
   mounted() {
-    
+    this.loading = true; 
     // Automatically fetch summary data when the component is mounted
     this.fetchAttendanceSummaryData();
     this.fetchUsersSummaryData();
     this.fetchMembersSummaryData();
-    
+    this.fetchUserTrackerData();
+    this.loading = false; 
     // Clear local storage when the tab or window is closed
    // window.addEventListener("beforeunload", () => {
    //   localStorage.clear();
@@ -298,13 +338,7 @@ select{
     top: 580px;
 
 }
-table {
-  width: 60%;
-  border-collapse: collapse;
-  position: fixed;
-  top: 160px;
-  left:280px;
-}
+
 
 .section1 {
       width: 200px;
@@ -780,7 +814,7 @@ th {
 
 
 .section2 {
-        width: 400px;
+        width: 600px;
     height: 200px;
     position: fixed;
     left: 550px;
@@ -803,16 +837,19 @@ th {
     position: fixed;
     top: 360px;
     left: 560px;
-    width: 380px;
-    height: 57px;
+    width: 580px;
+    height: 180px;
+    background-color: #d7e6e7;
 }
 
 table {
-  width: 28.4%; /* Ensure the table takes up the full width of the container */
+  width: 100%; /* Ensure the table takes up the full width of the container */
   border-collapse: collapse; /* Ensure no gaps between table cells */
   top: 365px;
   left : 565px;
   background-color: #d7e6e7;
+  table-layout: fixed;
+  display: block; 
 
 }
    

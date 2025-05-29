@@ -47,53 +47,21 @@
               {{ role }}
             </option>
           </select>
-          <button class="s2nextBut" type="button" @click="nextStep">Next</button>
+
+          <label class = "label_privilege" for="privilege">Privileges <span class="required-star">*</span> </label>
+          <select class = "privilege" v-model="form.privilege" id="privilege"  required>
+            <option disabled value="">Select privilege </option>
+            <option v-for="privilege in privileges" :key="privilege" :value="privilege">
+              {{ privilege }}
+            </option>
+          </select>
+
+          <button class="s2nextBut" type="button" @click="register">Submit</button>
         </div>
 
+    
 
-        <div v-if= "step === 2" class  >
-
-          <h2 class = "step2_first_h2"> Privileges</h2>
-
-                      
-              <label class="label_heading">Users Privileges <span class="required-star">*</span> </label>
-              
-              <label for="privilege1">
-                <input class="privilege1" type="checkbox" id="privilege1" value="Add members" v-model="form.privileges"> 
-                <span class="privilege1-text">Add members</span>
-              </label>
-
-              <label for="privilege2">
-                <input class="privilege2" type="checkbox" id="privilege2" value="Take Attendance" v-model="form.privileges"> 
-                <span class="privilege2-text">Take Attendance</span>
-              </label>
-
-              <label for="privilege3">
-                <input class="privilege3" type="checkbox" id="privilege3" value="Create Users" v-model="form.privileges"> 
-                <span class="privilege3-text">Create Users</span>
-              </label>
-              
-              <label for="privilege4">
-                <input class="privilege4" type="checkbox" id="privilege4" value="Get Attendance Overview" v-model="form.privileges"> 
-                <span class="privilege4-text">Get Attendance Overview</span>
-              </label>
-
-              <label for="privilege5">
-                <input class="privilege5" type="checkbox" id="privilege5" value="Get Member Details" v-model="form.privileges"> 
-                <span class="privilege5-text">Get Member Details</span>
-              </label>
-
-              <label for="privilege6">
-                <input class="privilege6" type="checkbox" id="privilege5" value="Generate Report" v-model="form.privileges"> 
-                <span class="privilege6-text">Generate Report</span>
-              </label>
-
-              
-             <button class = "s2preveBut" type="button" @click="prevStep">Previous</button>
-              <button class="s2submitBut" type="button" @click="register">Submit</button>
-            </div>
-
-        <div v-if="step === 3">
+        <div v-if="step === 2">
 
           <label class="label_heading_final">Users registration complete</label>
         </div>
@@ -126,7 +94,8 @@ export default {
       loading: false,
       step: 1,
       
-      roles :['ADMIN', 'DATA CLERK', 'ADMINISTRATOR'],
+      roles :['ADMIN', 'DATA CLERK', 'ADMINISTRATOR', 'GUEST'],
+      privileges: ['ADMIN PRIVILEGES', 'DATA CLERK PRIVILEGES', 'ADMINISTRATOR PRIVILEGES', 'GUEST PRIVILEGES'],
       form: {
       firstname: '',
       lastname: '',
@@ -135,7 +104,7 @@ export default {
       password: '',
       confirmPassword: '',
       role: '',
-      privileges: [],
+      privilege: '',
       },
 
     };
@@ -168,7 +137,7 @@ export default {
         this.form.password &&
         this.form.confirmPassword &&
         this.form.role &&
-        this.form.privileges
+        this.form.privilege
       );
       
     },
@@ -181,12 +150,13 @@ export default {
       !this.form.phoneNumber ||
       !this.form.password ||
       !this.form.confirmPassword ||
-      !this.form.role
+      !this.form.role ||
+      !this.form.privilege
     ) {
       alert("Please fill in all required fields.");
       return;
     }
-      if (this.step < 3) {
+      if (this.step < 2) {
         this.step++;
       }
     },
@@ -203,10 +173,17 @@ export default {
       alert("You are not allowed to perform this action"); 
     }else{
 
-      if (!this.form.privileges) {
-      alert("Please fill in all required fields.");
+      if (this.form.password !== this.form.confirmPassword) {
+      alert("Password and Confirm Password do not match");
       return;
-    }
+      }
+
+     if (!this.form.privilege.includes(this.form.role)) {
+      alert("Please choose the appropriate privilege for the right role.");
+      return;
+      }
+
+      
       this.loading = true; 
       if (this.isFormValid) {
         console.info("in the registeration function")
@@ -221,7 +198,7 @@ export default {
           phoneNumber: this.form.phoneNumber,
           password: this.form.password,
           role: this.form.role,
-          privileges: this.form.privileges,
+          privileges: this.form.privilege,
         };
 
         console.log("Form is valid. Proceeding with registration...", payload);
@@ -234,7 +211,8 @@ export default {
             phoneNumber: this.form.phoneNumber,
             password: this.form.password,
             role: this.form.role,
-            privileges: this.form.privileges,
+            privileges: this.form.privilege
+            ,
           });
 
           console.info(response)
@@ -480,11 +458,11 @@ form .button input:hover {
 .fn{
     position: fixed;
     left: 440px;
-    top: 270px;
+    top: 240px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
-    border-color: black;
+    border-color: #00d9ff;;
     background-color: white;
     text-align: center;
 
@@ -494,7 +472,7 @@ form .button input:hover {
 .label_fn{
    position: fixed;
     left: 460px;
-    top: 240px;
+    top: 200px;
     font-size: 20px;
     color: aqua;
 
@@ -505,7 +483,7 @@ form .button input:hover {
 .ln{
     position: fixed;
     left: 800px;
-    top: 270px;
+    top: 240px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -519,7 +497,7 @@ form .button input:hover {
 .label_ln{
    position: fixed;
     left: 820px;
-    top: 240px;
+    top: 200px;
     font-size: 20px;
     color: aqua;
 }
@@ -527,7 +505,7 @@ form .button input:hover {
 .ea{
     position: fixed;
     left: 440px;
-    top: 360px;
+    top: 340px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -541,7 +519,7 @@ form .button input:hover {
 .label_ea{
    position: fixed;
     left: 460px;
-    top: 330px;
+    top: 300px;
     font-size: 20px;
     color: aqua;
 
@@ -551,7 +529,7 @@ form .button input:hover {
 .pn{
     position: fixed;
     left: 800px;
-    top: 360px;
+    top: 340px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -565,7 +543,7 @@ form .button input:hover {
 .label_pn{
    position: fixed;
     left: 820px;
-    top: 330px;
+    top: 300px;
     font-size: 20px;
     color: aqua;
 
@@ -576,7 +554,7 @@ form .button input:hover {
 .pw{
     position: fixed;
     left: 440px;
-    top: 450px;
+    top: 430px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -589,7 +567,7 @@ form .button input:hover {
 .label_pw{
    position: fixed;
     left: 460px;
-    top: 420px;
+    top: 395px;
     font-size: 20px;
     color: aqua;
 
@@ -599,7 +577,7 @@ form .button input:hover {
 .cpw{
     position: fixed;
     left: 800px;
-    top: 450px;
+    top: 430px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -612,7 +590,7 @@ form .button input:hover {
 .label_cpw{
    position: fixed;
     left: 820px;
-    top: 420px;
+    top: 395px;
     font-size: 20px;
     color: aqua;
 
@@ -630,7 +608,7 @@ form .button input:hover {
 .role{
     position: fixed;
     left: 440px;
-    top: 535px;
+    top: 515px;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -641,12 +619,31 @@ form .button input:hover {
 .label_role{
    position: fixed;
     left: 460px;
-    top: 500px;
+    top: 480px;
     font-size: 20px;
     color: aqua;
 
 }
 
+.privilege{
+    position: fixed;
+    left: 800px;
+    top: 515px;
+    height: 35px;
+    width: 300px;
+    border-radius: 10px;
+    border-color: aqua;
+    background-color: white;
+
+}
+.label_privilege{
+   position: fixed;
+    left: 800px;
+    top: 480px;
+    font-size: 20px;
+    color: aqua;
+
+}
 
 
 /* step 2 */
@@ -801,8 +798,8 @@ form .button input:hover {
 
 .first_info .s2nextBut{
     position: fixed;
-    left: 970px;
-    top: 535px;
+    left: 720px;
+    top: 542px;
     height: 30px;
     width: 100px;
     color: #010808;

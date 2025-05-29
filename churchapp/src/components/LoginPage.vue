@@ -58,6 +58,7 @@ export default {
   name: 'LoginPage',
   data() {
     return {
+		userID : '',
 		loading: false,
       email: '',
       password: '',
@@ -90,24 +91,50 @@ export default {
           // Save token if your backend sends one for future authenticated requests
           sessionStorage.setItem('isAuthenticated', 'True');
 			sessionStorage.setItem('userRole', response.data.data.role);
-			sessionStorage.setItem('userId', response.data.data.role);
+			sessionStorage.setItem('userId', response.data.data.id);
 			sessionStorage.setItem('username', response.data.data.firstName + " " +response.data.data.lastName);
-			sessionStorage.setItem('privilage', response.data.data.privileges);
+			sessionStorage.setItem('privilege', response.data.data.privileges);
 
 
-			if (response.data.data.role === "ADMIN"){
+			if (response.data.data.role === "ADMIN" || response.data.data.role === "ADMINISTRATOR"){
 				this.$router.push('/adminOverView'); // Navigate to home page upon successful login
+			}
+			else if (response.data.data.role === "DATA CLERK"){
+				this.$router.push('/attendanceOverview'); // Navigate to home page upon successful login
 			}
 			else{
 				this.$router.push('/home');
 			}
 
-        } else {
-          alert('Invalid credentials');
-        }
-      } catch (error) {
-        console.error("Login error:", error);
+
+			try {
+				const feedBack = await axios.post('https://churchmsbackend.onrender.com/auth/user_tracking', {
+				userId: response.data.data.id,
+				status: "ACTIVE",
+				logInTime: new Date().toISOString(),
+				});
+
+				if(feedBack.data.message === "User activitity tracking successful"){
+					console.info("User tracker saved");
+				}
+
+			} catch (error) {
+				console.error("User tracker error :", error);
+				//alert("An error occurred during login. Please try again.");
+			}
+			
+			}
+		
+		} catch (error) {
+			if (error.response.status === 401 || error.response.status === 403) {
+				alert('Invalid credentials');
+			
+			}
+			else{
+				console.error("Login error:", error);
         alert("An error occurred during login. Please try again.");
+			}
+        
       }finally {
 		//this.email = "";
 		//this.password = "";
@@ -117,7 +144,39 @@ export default {
 		}
       
     },
+
+
+
   },
+
+  mounted() {
+  // Clear storage and notify backend if needed
+  this.userID = sessionStorage.getItem("userId");
+  
+
+  if (this.userID !== null){
+
+	sessionStorage.clear();
+  localStorage.clear();
+
+  // Optional: Inform backend to invalidate session/token
+  try {
+          console.info("Updating user tracking")
+
+          const response = axios.patch(`https://churchmsbackend.onrender.com/auth/update_user_tracking/${this.userID}/${new Date().toISOString()}`, {
+            
+          });
+          if(response.data.message === "User activitity tracking updated successfully"){
+					console.info("User tracker updated");
+				}
+        
+        } catch (error) {
+				console.error("User tracker error :", error);
+			}
+
+  }
+  
+}
 };
 </script>
 

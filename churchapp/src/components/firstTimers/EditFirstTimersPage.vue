@@ -208,7 +208,7 @@ export default {
 
   computed: {
     isAdmin() {
-      return sessionStorage.getItem("userRole") === 'ADMIN';
+      return sessionStorage.getItem("userRole") === 'ADMIN' ||sessionStorage.getItem("userRole") === 'ADMINISTRATOR' ;
     }
   },
 
@@ -318,7 +318,7 @@ export default {
     this.showDownloadDropdown = false;
     this.FirstTimersList = [];
 
- if(sessionStorage.getItem('userRole') == "GUEST"){
+ if(sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "DATA CLERK PRIVILEGES"){
       alert("You are not allowed to perform this action"); 
     }else{
       this.loading = true;
@@ -372,8 +372,13 @@ export default {
 
 
     async downloadSampleData() {
+
+      if(sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "DATA CLERK PRIVILEGES"){
+      alert("You are not allowed to perform this action"); 
+    }else{
     this.showDownloadDropdown = false;
     this.FirstTimersList = [];
+
 
     console.info("In the download sample data function");
         this.loading = true;
@@ -421,6 +426,8 @@ export default {
           console.error("Error downloading the file:", error);
           this.loading = false;
         }
+        }
+
         },
     
     openFileDialog() {
@@ -436,6 +443,10 @@ export default {
     },
 
     async uploadFirstTimerData() {
+
+      if(sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "DATA CLERK PRIVILEGES"){
+      alert("You are not allowed to perform this action"); 
+    }else{
       this.showDownloadDropdown = false;
       this.showEditModal = false;
         this.loading = true; 
@@ -486,6 +497,7 @@ export default {
         finally {
           this.loading = false; // Hide loading screen
         }
+    }
     },
 
     

@@ -10,7 +10,7 @@
     <div v-if="noData" class="no-data-card">
   <div class="card">
     <h3>No Data for Today</h3>
-    <p>Please check back later.</p>
+    <h4>Please check back later.</h4>
   </div>
 </div>
 
@@ -101,7 +101,7 @@ export default {
 
   computed: {
     isAdmin() {
-      return sessionStorage.getItem("userRole") === 'ADMIN';
+      return sessionStorage.getItem("userRole") === 'ADMIN' ||sessionStorage.getItem("userRole") === 'ADMINISTRATOR' ;
     }
   },
 
@@ -110,6 +110,9 @@ export default {
 
     async fetchSummaryData() {
       this.loading = true; 
+      this.noData = true;
+
+      
       try {
         const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_attendance_for_the_current_day');
         this.totalAttendance = response.data.total_attendance;
@@ -126,6 +129,7 @@ export default {
 
     async attendance() {
       this.loading = true; 
+      this.noData = false;
       try {
         const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_attendance_data');
         this.attendanceList = response.data;
@@ -156,6 +160,7 @@ export default {
 
     async presentAttendance() {
       this.loading = true; 
+      this.noData = false;
       try {
         const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_present_attendance_data');
         this.attendanceList = response.data;
@@ -188,6 +193,7 @@ export default {
 
     async absentAttendance() {
       this.loading = true; 
+      this.noData = false;
       try {
         const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_absent_attendance_data');
         this.attendanceList = response.data;
@@ -216,9 +222,10 @@ export default {
 
 
     async downloadAttendance() {
+      this.noData = false;
   console.info("In the download attendance function");
 
-   if(sessionStorage.getItem('userRole') == "GUEST"){
+   if(sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "DATA CLERK PRIVILEGES"){
       alert("You are not allowed to perform this action"); 
     }else{
 
@@ -503,13 +510,30 @@ th {
 }
 
 .no-data-card{
-  background: #7faba5;
-    height: 200px;
+  background:rgb(178, 212, 214);
+    height: 100px;
     position: fixed;
     top: 300px;
-    left: 490px;
-    width: 400px;
+    left: 500px;
+    width: 300px;
+    border-radius: 40px;
 }
+
+.no-data-card h4{
+    position: relative;
+    top: 30px;
+    left: 18%;
+}
+
+.no-data-card h3{
+    position: relative;
+    top: 22px;
+    left: 20%;
+}
+
+
+
+
 /* Loading Screen Styles */
 .loading-screen {
   position: fixed;

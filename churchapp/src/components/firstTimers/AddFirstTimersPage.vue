@@ -125,7 +125,7 @@ export default {
 
   computed: {
     isAdmin() {
-      return sessionStorage.getItem("userRole") === 'ADMIN';
+      return sessionStorage.getItem("userRole") === 'ADMIN' ||sessionStorage.getItem("userRole") === 'ADMINISTRATOR' ;
     }
   },
 

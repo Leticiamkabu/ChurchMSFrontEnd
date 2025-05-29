@@ -17,7 +17,7 @@
       </div>
       <div class="navbar_content" :class="{ 'active': isMenuActive }">
         <i class="bi bi-grid"></i>
-        <i class='bx bx-sun' id="darkLight"></i>
+        <i class='bx bx-sun' @click="toggleDarkMode" id="darkLight"></i>
         <i class='bx bx-bell'></i>
         <button @click="logout">Logout</button>
       </div>
@@ -26,20 +26,64 @@
 </template>
 
 <script>
+
+import axios from 'axios';
 export default {
   data() {
     return {
+
+      userId : "",
+      isDark :false,
+
       isMenuActive: false, // This will control the toggling of the navbar items
     };
   },
+
+  computed: {
+  darkModeIcon() {
+    return this.isDark ? 'bx bx-moon' : 'bx bx-sun';
+  }
+},
+
   methods: {
-    logout() {
+
+    toggleDarkMode() {
+    this.isDark = !this.isDark;
+    document.body.classList.toggle("dark");
+  }
+  ,
+    async logout() {
+      this.userId = sessionStorage.getItem("userId");
+      console.info(" id :", this.userId )
       // Clear session storage
       sessionStorage.clear();
+      localStorage.clear();
+
+      
+
+      // add the logout timeMarked
+      try {
+          console.info("Updating user tracking")
+          console.info("date",typeof new Date().toISOString())
+
+          const response = await axios.patch(`https://churchmsbackend.onrender.com/auth/update_user_tracking/${this.userId}/${new Date().toISOString()}`, {
+            // Include the fields and new values you want to update
+            
+            
+          });
+          if(response.data.message === "User activitity tracking updated successfully"){
+					console.info("User tracker updated");
+				}
+        
+        } catch (error) {
+				console.error("User tracker error :", error);
+			}
 
       // Optional: Redirect the user to the login page
-      window.location.href = "/#/login";
+      window.location.href = "/#";
+
     },
+
     toggleMenu() {
       this.isMenuActive = !this.isMenuActive;
     }

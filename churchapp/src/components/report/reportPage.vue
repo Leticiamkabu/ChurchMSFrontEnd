@@ -113,7 +113,7 @@
 
           <div>
             <label for="age" class="ageFilterLabel">Age</label>
-            <input class = "ageFilter" type="text" v-model="memberFilters.age" placeholder="Enter Age" required  @keydown.enter="checkName" />
+            <input class = "ageFilter" type="text" v-model="memberFilters.age" placeholder="Enter Age" />
             
           </div>
 
@@ -185,7 +185,7 @@
       <!-- general  Table -->
       <div class="table-container">
 
-        <button @click="getAttendanceReport" class="downloadAttendanceButton">
+        <button @click="getReport()" class="downloadAttendanceButton">
             Download
         </button>
 
@@ -236,6 +236,8 @@ export default {
     return {
       loading: false,
 
+      reportName :"",
+
       showAttendanceFilters: false,
       filters: {
         date: "",
@@ -261,7 +263,7 @@ export default {
 
   computed: {
     isAdmin() {
-      return sessionStorage.getItem("userRole") === 'ADMIN';
+      return sessionStorage.getItem("userRole") === 'ADMIN' ||sessionStorage.getItem("userRole") === 'ADMINISTRATOR' ;
     }
   },
 
@@ -277,10 +279,12 @@ export default {
     toggleMemberFilters() {
       this.showMembersFilters = true;
       this.showAttendanceFilters = false;
+      this.attendanceList = [];
     },
 
     async getAttendanceFetch() {
       this.loading = true;
+     
       console.info('status :', this.filters.status)
       if (this.filters.status == ""){
         this.filters.status = "ALL";
@@ -320,6 +324,7 @@ export default {
           this.filters.date = "";
           this.filters.status = "";
           this.filters.department = "";
+          this.reportName = "Attendance_Report";
 
           
           
@@ -355,69 +360,79 @@ export default {
     },
 
 
-    async getAttendanceReport() {
+   async getReport() {
+  if (sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "DATA CLERK PRIVILEGES") {
+    alert("You are not allowed to perform this action");
+    return;
+  }
 
-       if(sessionStorage.getItem('userRole') == "GUEST"){
-      alert("You are not allowed to perform this action"); 
-    }else{
-      this.loading = true;
-      console.info('status :', this.filters.status)
-      if (this.filters.status == ""){
-        this.filters.status = "All";
+  this.loading = true;
+
+  console.info('Getting report data');
+  console.info('Report:', this.attendanceList);
+  console.info('Type of report:', typeof(this.attendanceList));
+
+  if (!this.attendanceList || this.attendanceList.length === 0){
+    alert("Data not provided for download");
+  }
+  else{
+
+  try {
+    console.log("Payload being sent:", JSON.stringify({ reportList: Object.values(this.attendanceList) }));
+
+    const response = await axios.post(
+      'https://churchmsbackend.onrender.com/members/download_report_data',
+      { reportList: Object.values(this.attendanceList) },
+      {
+        responseType: 'blob',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }
-      
-      console.info('getting attendance report')
-      console.info('date :', this.filters.date)
-      console.info('status :', this.filters.status)
+    );
 
-       try {
-        const response = await axios.get(`https://churchmsbackend.onrender.com/attendance/report_download/${this.filters.date}/${this.filters.status}`,{
-          responseType: 'blob',
-        });
-        
-        console.info("Attendance report data : ", response)
+    console.info("Report data:", response);
 
-        // Create a Blob from the response
-          const blob = new Blob([response.data], {
-            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          });
+    // Create a Blob from the response
+    const blob = new Blob([response.data], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
 
-        console.info("File response converted:", blob);
+    console.info("File response converted:", blob);
 
-      // Create a download link
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
+    // Create a download link
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
 
-      // Use the filename provided by the backend or set a default one
-      const contentDisposition = response.headers['content-disposition'];
-      let fileName = 'attendance_report.xlsx';
-      if (contentDisposition) {
-        const match = contentDisposition.match(/filename="(.+)"/);
-        if (match && match[1]) {
-          fileName = match[1];
-        }
+    // Use the filename provided by the backend or set a default one
+    const contentDisposition = response.headers['content-disposition'];
+    let fileName = this.reportName +'.xlsx';
+    if (contentDisposition) {
+      const match = contentDisposition.match(/filename="(.+)"/);
+      if (match && match[1]) {
+        fileName = match[1];
       }
+    }
 
-      a.download = fileName;
-      document.body.appendChild(a); // Append the link to the body
-      a.click();
-      document.body.removeChild(a); // Remove the link after clicking
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 
-      console.info("File downloaded");
+    console.info("File downloaded");
 
-      // Cleanup
-      window.URL.revokeObjectURL(url);
-        } catch (error) {
-          console.error('Error getting Downloading Attendance Report :', error);
-        }
-        finally {
+    // Cleanup
+    window.URL.revokeObjectURL(url);
 
-          this.loading = false; // Hide loading screen
-        }}
+  } catch (error) {
+    console.error('Error Downloading Attendance Report:', error);
+  } finally {
+    this.loading = false;
+  }
 
-    },
-
+   }
+},
 
 
     async getMemberFetch() {
@@ -454,8 +469,16 @@ export default {
         
         console.info("Member report data : ", response.data)
 
-        if (response.data.detail !== "No attendance data exists with date specified" && response.data.detail !== "No attendance data exists with status specified" ) {
-
+        if (response.data.length === 0){
+          alert("Data not availble"); 
+          this.memberFilters.age = "";
+          this.memberFilters.ageRange = "";
+          this.memberFilters.birthMonth = "";
+          this.memberFilters.department = "";
+          
+          
+          
+        } else if (response.data.detail !== "No attendance data exists with date specified" && response.data.detail !== "No attendance data exists with status specified" )  {
           console.info("Populating Attendance List")
           this.attendanceList = response.data;
           this.showAttendanceFilters = false;
@@ -463,14 +486,8 @@ export default {
           this.memberFilters.ageRange = "";
           this.memberFilters.birthMonth = "";
           this.memberFilters.department = "";
-          
-          
-        } else if (response.data.detail) {
-          alert(response.data.detail); 
-          this.memberFilters.age = "";
-          this.memberFilters.ageRange = "";
-          this.memberFilters.birthMonth = "";
-          this.memberFilters.department = "";
+
+          this.reportName = "Members_Report";
         }
 
         else{
@@ -490,6 +507,10 @@ export default {
       }
       finally {
         this.showMembersFilters = false;
+        this.memberFilters.age = "";
+          this.memberFilters.ageRange = "";
+          this.memberFilters.birthMonth = "";
+          this.memberFilters.department = "";
         this.loading = false; // Hide loading screen
       }
 
@@ -1197,15 +1218,16 @@ th, td {
 /* Optional: Style the scrollbar */
 .table-container::-webkit-scrollbar {
   width: 8px;
+  height:6px;
 }
 
 .table-container::-webkit-scrollbar-thumb {
-  background: #888;
+  background: #92c1c0;
   border-radius: 4px;
 }
 
 .table-container::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background:rgb(123, 165, 164);
 }
 
 

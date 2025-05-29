@@ -50,6 +50,7 @@
       <!-- Modal to edit user details -->
       <div v-if="showEditModal" @submit.prevent="updateUserDetails" class="modal-overlay">
         <div class="modal-card">
+        <button @click="showEditModal = false ;" class="cancleButton">&times;</button>
           <h2>Update User </h2>
           
           <label class = "firstN" >First Name</label>
@@ -75,29 +76,14 @@
             </option>
           </select>
 
-          <label class = "privi">Privileges</label>
-          <div>
-            <label>
-              <input class = "privi1" type="checkbox" v-model="form.privileges" value="Add members" />
-              <span class="privi1-text">Add Members</span> 
-            </label>
-            <label>
-              <input class = "privi2" type="checkbox" v-model="form.privileges" value="Take Attendance" />
-              <span class="privi2-text">Take Attendance</span>
-            </label>
-            <label>
-              <input class = "privi3" type="checkbox" v-model="form.privileges" value="Create Users" /> 
-              <span class="privi3-text">Create Users</span>
-            </label>
-            <label>
-              <input class = "privi4" type="checkbox" v-model="form.privileges" value="Get Attendance Overview" /> 
-              <span class="privi4-text">Get Attendance Overview</span>
-            </label>
-            <label>
-              <input class = "privi5" type="checkbox" v-model="form.privileges" value="Get Member Details" /> <!-- Get Member Details -->
-              <span class="privi5-text">Get Member Details</span>
-            </label>
-          </div>
+          <label class = "label_privilege" for="privilege">Privilege  </label>
+          <select class = "privilege" v-model="form.privilege" id="privilege"  required>
+            <option disabled value="">Select privilege </option>
+            <option v-for="privilege in privileges" :key="privilege" :value="privilege">
+              {{ privilege }}
+            </option>
+          </select>
+
 
           <button class = "updateb"  @click="updateUserDetails">Save</button>
           <button class = "cancelb"  @click="showEditModal = false">Cancel</button>
@@ -125,6 +111,7 @@
         showEditModal: false,
         user_id: '',
         usersList: [],
+        privileges: ['ADMIN PRIVILEGES', 'DATA CLERK PRIVILEGES', 'ADMINISTRATOR PRIVILEGES', 'GUEST PRIVILEGES'],
         roles :['ADMIN', 'DATA CLERK', 'ADMINISTRATOR'],
         form: {
         firstname: '',
@@ -134,7 +121,7 @@
         password: '',
         confirmPassword: '',
         role: '',
-        privileges: [],
+        privilege: '',
       },
 
     };
@@ -188,7 +175,7 @@
     },
 
     async editUser(record) {
-      if(sessionStorage.getItem('userRole') == "GUEST"){
+      if(sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "ADMINISTRATOR PRIVILEGES"){
         alert("You are not allowed to perform this action"); 
 
       }else{
@@ -211,13 +198,14 @@
               phoneNumber: user.phoneNumber || "",
               password:user.password || "", // Leave password empty for security reasons
               role: user.role || "",
-              privileges: user.privileges ? user.privileges.split(",") : []
+              privilege: user.privileges ,
             }
           
             // Mask the password for display
-            this.maskedPassword = "*****";
+            //this.maskedPassword = "*****";
             this.user_id = user.id
             this.showEditModal = true;
+            console.info("password : " ,this.form.password)
 
           } else {
             alert("Error getting user data"); 
@@ -249,11 +237,16 @@
 
     async updateUserDetails() {
       
-      if (sessionStorage.getItem('userRole') == "GUEST") {
+      if (sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "ADMINISTRATOR PRIVILEGES") {
         alert("You are not allowed to perform this action"); 
 
       }else{
 
+        if (!this.form.privilege.includes(this.form.role)) {
+      alert("Please choose the appropriate privilege for the right role.");
+      return;
+      }
+      
         this.loading = true; 
         if (this.isFormValid) {
           console.info("in the registeration function")
@@ -266,27 +259,27 @@
             phoneNumber: this.form.phoneNumber,
             password: this.form.password,
             role: this.form.role,
-            privileges: this.form.privileges,
+            privileges: this.form.privilege,
           };
 
           console.log("Form is valid. Proceeding with user update...", payload);
 
           try {
-            const response = await axios.patch(`https://churchmsbackend.onrender.com/auth/update_individual_user_fields/${this.user_id}`, {
+            const response = await axios.patch(`https://churchmsbackend.onrender.com//auth/update_individual_user_fields/${this.user_id}`, {
               firstName: this.form.firstname,
               lastName: this.form.lastname,
               email: this.form.email,
               phoneNumber: this.form.phoneNumber,
               password: this.form.password,
               role: this.form.role,
-              privileges: this.form.privileges,
+              privileges: this.form.privilege,
             });
 
             console.info(response)
             if (response.data ) {
             
               alert("User updated successfully");
-              this.showEditModal = true;
+              this.showEditModal = false;
 
             } else {
               console.info("error response for registeration ",response)
@@ -314,7 +307,7 @@
     
     async deleteUser(record) {
       
-      if(sessionStorage.getItem('userRole') == "GUEST"){
+      if(sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "ADMINISTRATOR PRIVILEGES"){
         alert("You are not allowed to perform this action"); 
 
       }else{
@@ -543,9 +536,9 @@ select{
 .modal-card {
       background: #05919d;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 10px;
     width: 700px;
-    height: 520px;
+    height: 460px;
     position: fixed;
     top: 105px;
     left: 400px;
@@ -651,15 +644,15 @@ select{
 .roleL{
   color: white;
       position: fixed;
-    top: 520px;
-    left: 420px;
+    top: 170px;
+    left: 800px;
     font-size: 20px;
 }
 
 .roleL-input{
   position: fixed;
-    left: 450px;
-    top: 550px;
+    left: 820px;
+    top: 210px;
     height: 45px;
     width: 260px;
     border-radius: 10px;
@@ -748,7 +741,7 @@ select{
 .updateb{
   position: fixed;
     left: 870px;
-    top: 570px;
+    top: 510px;
     height: 30px;
     width: 110px;
     border-radius: 10px;
@@ -760,7 +753,7 @@ select{
 .cancelb{
   position: fixed;
     left: 990px;
-    top: 570px;
+    top: 510px;
     height: 30px;
     width: 100px;
     border-radius: 10px;
@@ -769,6 +762,37 @@ select{
     color: black;
 }
 
+.cancleButton{
+  position: fixed;
+    left: 1070px;
+    top: 75px;
+    height: 40px;
+    width: 60px;
+    border-radius: 10px;
+    border-color: aqua;
+    background-color: #3cd0dd;
+    color: black;
+}
+
+.label_privilege {
+    position: fixed;
+    left: 800px;
+    top: 280px;
+    font-size: 20px;
+    color: #fff;
+}
+
+.privilege {
+    position: fixed;
+    left: 820px;
+    top: 310px;
+    height: 45px;
+    width: 260px;
+    border-radius: 10px;
+    border-color: aqua;
+    background-color: white;
+
+}
 
 
 .table-container {

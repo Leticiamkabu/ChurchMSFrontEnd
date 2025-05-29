@@ -51,16 +51,24 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
-  const user = sessionStorage.getItem('privilage')
-  const privileges = user ? user.split(',') : []
+  // const user = sessionStorage.getItem('privilage')
+  // const privileges = user ? user.split(',') : []
+  const isAuthenticated = sessionStorage.getItem('userId'); // or token
 
-  if (to.meta.requiresMarkAttendancePrivilege) {
-    if (!privileges || !privileges.includes("Take Attendance")) {
-      alert("You do not have permission to access the attendance page.")
-      return next(from.fullPath || '/') // Or redirect to an "Access Denied" page
-    }
+  
+
+  // if (to.meta.requiresMarkAttendancePrivilege) {
+  //   if (!privileges || !privileges.includes("Take Attendance")) {
+  //     alert("You do not have permission to access the attendance page.")
+  //     return next(from.fullPath || '/') // Or redirect to an "Access Denied" page
+  //   }
+  // }
+
+  if (to.path !== '/login' && !isAuthenticated) {
+    next('/login');
   }
 
+  
   next()
 })
 
