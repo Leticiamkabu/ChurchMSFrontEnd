@@ -443,337 +443,82 @@ export default {
 
     closeDropdown() {
     this.showDownloadDropdown = true;
-  },
-
-    //https://churchmsbackend.onrender.com
-
-    async getMembers() {
-        this.showDownloadDropdown = false;
-        this.loading = true; 
-        try {
-          const response = await axios.get('https://churchmsbackend.onrender.com/members/get_all_members');
-          
-          console.info("member list", response.data)
-          if (response.data !== 'No user data exists') {
-
-            
-
-            this.memberList = response.data.map(members => ({
-
-            name: [members.firstName, members.middleName, members.lastName]
-                .map(name => name?.trim()) // Trim each name to remove extra spaces
-                .filter(name => name) // Remove empty or undefined values
-                .join(' '),
-            phoneNumber: members.phoneNumber,
-            memberStatus: members.memberStatus,
-            member_id: members.id,
-            }
-            ))
-
-            
-          } else {
-            this.attendanceList = response.data;
-          this.memberList = [];  // Clear the list if no data is found
-          
-          }
-        } catch (error) {
-          console.error('Error fetching user list:', error);
-        }
-        finally {
-          this.loading = false; // Hide loading screen
-        }
-        
     },
 
-    openFileDialog() {
-      this.showDownloadDropdown = false;
-      this.$refs.fileInput.click();
-
-    },
-
-    handleFileUpload(event) {
-      this.selectedFile = event.target.files[0];
-      this.uploadMemberData();
-    },
-
-    async uploadMemberData() {
-      this.showDownloadDropdown = false;
-        this.loading = true; 
-        if(sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "DATA CLERK PRIVILEGES"){
-      alert("You are not allowed to perform this action"); 
-    }else{
-
-        if (!this.selectedFile) {
-        alert('Please select a file first.');
-        return;
+    nextStep() {
+      if (this.step < 5) {
+        this.step++;
       }
+    },
 
-      const formData = new FormData();
-      formData.append('file', this.selectedFile); 
+    prevStep() {
+      if (this.step > 1) {
+        this.step--;
+      }
+    },
+
+  async editMember(record){
+      this.showDownloadDropdown = false;
+      if(sessionStorage.getItem('userRole') == "GUEST"){
+        alert("You are not allowed to perform this action"); 
+      }else{
+        this.loading = true;
+        this.showEditModal = true;
+        console.error('getting member details to update')
 
         try {
-          const response = await axios.post('https://churchmsbackend.onrender.com/members/upload-docx', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+          const response = await axios.get(`https://churchmsbackend.onrender.com/members/get_member_by_id/${record.member_id}`);
         
-          console.info("response from member data upload : " ,response )
+          console.info("member data", response.data)
 
-          if (response.message == "Members added successfully"){
-              alert(response.message , ". ", "Total number of users added = ",response.total_members);
+          if (response.data){
+            const member = response.data;
 
-              if (response.skiped_members !== []){
-                alert("Data has been skipped")
+              // Populate the form with fetched member details
+              this.form = {
+                title: member.title || "",
+                firstname: member.firstName || "",
+                middlename: member.middleName || "",
+                lastname: member.lastName || "",
+                dateOfBirth:member.dateOfBirth || "",
+                age:member.age || "",
+                gender: member.gender || "",
+                phoneNumber: member.phoneNumber || "",
+                email: member.email || "",
+                nationality: member.nationality || "",
+                homeTown: member.homeTown || "",
+                workingStatus: member.workingStatus || "",
+                homeAddress: member.homeAddress || "",
+                occupation: member.occupation || "",
+                qualification: member.qualification || "",
+                institutionName: member.institutionName || "",
+                mothersName: member.mothersName || "",
+                fathersName: member.fathersName || "",
+                nextOfKin: member.nextOfKin || "",
+                nextOfKinPhoneNumber: member.nextOfKinPhoneNumber || "",
+                maritalStatus: member.maritalStatus || "",
+                spouseContact: member.spouseContact || "",
+                spouseName: member.spouseName || "",
+                numberOfChildren: member.numberOfChildren || "",
+                memberType: member.memberType || "",
+                cell: member.cell || "",
+                departmentName: member.departmentName || "",
+                dateJoined: member.dateJoined || "",
+                classSelection: member.classSelection || "",
+                spiritualGift: member.spiritualGift || "",
+                position: member.position || "",
+                waterBaptised: member.waterBaptised || "",
+                baptisedBy: member.baptisedBy || "",
+                dateBaptised: member.dateBaptised || "",
+                baptisedByTheHolySpirit: member.baptisedByTheHolySpirit || "",
+                memberStatus: member.memberStatus || "",
+                dateDeceased: member.dateDeceased || "",
+                dateBuried: member.dateBuried || "",
+                confirmed: member.confirmed || "",
+                dateConfirmed: member.dateConfirmed || "",
+                comment: member.comment || "",
+                
               }
-
-              //CLEAN DATA FUNCTION HERE
-
-
-          }
-          else if (response.data.detail == "Error processing document: list index out of range"){
-            alert("Please make sure your document contains data");
-
-          }
-          else{
-            alert(response.detail);
-          }
-        } catch (error) {
-        console.error("Uploading member data error: ", error);
-        alert("An error occurred during member data upload. Please try again.");
-        }
-
-        finally {
-          this.loading = false; // Hide loading screen
-        }
-        
-        }
-    },
-
-
-    async checkName() {
-      this.showDownloadDropdown = false;
-      console.info("About to check name");
-      // If marking attendance is in progress, skip search
-      //if (this.isMarkingAttendance) return;
-
-      //this.isSearching = true;  // Set search flag
-      //console.log("Searching for:", this.name);
-      this.loading = true; 
-        try {
-          
-          const response = await axios.get(`https://churchmsbackend.onrender.com/members/get_member_by_words/${this.name}`);
-          console.info(response); 
-
-          // Check if members were found
-          if (response.data.detail !== 'Members with the given names do not exist') {
-            console.info("Member found");
-
-            if (response.data.length > 0) {
-              console.info("Appending members");
-              
-              // Clear current list (if needed)
-              this.memberList = []; 
-            
-              this.memberList = response.data.map(members => ({
-                name: members.firstName + ' ' + members.lastName ,
-                phoneNumber: members.phoneNumber,
-                memberStatus: members.memberStatus,
-                member_id: members.id,
-              
-                }));
-
-              this.name = ''; // Clear search input after processing
-
-            }
-          } else {
-            alert(response.data.detail);
-          }
-        } catch (error) {
-          console.error("Member search error:", error);
-          alert("An error occurred during member search processing. Please try again.");
-        }
-        finally {
-              this.loading = false; // Hide loading screen
-            }
-
-        // Clear the search flag after search logic completes (if needed)
-        //setTimeout(() => {
-          //        this.isSearching = false;
-            //   }, 10);
-    },
-
-   async downloadSampleData() {
-    this.showDownloadDropdown = false;
-
-    if(sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "DATA CLERK PRIVILEGES"){
-      alert("You are not allowed to perform this action"); 
-    }else{
-
-    console.info("In the download sample data function");
-
-        try {
-          // Fetch the file from the backend
-          const response = await axios.get(`https://churchmsbackend.onrender.com/members/download_sample_upload_data_document`, {
-            responseType: 'blob', // Specify response type as blob
-          });
-
-          console.info("Response:", response);
-
-          // Create a Blob from the response
-          const blob = new Blob([response.data], {
-            type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-          });
-
-          console.info("File response converted:", blob);
-
-          // Create a download link
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-
-          // Use the filename provided by the backend or set a default one
-          const contentDisposition = response.headers['content-disposition'];
-          let fileName = 'CTC_Member_Sample_document.docx';
-          if (contentDisposition) {
-            const match = contentDisposition.match(/filename="(.+)"/);
-            if (match && match[1]) {
-              fileName = match[1];
-            }
-          }
-
-          a.download = fileName;
-          document.body.appendChild(a); // Append the link to the body
-          a.click();
-          document.body.removeChild(a); // Remove the link after clicking
-
-          console.info("File is downloaded");
-
-          // Cleanup
-          window.URL.revokeObjectURL(url);
-        } catch (error) {
-          console.error("Error downloading the file:", error);
-        }}
-   }
-    
-    },
-
-  async downloadMembers(documentFormat) {
-    this.showDownloadDropdown = false;
-
- if(sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "DATA CLERK PRIVILEGES"){
-      alert("You are not allowed to perform this action"); 
-    }else{
-        console.info("In the download attendance function");
-
-        try {
-          // Fetch the file from the backend
-          const response = await axios.get(`https://churchmsbackend.onrender.com/members/download_member_data/${documentFormat}`, {
-            responseType: 'blob', // Specify response type as blob
-          });
-
-          console.info("Response:", response);
-
-          // Create a Blob from the response
-          const blob = new Blob([response.data], {
-            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          });
-
-          console.info("File response converted:", blob);
-
-          // Create a download link
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-
-          // Use the filename provided by the backend or set a default one
-          const contentDisposition = response.headers['content-disposition'];
-          let fileName = 'CTC_Members_data.xlsx';
-          if (contentDisposition) {
-            const match = contentDisposition.match(/filename="(.+)"/);
-            if (match && match[1]) {
-              fileName = match[1];
-            }
-          }
-
-          a.download = fileName;
-          document.body.appendChild(a); // Append the link to the body
-          a.click();
-          document.body.removeChild(a); // Remove the link after clicking
-
-          console.info("File is downloaded");
-
-          // Cleanup
-          window.URL.revokeObjectURL(url);
-        } catch (error) {
-          console.error("Error downloading the file:", error);
-        }}
-      },
-
-
-
-    async editMember(record) {
-      this.showDownloadDropdown = false;
-       if(sessionStorage.getItem('userRole') == "GUEST"){
-      alert("You are not allowed to perform this action"); 
-    }else{
-    this.loading = true;
-    this.showEditModal = true;
-      console.error('getting member details to update')
-
-      try {
-        const response = await axios.get(`https://churchmsbackend.onrender.com/members/get_member_by_id/${record.member_id}`);
-        
-        console.info("member data", response.data)
-
-        if (response.data){
-          const member = response.data;
-
-          // Populate the form with fetched member details
-          this.form = {
-            title: member.title || "",
-            firstname: member.firstName || "",
-            middlename: member.middleName || "",
-            lastname: member.lastName || "",
-            dateOfBirth:member.dateOfBirth || "",
-            age:member.age || "",
-            gender: member.gender || "",
-            phoneNumber: member.phoneNumber || "",
-            email: member.email || "",
-            nationality: member.nationality || "",
-            homeTown: member.homeTown || "",
-            workingStatus: member.workingStatus || "",
-            homeAddress: member.homeAddress || "",
-            occupation: member.occupation || "",
-            qualification: member.qualification || "",
-            institutionName: member.institutionName || "",
-            mothersName: member.mothersName || "",
-            fathersName: member.fathersName || "",
-            nextOfKin: member.nextOfKin || "",
-            nextOfKinPhoneNumber: member.nextOfKinPhoneNumber || "",
-            maritalStatus: member.maritalStatus || "",
-            spouseContact: member.spouseContact || "",
-            spouseName: member.spouseName || "",
-            numberOfChildren: member.numberOfChildren || "",
-            memberType: member.memberType || "",
-            cell: member.cell || "",
-            departmentName: member.departmentName || "",
-            dateJoined: member.dateJoined || "",
-            classSelection: member.classSelection || "",
-            spiritualGift: member.spiritualGift || "",
-            position: member.position || "",
-            waterBaptised: member.waterBaptised || "",
-            baptisedBy: member.baptisedBy || "",
-            dateBaptised: member.dateBaptised || "",
-            baptisedByTheHolySpirit: member.baptisedByTheHolySpirit || "",
-            memberStatus: member.memberStatus || "",
-            dateDeceased: member.dateDeceased || "",
-            dateBuried: member.dateBuried || "",
-            confirmed: member.confirmed || "",
-            dateConfirmed: member.dateConfirmed || "",
-            comment: member.comment || "",
-            
-          }
 
 
 
@@ -822,86 +567,49 @@ export default {
       
       finally {
         this.loading = false; // Hide loading screen
+      }
+    }
+    }, 
+
+    async deleteMember(record) {
+      this.showDownloadDropdown = false;
+       if(sessionStorage.getItem('userRole') == "GUEST"){
+      alert("You are not allowed to perform this action"); 
+    }else{
+      this.loading = true; 
+      console.info("this is the current record: ", record)
+
+      try {
+        console.info("Member_id: ", record.user_id)
+        const confirmDelete = window.confirm(`Are you sure you want to delete the member with the name "${record.name}"?`);
+
+        if (confirmDelete) {
+          const response = await axios.delete(`https://churchmsbackend.onrender.com/members/delete_member_by_id/${record.member_id}`);
+          
+          console.info(" delete response ", response)
+          if (response.data !== 'Mmember not found') {
+            this.memberList = this.memberList.filter(user => user.user_id !== record.user_id);
+            alert("Member deleted successfully."); 
+
+          } else {
+            alert("Member with name not found.");
+              
+          }
+
+        } else {
+          // If the user cancels the deletion
+          console.info("Member deletion cancelled.");
+        }
+
+      } catch (error) {
+        console.error('Error deleting member', error);
+      }
+      finally {
+        this.loading = false; // Hide loading screen
       }}
-    }  , 
-  
-
-
-
-   nextStep() {
-      if (this.step < 5) {
-        this.step++;
-      }
-    },
-    prevStep() {
-      if (this.step > 1) {
-        this.step--;
-      }
     },
 
-
-    isFormValid() {
-      return (
-        this.form.title &&
-        this.form.firstName &&
-        this.form.middleName &&
-        this.form.lastName &&
-        this.form.dateOfBirth &&
-        this.form.age &&
-        this.form.gender &&
-        this.form.phoneNumber &&
-        this.form.email &&
-        this.form.nationality &&
-        this.form.homeTown &&
-        this.form.workingStatus &&
-        this.form.homeAddress &&
-        this.form.occupation &&
-        this.form.qualification &&
-        this.form.institutionName &&
-        this.form.mothersName &&
-        this.form.fathersName &&
-        this.form.nextOfKin &&
-        this.form.nextOfKinPhoneNumber &&
-        this.form.maritalStatus &&
-        this.form.spouseContact &&
-        this.form.spouseName &&
-        this.form.numberOfChildren &&
-        this.form.memberType &&
-        this.form.cell &&
-        this.form.departmentName &&
-        this.form.dateJoined &&
-        this.form.classSelection &&
-        this.form.spiritualGift &&
-        this.form.position &&
-        this.form.waterBaptised &&
-        this.form.baptisedBy &&
-        this.form.dateBaptised &&
-        this.form.baptisedByTheHolySpirit &&
-        this.form.memberStatus &&
-        this.form.dateDeceased &&
-        this.form.dateBuried &&
-        this.form.confirmed &&
-        this.form.dateConfirmed &&
-        this.form.comment 
-      
-        
-      );
-      
-    },
-
-
-     handleImageUpload(event) {
-      const file = event.target.files[0];
-      console.info("in image handeler")
-      console.info(file)
-      if (file) {
-        this.imageUrl.url = URL.createObjectURL(file); // Generate a preview URL
-        this.selectedImage = file
-      }
-
-    },
-
-     async updateMemberDetails() {
+    async updateMemberDetails() {
       this.showDownloadDropdown = false;
  if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
@@ -1117,45 +825,359 @@ export default {
     },
 
 
-    async deleteMember(record) {
-      this.showDownloadDropdown = false;
-       if(sessionStorage.getItem('userRole') == "GUEST"){
-      alert("You are not allowed to perform this action"); 
-    }else{
-      this.loading = true; 
-      console.info("this is the current record: ", record)
-
-      try {
-        console.info("Member_id: ", record.user_id)
-        const confirmDelete = window.confirm(`Are you sure you want to delete the member with the name "${record.name}"?`);
-
-        if (confirmDelete) {
-          const response = await axios.delete(`https://churchmsbackend.onrender.com/members/delete_member_by_id/${record.member_id}`);
-          
-          console.info(" delete response ", response)
-          if (response.data !== 'Mmember not found') {
-            this.memberList = this.memberList.filter(user => user.user_id !== record.user_id);
-            alert("Member deleted successfully."); 
-
-          } else {
-            alert("Member with name not found.");
-              
-          }
-
-        } else {
-          // If the user cancels the deletion
-          console.info("Member deletion cancelled.");
-        }
-
-      } catch (error) {
-        console.error('Error deleting member', error);
+    handleImageUpload(event) {
+      const file = event.target.files[0];
+      console.info("in image handeler")
+      console.info(file)
+      if (file) {
+        this.imageUrl.url = URL.createObjectURL(file); // Generate a preview URL
+        this.selectedImage = file
       }
-      finally {
-        this.loading = false; // Hide loading screen
-      }}
+
+    },
+
+    isFormValid() {
+      return (
+        this.form.title &&
+        this.form.firstName &&
+        this.form.middleName &&
+        this.form.lastName &&
+        this.form.dateOfBirth &&
+        this.form.age &&
+        this.form.gender &&
+        this.form.phoneNumber &&
+        this.form.email &&
+        this.form.nationality &&
+        this.form.homeTown &&
+        this.form.workingStatus &&
+        this.form.homeAddress &&
+        this.form.occupation &&
+        this.form.qualification &&
+        this.form.institutionName &&
+        this.form.mothersName &&
+        this.form.fathersName &&
+        this.form.nextOfKin &&
+        this.form.nextOfKinPhoneNumber &&
+        this.form.maritalStatus &&
+        this.form.spouseContact &&
+        this.form.spouseName &&
+        this.form.numberOfChildren &&
+        this.form.memberType &&
+        this.form.cell &&
+        this.form.departmentName &&
+        this.form.dateJoined &&
+        this.form.classSelection &&
+        this.form.spiritualGift &&
+        this.form.position &&
+        this.form.waterBaptised &&
+        this.form.baptisedBy &&
+        this.form.dateBaptised &&
+        this.form.baptisedByTheHolySpirit &&
+        this.form.memberStatus &&
+        this.form.dateDeceased &&
+        this.form.dateBuried &&
+        this.form.confirmed &&
+        this.form.dateConfirmed &&
+        this.form.comment 
+      
+        
+      );
+      
     },
 
 
+    async downloadMembers(documentFormat) {
+    this.showDownloadDropdown = false;
+
+    if(sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "DATA CLERK PRIVILEGES"){
+          alert("You are not allowed to perform this action"); 
+        }else{
+            console.info("In the download attendance function");
+
+            try {
+              // Fetch the file from the backend
+              const response = await axios.get(`https://churchmsbackend.onrender.com/members/download_member_data/${documentFormat}`, {
+                responseType: 'blob', // Specify response type as blob
+              });
+
+              console.info("Response:", response);
+
+              // Create a Blob from the response
+              const blob = new Blob([response.data], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+              });
+
+              console.info("File response converted:", blob);
+
+              // Create a download link
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+
+              // Use the filename provided by the backend or set a default one
+              const contentDisposition = response.headers['content-disposition'];
+              let fileName = 'CTC_Members_data.xlsx';
+              if (contentDisposition) {
+                const match = contentDisposition.match(/filename="(.+)"/);
+                if (match && match[1]) {
+                  fileName = match[1];
+                }
+              }
+
+              a.download = fileName;
+              document.body.appendChild(a); // Append the link to the body
+              a.click();
+              document.body.removeChild(a); // Remove the link after clicking
+
+              console.info("File is downloaded");
+
+              // Cleanup
+              window.URL.revokeObjectURL(url);
+            } catch (error) {
+              console.error("Error downloading the file:", error);
+            }}
+    },
+
+
+    async downloadSampleData() {
+    this.showDownloadDropdown = false;
+
+    if(sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "DATA CLERK PRIVILEGES"){
+      alert("You are not allowed to perform this action"); 
+    }else{
+
+    console.info("In the download sample data function");
+
+        try {
+          // Fetch the file from the backend
+          const response = await axios.get(`https://churchmsbackend.onrender.com/members/download_sample_upload_data_document`, {
+            responseType: 'blob', // Specify response type as blob
+          });
+
+          console.info("Response:", response);
+
+          // Create a Blob from the response
+          const blob = new Blob([response.data], {
+            type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          });
+
+          console.info("File response converted:", blob);
+
+          // Create a download link
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+
+          // Use the filename provided by the backend or set a default one
+          const contentDisposition = response.headers['content-disposition'];
+          let fileName = 'CTC_Member_Sample_document.docx';
+          if (contentDisposition) {
+            const match = contentDisposition.match(/filename="(.+)"/);
+            if (match && match[1]) {
+              fileName = match[1];
+            }
+          }
+
+          a.download = fileName;
+          document.body.appendChild(a); // Append the link to the body
+          a.click();
+          document.body.removeChild(a); // Remove the link after clicking
+
+          console.info("File is downloaded");
+
+          // Cleanup
+          window.URL.revokeObjectURL(url);
+        } catch (error) {
+          console.error("Error downloading the file:", error);
+        }}
+   },
+
+
+    async checkName() {
+      this.showDownloadDropdown = false;
+      console.info("About to check name");
+      // If marking attendance is in progress, skip search
+      //if (this.isMarkingAttendance) return;
+
+      //this.isSearching = true;  // Set search flag
+      //console.log("Searching for:", this.name);
+      this.loading = true; 
+        try {
+          
+          const response = await axios.get(`https://churchmsbackend.onrender.com/members/get_member_by_words/${this.name}`);
+          console.info(response); 
+
+          // Check if members were found
+          if (response.data.detail !== 'Members with the given names do not exist') {
+            console.info("Member found");
+
+            if (response.data.length > 0) {
+              console.info("Appending members");
+              
+              // Clear current list (if needed)
+              this.memberList = []; 
+            
+              this.memberList = response.data.map(members => ({
+                name: members.firstName + ' ' + members.lastName ,
+                phoneNumber: members.phoneNumber,
+                memberStatus: members.memberStatus,
+                member_id: members.id,
+              
+                }));
+
+              this.name = ''; // Clear search input after processing
+
+            }
+          } else {
+            alert(response.data.detail);
+          }
+        } catch (error) {
+          console.error("Member search error:", error);
+          alert("An error occurred during member search processing. Please try again.");
+        }
+        finally {
+              this.loading = false; // Hide loading screen
+            }
+
+        // Clear the search flag after search logic completes (if needed)
+        //setTimeout(() => {
+          //        this.isSearching = false;
+            //   }, 10);
+    },
+
+    async uploadMemberData() {
+      this.showDownloadDropdown = false;
+        this.loading = true; 
+        if(sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "DATA CLERK PRIVILEGES"){
+      alert("You are not allowed to perform this action"); 
+    }else{
+
+        if (!this.selectedFile) {
+        alert('Please select a file first.');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', this.selectedFile); 
+
+        try {
+          const response = await axios.post('https://churchmsbackend.onrender.com/members/upload-docx', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        
+          console.info("response from member data upload : " ,response )
+
+          if (response.message == "Members added successfully"){
+              alert(response.message , ". ", "Total number of users added = ",response.total_members);
+
+              if (response.skiped_members !== []){
+                alert("Data has been skipped")
+              }
+
+              //CLEAN DATA FUNCTION HERE
+
+
+          }
+          else if (response.data.detail == "Error processing document: list index out of range"){
+            alert("Please make sure your document contains data");
+
+          }
+          else{
+            alert(response.detail);
+          }
+        } catch (error) {
+        console.error("Uploading member data error: ", error);
+        alert("An error occurred during member data upload. Please try again.");
+        }
+
+        finally {
+          this.loading = false; // Hide loading screen
+        }
+        
+        }
+    },
+
+    openFileDialog() {
+      this.showDownloadDropdown = false;
+      this.$refs.fileInput.click();
+
+    },
+
+    handleFileUpload(event) {
+      this.selectedFile = event.target.files[0];
+      this.uploadMemberData();
+    },
+  
+
+    //https://churchmsbackend.onrender.com
+
+    async getMembers() {
+        this.showDownloadDropdown = false;
+        this.loading = true; 
+        try {
+          const response = await axios.get('https://churchmsbackend.onrender.com/members/get_all_members');
+          
+          console.info("member list", response.data)
+          if (response.data !== 'No user data exists') {
+
+            
+
+            this.memberList = response.data.map(members => ({
+
+            name: [members.firstName, members.middleName, members.lastName]
+                .map(name => name?.trim()) // Trim each name to remove extra spaces
+                .filter(name => name) // Remove empty or undefined values
+                .join(' '),
+            phoneNumber: members.phoneNumber,
+            memberStatus: members.memberStatus,
+            member_id: members.id,
+            }
+            ))
+
+            
+          } else {
+            this.attendanceList = response.data;
+          this.memberList = [];  // Clear the list if no data is found
+          
+          }
+        } catch (error) {
+          console.error('Error fetching user list:', error);
+        }
+        finally {
+          this.loading = false; // Hide loading screen
+        }
+        
+    },
+
+    
+
+    
+
+
+   
+
+   
+
+  
+
+
+
+
+   
+
+
+
+
+     
+
+     
+
+
+    
+
+  }
 
   }
 
