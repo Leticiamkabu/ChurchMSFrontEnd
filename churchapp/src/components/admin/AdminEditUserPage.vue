@@ -265,7 +265,7 @@
           console.log("Form is valid. Proceeding with user update...", payload);
 
           try {
-            const response = await axios.patch(`https://churchmsbackend.onrender.com//auth/update_individual_user_fields/${this.user_id}`, {
+            const response = await axios.patch(`https://churchmsbackend.onrender.com/auth/update_individual_user_fields/${this.user_id}`, {
               firstName: this.form.firstname,
               lastName: this.form.lastname,
               email: this.form.email,

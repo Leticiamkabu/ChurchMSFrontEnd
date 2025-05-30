@@ -49,8 +49,10 @@ const router = createRouter({
   routes
 })
 
+const publicPages = ['/', '/login'];
 
 router.beforeEach((to, from, next) => {
+  
   // const user = sessionStorage.getItem('privilage')
   // const privileges = user ? user.split(',') : []
   const isAuthenticated = sessionStorage.getItem('userId'); // or token
@@ -64,12 +66,12 @@ router.beforeEach((to, from, next) => {
   //   }
   // }
 
-  if (to.path !== '/login' && !isAuthenticated) {
-    next('/login');
-  }
-
   
-  next()
+  if (!isAuthenticated && !publicPages.includes(to.path)) {
+    next('/welcome'); // redirect unauthenticated users to welcome page
+  } else {
+    next(); // allow navigation
+  }
 })
 
 
