@@ -75,8 +75,11 @@
 
       <!-- Modal to edit member details -->
       <div v-if="showEditModal" @submit.prevent="updateMemberDetails" class="modal-overlay">
+          
+
         <div class="modal-card">
-        
+
+        <button @click="showEditModal = false" class="cancleButton">&times;</button>
           
         <div v-if="step === 1" class = "first_info">
           <h2 class = "bi">Basic Information</h2>
@@ -1673,6 +1676,18 @@ button {
     border-color: aqua;
     background-color: white;
 
+}
+
+.cancleButton{
+  top: 80px;
+    left: 1070px;
+    position: fixed;
+    background-color: #7ab9b9 !important;
+    color: black;
+    border-radius: 10px;
+    width: 55px;
+    
+    
 }
 
 .ha{
