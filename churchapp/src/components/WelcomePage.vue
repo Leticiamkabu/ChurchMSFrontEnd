@@ -31,30 +31,30 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* full screen height */
+  height: 100vh; /* full screen height */
   background: #e7f2fd;
-  padding: 20px;
+  padding: 0 5vw;
 }
 
 .welcome-container {
-  width: 90%;
-  max-width: 500px; /* Cap the max width */
+  width: 100%;
+  max-width: 35rem; /* Cap the max width */
   padding: 2rem;
   background-color: #87e3e1;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0.625rem;
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
 h1 {
   font-size: 2.5rem;
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
   color: #1d6767;
 }
 
 p {
   font-size: 1.2rem;
-  margin-bottom: 40px;
+  margin-bottom: 2rem;
   color: black;
 }
 
@@ -64,16 +64,16 @@ p {
 }
 
 button {
-  padding: 10px 20px;
+  padding: 0.75rem 1.5rem;
   font-size: 1.1rem;
   cursor: pointer;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.3rem;
+  transition: all 0.3s ease;
 }
 
 .login-btn {
   color: #040404;
-  transition: all 0.3s ease;
   background: linear-gradient(135deg, #05919d, #7ab9b9);
 }
 
@@ -82,7 +82,9 @@ button:hover {
 }
 
 /* Responsive adjustments */
-@media (max-width: 600px) {
+
+/* Tablet */
+@media (max-width: 48rem) {
   h1 {
     font-size: 2rem;
   }
@@ -93,7 +95,27 @@ button:hover {
 
   button {
     font-size: 1rem;
-    padding: 8px 16px;
+    padding: 0.6rem 1.2rem;
+  }
+}
+
+/* Small phones */
+@media (max-width: 30rem) {
+  .welcome-container {
+    padding: 1.5rem 1rem;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+  }
+
+  button {
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
   }
 }
 </style>

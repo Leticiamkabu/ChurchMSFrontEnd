@@ -353,14 +353,17 @@ computed: {
       if (this.form.notificationType == "SMS"){
 
         console.info('Sending a single message')
+        
       
         const formattedData = {
-          notificationType: this.form.notificationType,
-          to: this.form.receipient,
+          to: this.form.recipient,
           message: this.form.message,
+          notificationType: this.form.notificationType,
           
         }
 
+        console.info('message : ', formattedData)
+       
         try {
           const response = await axios.post('https://churchmsbackend.onrender.com/notification/send/individual_sms',formattedData);
           
@@ -457,7 +460,7 @@ computed: {
 
       const formattedData = {
           notificationType: "SCHEDULE_MESSAGE",
-          receipient: this.scheduledMessageForm.recipient.split(',').map(num => num.trim()),
+          recipient: this.scheduledMessageForm.recipient.split(',').map(num => num.trim()),
           message: this.scheduledMessageForm.message,
           scheduledTime: this.scheduledMessageForm.duration,
         }

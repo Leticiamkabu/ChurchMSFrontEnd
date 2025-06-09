@@ -9,7 +9,7 @@
     <nav class="navbar">
       <div class="logo_item">
         <i class="bx bx-menu" id="sidebarOpen" @click="toggleMenu"></i>
-        <img src="@/assets/logo.png" alt="" />
+        <img src="@/assets/ag2.png" alt="" />
         <i>CTC CMS</i>
       </div>
       <div class="search_bar">
@@ -169,13 +169,13 @@ body.dark {
   column-gap: 10px;
   font-size: 22px;
   font-weight: 500;
-  color: var(--blue-color);
+  color: #2cc7c7;
 }
 
 .navbar img {
   width: 35px;
   height: 35px;
-  border-radius: 50%;
+  border-radius: 30%;
 }
 
 .search_bar {

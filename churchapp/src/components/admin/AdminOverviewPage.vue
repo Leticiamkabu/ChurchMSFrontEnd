@@ -122,7 +122,8 @@ export default {
       totalPresent: 0,
       totalAbsent: 0,
       
-
+      intervalId: null,
+      
       totalUsers: 0,
       totalDataclerk: 0,
       totalAccounts: 0,
@@ -203,7 +204,7 @@ export default {
 
 
         try {
-        const feedBack = await axios.get('https://churchmsbackend.onrender.com/auth/get_all_user_tracking');
+        const feedBack = await axios.get('http://localhost:8000/auth/get_all_user_tracking');
 
         console.info('Users tracking data:',feedBack.data );
 
@@ -242,12 +243,23 @@ export default {
     this.fetchMembersSummaryData();
     this.fetchUserTrackerData();
     this.loading = false; 
+
+    console.info('Loading user tracker data:');
+    this.intervalId = setInterval(() => {
+      this.fetchUserTrackerData();
+    }, 3600000);
+//3600000 for 1 hour
     // Clear local storage when the tab or window is closed
    // window.addEventListener("beforeunload", () => {
    //   localStorage.clear();
    // });
 
     
+  },
+
+  beforeUnmount() {
+    // Clear the interval when the component is destroyed (Vue 3)
+    clearInterval(this.intervalId);
   }
 };
 </script>
