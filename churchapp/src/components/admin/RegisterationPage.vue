@@ -156,7 +156,7 @@ export default {
       alert("Please fill in all required fields.");
       return;
     }
-      if (this.step < 2) {
+      if (this.step < 1) {
         this.step++;
       }
     },
@@ -219,7 +219,8 @@ export default {
           if (response.data.message === 'User registeration successfully') {
            
             // On success, move to the completion step
-            this.step = 3;
+            //this.step = 3;
+            this.loading = false;
             
           } else if (response.data == "Email already exist"){
             alert("Email already exists, Try registering with a new email");
@@ -598,8 +599,8 @@ form .button input:hover {
 
 .error{
    position: fixed;
-    left: 830px;
-    top: 490px;
+    left: 810px;
+    top: 373px;
     font-size: 20px;
     color: aqua;
 

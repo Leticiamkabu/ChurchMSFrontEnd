@@ -12,9 +12,9 @@
         <img src="@/assets/ag2.png" alt="" />
         <i>CTC CMS</i>
       </div>
-      <div class="search_bar">
+      <!-- <div class="search_bar">
         <input type="text" placeholder="Search" />
-      </div>
+      </div> -->
       <div class="navbar_content" :class="{ 'active': isMenuActive }">
         <i class="bi bi-grid"></i>
         <i class='bx bx-sun' @click="toggleDarkMode" id="darkLight"></i>
@@ -157,98 +157,95 @@ body.dark {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 30px;
+  padding: 0.9375rem 1.25rem;
   z-index: 1000;
-  box-shadow: 0 0 2px var(--grey-color-light);
+  box-shadow: 0 0 20.125rem var(--grey-color-light);
   flex-wrap: wrap;
+  gap: 0.625rem;
 }
 
 .logo_item {
   display: flex;
   align-items: center;
-  column-gap: 10px;
-  font-size: 22px;
+  column-gap: 0.625rem;
+  font-size: clamp(1rem, 2vw, 1.375rem);
   font-weight: 500;
   color: #2cc7c7;
+  flex: 1 1 auto;
+  min-width: 9.375rem;
 }
 
 .navbar img {
-  width: 35px;
-  height: 35px;
-  border-radius: 30%;
+  width: 2.1875rem;
+  height: 2.1875rem;
+  border-radius: 50%;
 }
 
 .search_bar {
-  height: 47px;
-  max-width: 430px;
-  width: 100%;
+  height: 2.9375rem; 
+  flex: 2 1 18.75rem;
+  min-width: 11.25rem;
 }
 
 .search_bar input {
   height: 100%;
   width: 100%;
-  border-radius: 25px;
-  font-size: 18px;
+  border-radius: 1.5625rem;
+  font-size: 1rem;
   outline: none;
   background-color: var(--white-color);
   color: var(--grey-color);
-  border: 1px solid var(--grey-color-light);
-  padding: 0 20px;
+  border: 0.0625rem solid var(--grey-color-light);
+  padding: 0 1.25rem;
 }
 
 .navbar_content {
   display: flex;
   align-items: center;
-  column-gap: 25px;
+  gap: 0.9375rem;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  min-width: 9.375rem;
 }
 
 .navbar_content i {
   cursor: pointer;
-  font-size: 20px;
+  font-size: 1.25rem;
   color: var(--grey-color);
 }
 
 .navbar_content button {
   color: black;
   background-color: #92c1c0;
-  border-radius: 5px;
+  border-radius: 0.3125rem;
+  padding: 0.5rem 0.75rem; 
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 /* Mobile responsiveness */
-@media (max-width: 768px) {
-  .logo_item i {
-    display: block;
-  }
-
-  .search_bar {
-    display: none;
+/* Responsive stacking for small screens */
+@media (max-width: 37.5rem) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .navbar_content {
-    display: none;
-    flex-direction: column;
     width: 100%;
-    align-items: flex-start;
-    padding: 10px 20px;
-    box-sizing: border-box;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
 
-  .navbar_content.active {
-    display: flex;
+  .search_bar {
+    width: 100%;
   }
 
   .navbar_content button {
     width: 100%;
-    margin-top: 10px;
-  }
-
-  .bx-menu {
-    font-size: 28px;
-    cursor: pointer;
-  }
-
-  .bx-sun, .bx-moon {
-    font-size: 24px;
+    margin-top: 0.625rem;
   }
 }
 </style>

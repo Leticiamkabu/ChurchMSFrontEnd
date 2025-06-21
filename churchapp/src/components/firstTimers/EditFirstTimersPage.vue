@@ -468,10 +468,10 @@ export default {
         
           console.info("response from member data upload : " ,response )
 
-          if (response.message == "First Timers added successfully"){
-              alert(response.message , ". ", "Total number of users added = ",response.total_first_timers);
+          if (response.data.message == "First Timers added successfully"){
+              alert(response.data.message + ". " + "Total number of users added = " + response.data.total_first_timers);
 
-              if (response.skipped_first_timers !== []){
+              if (response.data.skipped_first_timers !== []){
                 alert("Data has been skipped")
               }
 

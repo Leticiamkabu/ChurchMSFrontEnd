@@ -204,7 +204,7 @@ export default {
 
 
         try {
-        const feedBack = await axios.get('http://localhost:8000/auth/get_all_user_tracking');
+        const feedBack = await axios.get('https://churchmsbackend.onrender.com/auth/get_all_user_tracking');
 
         console.info('Users tracking data:',feedBack.data );
 
@@ -267,90 +267,63 @@ export default {
 
 <style scoped>
 
-h1{
-      position: fixed;
-    top: 100px;
-    left: 500px;
-}
-
-h2{
-      position: fixed;
-    top: 260px;
-    left: 550px;
-}
-
-
 .attendance-page {
   display: flex; /* Flex to align sidebar and main content */
+  flex-direction: row;
+  gap: 1.25rem; /* 20px */
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Loading Screen Styles */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loading-screen .spinner {
+   width: 3rem;
+  height: 3rem;
+  border: 0.3rem solid #f3f3f3;
+  border-top: 0.3rem solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-screen p {
+  color: #fff;
+  font-size: 1.1rem;
+  margin-top: 0.75rem;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .main-content {
   flex: 1; /* Take remaining space */
-  padding: 20px;
+  padding: 1.25rem; /* 20px */
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  box-sizing: border-box;
 }
-
-
-select{
-  padding: 10px;
-  margin-right: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.button1 {
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  background-color: #92c1c0;
-  color:black;
-  cursor: pointer;
-  margin-right: 10px;
-  position: fixed;
-  left: 1173px;
-    top: 435px;
-}
-
-.button2 {
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  background-color: #92c1c0;
-  color:black;
-  cursor: pointer;
-  margin-right: 10px;
-  position: fixed;
-  left: 1090px;
-    top: 485px;
-}
-
-.button3 {
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  background-color: #92c1c0;
-  color: black;
-  cursor: pointer;
-  margin-right: 10px;
-  position: fixed;
-  left: 1180px;
-    top: 530px;
-
-}
-
-.button4 {
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  background-color: #92c1c0;
-  color: black;
-  cursor: pointer;
-  margin-right: 10px;
-  position: fixed;
-  left: 1090px;
-    top: 580px;
-
-}
-
 
 .section1 {
       width: 200px;
@@ -463,7 +436,6 @@ select{
 }
 
 
-
 .total_Administrators {
    width: 50px;
     height: 5px;
@@ -559,7 +531,72 @@ select{
 }
 
 
+.section2 {
+        width: 600px;
+    height: 200px;
+    position: fixed;
+    left: 550px;
+    top: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    border-color: #d1cfcd;
+    border-style: solid;
+    background-color: white;
+    padding-top: 150px;
+}
 
+.table-container {
+  max-height: 190px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    position: fixed;
+    top: 360px;
+    left: 560px;
+    width: 580px;
+    height: 180px;
+    background-color: #d7e6e7;
+}
+
+table {
+  width: 100%; /* Ensure the table takes up the full width of the container */
+  border-collapse: collapse; /* Ensure no gaps between table cells */
+  top: 365px;
+  left : 565px;
+  background-color: #d7e6e7;
+  table-layout: fixed;
+  display: block; 
+
+}
+   
+
+th, td {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+  width :60px;
+  
+}
+
+/* Optional: Style the scrollbar */
+.table-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+th {
+  width: 800px;
+}
 
 
 .total_attendance {
@@ -698,197 +735,11 @@ th {
 
 
 
-/* Loading Screen Styles */
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.loading-screen .spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #3498db;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-.loading-screen p {
-  color: #fff;
-  font-size: 18px;
-  margin-top: 10px;
-}
-
-/* Spinner Animation */
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 /* Main Content Styles */
 .content {
   padding: 20px;
 }
 
-/* Media queries for responsiveness */
-
-/* Large tablets and small desktops */
-@media (max-width: 1200px) {
-  .dashboard-content {
-    flex-direction: column;
-  }
-  
-  .section1 {
-    width: 100%;
-    min-height: auto;
-    padding-top: 120px;
-    margin-bottom: 20px;
-  }
-  
-  .user-stats-card {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  .user-role-card {
-    width: 80%;
-    max-width: 200px;
-  }
-  
-  .stats-row {
-    justify-content: center;
-  }
-  
-  .small-stats-row {
-    justify-content: center;
-  }
-}
-
-/* Medium tablets */
-@media (max-width: 992px) {
-  .attendance-page {
-    flex-direction: column;
-  }
-  
-  .attendance-stats-container {
-    margin-top: 20px;
-  }
-}
-
-/* Small tablets and large phones */
-@media (max-width: 768px) {
-  .stats-card {
-    width: 100%;
-    max-width: 300px;
-  }
-  
-  .small-stats-card {
-    width: 45%;
-    max-width: 140px;
-  }
-}
-
-/* Small phones */
-@media (max-width: 576px) {
-  .main-content {
-    padding: 10px;
-  }
-  
-  .dashboard-content {
-    gap: 15px;
-  }
-  
-  .stats-row, .small-stats-row {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .stats-card, .small-stats-card {
-    width: 100%;
-    max-width: 220px;
-  }
-}
 
 
-.section2 {
-        width: 600px;
-    height: 200px;
-    position: fixed;
-    left: 550px;
-    top: 350px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 10px;
-    border-color: #d1cfcd;
-    border-style: solid;
-    background-color: white;
-    padding-top: 150px;
-}
-
-.table-container {
-  max-height: 190px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    padding: 10px;
-    position: fixed;
-    top: 360px;
-    left: 560px;
-    width: 580px;
-    height: 180px;
-    background-color: #d7e6e7;
-}
-
-table {
-  width: 100%; /* Ensure the table takes up the full width of the container */
-  border-collapse: collapse; /* Ensure no gaps between table cells */
-  top: 365px;
-  left : 565px;
-  background-color: #d7e6e7;
-  table-layout: fixed;
-  display: block; 
-
-}
-   
-
-th, td {
-  background-color: #f2f2f2;
-  padding: 10px;
-  border: 1px solid #ddd;
-  text-align: center;
-  width :60px;
-  
-}
-
-/* Optional: Style the scrollbar */
-.table-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.table-container::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-.table-container::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-th {
-  width: 800px;
-}
 </style>

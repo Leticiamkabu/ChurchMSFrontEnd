@@ -1052,15 +1052,16 @@ export default {
       this.showDownloadDropdown = false;
         this.loading = true; 
         if(sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "DATA CLERK PRIVILEGES"){
-      alert("You are not allowed to perform this action"); 
-    }else{
+          alert("You are not allowed to perform this action"); 
+        }else{
 
-        if (!this.selectedFile) {
-        alert('Please select a file first.');
-        return;
-      }
+          if (!this.selectedFile) {
+            alert('Please select a file first.');
+            this.loading = false;
+            }
+          else{
 
-      const formData = new FormData();
+            const formData = new FormData();
       formData.append('file', this.selectedFile); 
 
         try {
@@ -1072,10 +1073,10 @@ export default {
         
           console.info("response from member data upload : " ,response )
 
-          if (response.message == "Members added successfully"){
-              alert(response.message , ". ", "Total number of users added = ",response.total_members);
+          if (response.data.message == "Members added successfully"){
+              alert(response.data.message + ". "+ "Total number of users added = "+response.data.total_members);
 
-              if (response.skiped_members !== []){
+              if (response.data.skiped_members !== []){
                 alert("Data has been skipped")
               }
 
@@ -1083,8 +1084,11 @@ export default {
 
 
           }
+          
+
           else if (response.data.detail == "Error processing document: list index out of range"){
             alert("Please make sure your document contains data");
+            
 
           }
           else{
@@ -1092,7 +1096,15 @@ export default {
           }
         } catch (error) {
         console.error("Uploading member data error: ", error);
-        alert("An error occurred during member data upload. Please try again.");
+
+          if (error.response.status == 500){
+            alert("Our server are having a moment. Please try again.");
+          }
+          else{
+            alert("An error occurred during member data upload. Please try again.");
+
+          }
+       // return;
         }
 
         finally {
@@ -1100,6 +1112,9 @@ export default {
         }
         
         }
+          }
+        
+      
     },
 
     openFileDialog() {
