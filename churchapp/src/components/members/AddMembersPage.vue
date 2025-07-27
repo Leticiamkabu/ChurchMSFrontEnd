@@ -472,7 +472,7 @@ export default {
         this.loading = true; 
       try {
         console.info("1234" ,formattedData)
-        const response = await axios.post('http://localhost:8000/members/create_member',formattedData);
+        const response = await axios.post('https://churchmsbackend.onrender.com/members/create_member',formattedData);
             
 
         console.info(response.data)
