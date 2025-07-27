@@ -250,9 +250,10 @@ export default {
           this.attendanceList.push({ name: response.data.Attendance.fullName, 
             date: response.data.Attendance.date , 
             attendanceStatus: response.data.Attendance.status, 
-            serviceType: response.data.Attendance.serviceType, 
+            serviceType: response.data.Attendance.serviceType || "Not Indicated", 
             attendanceIDS : response.data.Attendance.id, 
-            markedBy : response.data.Attendance.markedBy});
+            markedBy : response.data.Attendance.markedBy,
+            timeMarked : response.data.Attendance.createdOn});
           this.name = '';
 
           setTimeout(() => {
@@ -270,7 +271,6 @@ export default {
             this.isMarkingAttendance = false;
           }, 10);
           return;
-          
         }
 
         else {

@@ -403,7 +403,6 @@ export default {
       if (
       !this.form.firstName ||
       !this.form.lastName ||
-      !this.form.email ||
       !this.form.gender ||
       !this.form.phoneNumber ||
       !this.form.homeAddress ||
@@ -465,17 +464,19 @@ export default {
           confirmed: this.form.confirmed,
           dateConfirmed: this.form.dateConfirmed,
           comment: this.form.comment,
+          age: "",
         };
 
       console.info("form", formattedData)
       if (formattedData && Object.keys(formattedData).length > 0){
         this.loading = true; 
       try {
-        const response = await axios.post('https://churchmsbackend.onrender.com/members/create_member',formattedData);
+        console.info("1234" ,formattedData)
+        const response = await axios.post('http://localhost:8000/members/create_member',formattedData);
             
 
         console.info(response.data)
-        if (response.data.message === 'Member registeration successfully' && this.selectedImage !== null ){
+        if (response.data.message === 'Member registration successful' && this.selectedImage !== null ){
 
           const formData = new FormData();
 
@@ -508,11 +509,11 @@ export default {
          }
          finally {
         this.loading = false; // Hide loading screen
-      }
+        }
 
           
 
-        } else if (response.data.message === 'Member registeration successfully'){
+      } else if (response.data.message === 'Member registration successful'){
           //this.step = 6;
           alert('User Data  saved, add image later');
           this.step = 1;
@@ -522,8 +523,9 @@ export default {
             //this.step = 1; // Move back to step 3 after 5 minutes
         // }, 300000);
 
-        }
-        else{
+      }
+        else if (response.data.message !== 'Member registration successful'){
+          console.info("Saving member details error:", response);
           alert('User Data not saved');
         }
       } catch (error) {

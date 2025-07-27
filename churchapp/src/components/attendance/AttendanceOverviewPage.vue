@@ -7,13 +7,20 @@
       <p>Loading, please wait...</p>
     </div>
 
-    <div v-if="noData" class="no-data-card">
-  <div class="card">
-    <h3>No Data for Today</h3>
-    <h4>Please check back later.</h4>
-  </div>
-</div>
+    <!-- <div v-if="noData" class="no-data-card">
+      <div class="card">
+        <h3>No Data for Today</h3>
+        <h4>Please check back later.</h4>
+      </div>
+    </div>
+    -->
 
+<div v-if="instra" class="no-data-card">
+      <div class="card">
+        <h3>To view data for Today</h3>
+        <h4>Please click the buttons provided.</h4>
+      </div>
+    </div>
 
     <!-- Sidebar -->
      <!-- Conditional Rendering for Sidebar -->
@@ -91,6 +98,7 @@ export default {
     return {
       loading: false,
       noData: false,
+      instra: false,
 
       totalAttendance: 0,
       totalPresent: 0,
@@ -110,7 +118,7 @@ export default {
 
     async fetchSummaryData() {
       this.loading = true; 
-      this.noData = true;
+      this.instra = true;
 
       
       try {
@@ -129,7 +137,7 @@ export default {
 
     async attendance() {
       this.loading = true; 
-      this.noData = false;
+      this.instra = false;
       try {
         const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_attendance_data');
         this.attendanceList = response.data;
@@ -160,7 +168,7 @@ export default {
 
     async presentAttendance() {
       this.loading = true; 
-      this.noData = false;
+      this.instra = false;
       try {
         const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_present_attendance_data');
         this.attendanceList = response.data;
@@ -193,7 +201,7 @@ export default {
 
     async absentAttendance() {
       this.loading = true; 
-      this.noData = false;
+      this.instra = false;
       try {
         const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_absent_attendance_data');
         this.attendanceList = response.data;
@@ -222,7 +230,7 @@ export default {
 
 
     async downloadAttendance() {
-      this.noData = false;
+      this.instra = false;
   console.info("In the download attendance function");
 
    if(sessionStorage.getItem('privilege') == "GUEST PRIVILEGES" || sessionStorage.getItem('privilege') == "DATA CLERK PRIVILEGES"){
@@ -522,13 +530,13 @@ th {
 .no-data-card h4{
     position: relative;
     top: 30px;
-    left: 18%;
+    left: 5%;
 }
 
 .no-data-card h3{
     position: relative;
     top: 22px;
-    left: 20%;
+    left: 14%;
 }
 
 
