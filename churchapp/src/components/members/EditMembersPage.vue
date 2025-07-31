@@ -1080,9 +1080,18 @@ export default {
                 alert("Data has been skipped")
               }
 
-              //CLEAN DATA FUNCTION HERE
+              try {
+                
+                const response = await axios.post(`https://churchmsbackend.onrender.com/helperFunction/clean_data_base/members`)
+
+                console.info("response from data cleaning : " ,response )
 
 
+                }catch (error) {
+                  console.error("Data cleaning error: ", error);
+
+                }
+          
           }
           
 
