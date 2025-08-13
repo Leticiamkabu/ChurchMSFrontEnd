@@ -1,0 +1,101 @@
+import { createRouter, createWebHashHistory } from 'vue-router';
+import LoginPage from "../new_version/pages/auth/LoginPage.vue"
+import Home from "../new_version/pages/Home.vue"
+import DashboardLayout from '../new_version/pages/dashboard/layout/DashboardLayout.vue';
+import DashboardHome from '../new_version/pages/dashboard/pages/DashboardHome.vue';
+// // import App from '../App.vue';
+// import WelcomePage from '../components/WelcomePage.vue';
+// import LoginPage from '../components/LoginPage.vue';
+// import AdminPage from '../components/admin/AdminPage.vue';
+// import RegisterationPage from '../components/admin/RegisterationPage.vue';
+// import AdminEditUserPage from '../components/admin/AdminEditUserPage.vue';
+// import AdminOverViewPage from '../components/admin/AdminOverviewPage.vue';
+// import HomePage from '../components/HomePage.vue';
+// import AttendancePage from '../components/attendance/AttendancePage.vue';
+// import AttendanceOverviewPage from '../components/attendance/AttendanceOverviewPage.vue';
+// import MembersPage from '../components/members/AddMembersPage.vue';
+// import AdminMemberActionPage from '../components/admin/AdminMemberActionPage.vue';
+// import EditMemberPage from '../components/members/EditMembersPage.vue';
+// import ReportPage from '../components/report/reportPage.vue';
+// import SMSNotificationPage from '../components/notification/smsNotificationPage.vue';
+// import FirstTimersPage from '../components/firstTimers/AddFirstTimersPage.vue';
+// import EditFirstTimersPage from '../components/firstTimers/EditFirstTimersPage.vue';
+
+
+
+const routes = [
+//   { path: '/home', component: WelcomePage },
+  { path: '/new/login', component: LoginPage },
+  { path: '/new/home', component: Home },
+  {
+    path: '/dashboard',
+    component: DashboardLayout,
+    children: [
+      { path: '', name: 'dashboard-home', component: DashboardHome },
+    //   {
+    //     path: 'reports',
+    //     name: 'reports',
+    //     component: Reports,
+    //     children: [
+    //       { path: 'monthly', name: 'report-monthly', component: ReportMonthly },
+    //       { path: 'yearly', name: 'report-yearly', component: ReportYearly }
+    //     ]
+    //   },
+    //   { path: 'settings', name: 'settings', component: Settings },
+    //   { path: 'profile', name: 'profile', component: Profile }
+    ]
+  }
+
+//   // admin
+//   { path: '/adminDashboard', component: AdminPage },
+//   { path: '/register', component: RegisterationPage },
+//   { path: '/editUser', component: AdminEditUserPage },
+//   { path: '/adminOverView', component: AdminOverViewPage },
+//   { path: '/adminMemberActionPage', component: AdminMemberActionPage },
+  
+//   { path: '/editMemberPage', component: EditMemberPage },
+//   { path: '/reportPage', component: ReportPage },
+//   { path: '/smsNotificationPage', component: SMSNotificationPage },
+
+//   // user
+//   { path: '/home', component: HomePage },
+//   { path: '/attendance', component: AttendancePage, meta: { requiresMarkAttendancePrivilege: true } },
+//   { path: '/attendanceOverview', component: AttendanceOverviewPage, meta: { requiresMarkAttendancePrivilege: true } },
+//   { path: '/members', component: MembersPage },
+//   { path: '/firstTimers', component: FirstTimersPage },
+//   { path: '/editFirstTimers', component: EditFirstTimersPage },
+
+]
+
+const new_router = createRouter({
+  history: createWebHashHistory(),
+  routes
+})
+
+// const publicPages = ['/', '/login'];
+
+// new_router.beforeEach((to, from, next) => {
+
+//   // const user = sessionStorage.getItem('privilage')
+//   // const privileges = user ? user.split(',') : []
+//   const isAuthenticated = sessionStorage.getItem('userId'); // or token
+
+  
+
+//   // if (to.meta.requiresMarkAttendancePrivilege) {
+//   //   if (!privileges || !privileges.includes("Take Attendance")) {
+//   //     alert("You do not have permission to access the attendance page.")
+//   //     return next(from.fullPath || '/') // Or redirect to an "Access Denied" page
+//   //   }
+//   // }
+
+  
+//   if (!isAuthenticated && !publicPages.includes(to.path)) {
+//     next('/welcome'); // redirect unauthenticated users to welcome page
+//   } else {
+//     next(); // allow navigation
+//   }
+// })
+
+
+export default new_router

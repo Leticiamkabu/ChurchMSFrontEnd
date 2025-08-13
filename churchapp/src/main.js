@@ -3,6 +3,7 @@ import App from './App.vue'
 //import App from './components/LoginPage.vue'
 //import App from './components/WelcomePage.vue'
 import router from './router'
+import new_router from './router/router';
 
 
 window.addEventListener('beforeunload', () => {
@@ -24,7 +25,8 @@ localStorage.removeItem('likelyRefresh');
 
 
 createApp(App)
-.use(router) 
+// .use(router)
+.use(new_router)
 .mount('#app')
 
 
