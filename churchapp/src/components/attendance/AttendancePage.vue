@@ -205,7 +205,7 @@ export default {
       if (this.isSearching) {
       console.info("its searching")
       return;}
-      if (this.isEditingAttendance) return;
+      if (this.isEditingAttendance || this.currentStatus == "PRESENT") return;
 
       this.isMarkingAttendance = true; 
 
