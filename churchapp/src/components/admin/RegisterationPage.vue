@@ -235,7 +235,7 @@ export default {
         }
         finally {
         this.loading = false; // Hide loading screen
-        window.location.reload();
+        //window.location.reload();
       }
         
         
