@@ -240,7 +240,7 @@ export default {
 
       showAttendanceFilters: false,
       filters: {
-        date: "",
+        date: this.getTodayDate(),
         status: "",
         department: "",
       },
@@ -270,6 +270,15 @@ export default {
   methods: {
 
     //https://churchmsbackend.onrender.com
+
+    getTodayDate() {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const day = String(today.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
 
     toggleFilters() {
       this.showAttendanceFilters = true;
