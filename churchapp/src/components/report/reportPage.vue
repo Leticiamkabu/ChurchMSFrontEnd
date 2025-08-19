@@ -66,7 +66,7 @@
               class="statusFilter">
               <option value="">ALL</option>
               <option value="PRESENT">Attendees</option>
-              <option value="ABSCENT">Absentees</option>
+              <option value="ABSENT">Absentees</option>
             </select>
           </div>
 
