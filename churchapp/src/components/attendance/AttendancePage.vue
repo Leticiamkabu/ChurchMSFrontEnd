@@ -170,7 +170,7 @@ export default {
 
             const today = new Date().toLocaleDateString();
             const name = `${firstname} ${othername} ${lastname}`;
-            this.attendanceList.push({ name: name, date: today, attendanceStatus: attendance, membersId : member.id, attendanceIDS : attendanceId, serviceType: service_type, markedBy:markedBy,timeMarked: timeMarked});
+            this.attendanceList.push({ name: name, date: today, attendanceStatus: attendance, membersId : member.id, members_Id : member.memberID, attendanceIDS : attendanceId, serviceType: service_type, markedBy:markedBy,timeMarked: timeMarked});
           } catch (attendanceError) {
             console.error("Error fetching attendance:", attendanceError);
           }

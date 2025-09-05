@@ -41,8 +41,8 @@
             <input  class = "ln" type="text" v-model="form.lastName" id="lastName" placeholder="Last Name"  />
 
             <label class = "label_dobs" for="dob">Date of Birth</label>
-            <input class = "dobs" type="date" v-model="form.dateOfBirth" id="dob" placeholder="Date of Birth"  />
-
+            <input class = "dobs" type="date" v-model="form.dateOfBirth" id="dob" placeholder="Date of Birth"  /> 
+            
             <label class = "label_gn" for="gender">Gender <span class="required-star">*</span> </label>
             <select class = "gn" v-model="form.gender" id="gender" >
               <option disabled value="">Select Gender</option>
@@ -58,13 +58,22 @@
             <input class = "ea" type="email" v-model="form.email" id="email" placeholder="Email" />
 
             <label class = "label_ny" for="nationality">Nationality</label>
-            <input class = "ny" type="text" v-model="form.nationality" id="nationality" placeholder="Nationality"  />
+            <select class = "ny" v-model="form.nationality" id="ny"  >
+              <option disabled value="">Select nationality</option>
+              <option v-for="nationality in nationalities" :key="nationality" :value="nationality">
+                {{ nationality }}
+              </option>
+            </select>
 
             <label class = "label_ht" for="homeTown">Home Town</label>
             <input  class = "ht" type="text" v-model="form.homeTown" id="homeTown" placeholder="Home Town"  />
 
-            <label class = "label_ha" for="homeAddress">Home Address <span class="required-star">*</span> </label>
-            <input class = "ha" type="text" v-model="form.homeAddress" id="homeAddress" placeholder="Home Address"  />
+            <label class = "label_ha" for="homeAddress">GPS Address <span class="required-star">*</span> </label>
+            <input class = "ha" type="text" v-model="form.homeAddress" id="homeAddress" placeholder="GPS Address"  />
+
+            <label class = "label_town" for="town">Town <span class="required-star">*</span> </label>
+            <input class = "town" type="text" v-model="form.town" id="town" placeholder="Town"  />
+
 
             <button type="button" @click="nextStep">Next</button>
           </div>
@@ -74,22 +83,31 @@
 
             <h2 class = "step2_first_h2"> Professional Background</h2>
 
-            <label class = "label_auw" for="auw">Are you working</label>
+            <label class = "label_auw" for="auw">Employment Status</label>
             <select class = "auw" v-model="form.workingStatus" id="auw"  >
-              <option disabled value="">Select Working Status</option>
+              <option disabled value="">Select Employment Status</option>
               <option v-for="work in working" :key="work" :value="work">
                 {{ work }}
               </option>
             </select>
 
+
             <label class = "label_op" for="occupation">Occupation</label>
             <input class = "op" type="text" v-model="form.occupation" id="occupation" placeholder="Occupation"  />
 
-            <label class = "label_qf" for="qualification">Qualification</label>
-            <input class = "qf" type="text" v-model="form.qualification" id="qualification" placeholder="Qualification"  />
+          
+            <label class = "label_el" for="el">Educational Level</label>
+            <select class = "el" v-model="form.educationalLevel" id="auw"  >
+              <option disabled value="">Select Educational Level</option>
+              <option v-for="eduLevel in educationalLevel" :key="eduLevel" :value="eduLevel">
+                {{ eduLevel }}
+              </option>
+            </select>
 
-            <label class = "label_in" for="institutionName">Institution Name</label>
-            <input  class = "in" type="text" v-model="form.institutionName" id="institutionName" placeholder="Institution Name"  />
+            <div v-if="form.educationalLevel === 'Tertiary Education'">
+              <label class = "label_in" for="highestEducation">Highest Education</label>
+              <input  class = "in" type="text" v-model="form.highestEducation" id="highestEducation" placeholder="Highest Education"  />
+            </div>
 
             <h2 class = "step2_second_h2" >Family & Emergency Contact Information</h2>
 
@@ -162,7 +180,7 @@
             <label class = "label_datJo" for="datejoined">Date Joined <span class="required-star">*</span> </label>
             <input class = "datJo" type="date" v-model="form.dateJoined" id="dateJoined" placeholder="dateJoined"  />
 
-            <label class = "label_claSelec" for="classSelection">Class Selection</label>
+            <label class = "label_claSelec" for="classSelection">Sunday class Selection</label>
             <select class = "claSelec" v-model="form.classSelection" id="classSelection"  >
               <option disabled value="">Select Class Selection</option>
               <option v-for="classsel in classsels" :key="classsel" :value="classsel">
@@ -299,14 +317,16 @@ export default {
       imageUrl: null,
       selectedImage: null,
       titles: ['Mr', 'Miss', 'Mrs', 'Master', 'Dr', 'Prof', 'Eng', 'Prophet', 'Apostle', 'Pastor', 'Presiding Elder', 'Elder', 'Deacon', 'Deaconess', 'Brother', 'Sister', 'Reverend', 'Very Reverend', 'Rt Reverend'], 
-      working: ['Yes' , 'No'], 
+      working: ['Unemployed' , 'Employed', 'Self Employed'], 
+      educationalLevel: ['Uneducated' , 'Basic Education', 'Secondary Education', 'Tertiary Education'], 
       maritalS: ['Married (Ordinance)', 'Married (Customary)', 'Married (Blessing)', 'Single', 'Divorced' ], 
       memberT: ['Member', 'Inactive', 'Visitor', 'Child', 'Backslider', 'Transferred-in', 'Transferred-out', 'Student'], 
-      cells:['Salosi cell', 'Bruku cell(Pastor ivan 233556758997)', 'Junction cell', 'Takyikope cell', 'Aggrey cell(mama cynthia 233242309320)', 'Manya cell', 'Gblaka cell(mr nelson dangbe 233244787620)', 'Habitat cell(mr. Ahotor 233241847237)', 'Downtown cell(miss pomary dinah 233245435604)', 'Across cell', 'Ayikuma cell', 'Peace cell', 'Mataheko cell', 'Kordiabe cell'],
+      cells:['Salosi cell', 'Bruku cell', 'Junction cell', 'Takyikope cell', 'Aggrey cell', 'Manya cell', 'Gblaka cell', 'Habitat cell', 'Downtown cell', 'Across cell', 'Ayikuma cell', 'Peace cell', 'Mataheko cell', 'Kordiabe cell'],
       departmentNames: ['Men Ministries', 'Women Ministries', 'Youth Ministry', 'Joy Ministry', 'Missionnettes', 'Pathfinders', 'Royal Rangers', 'Youth Singles', 'Missions', 'Protocol/Ushering', 'Children Ministry', 'Music', 'Sanctuary Keepers'],
       classsels:['English Adult', 'Ewe Adult(Faith)', 'Twi Adult', 'Dangbe Adult', 'Discipleship class 1', ' Discipleship class 2', 'Deliverance class', 'New Convent', 'Youth English', 'Children', 'Ewe Adult(Love)'],
       positions:['Women Ministries President', 'Women Ministries Vice President', 'Women Ministries Secretary','Women Ministries Treasurer', 'Women Ministries Organizer', 'Men Ministry President', 'Men Ministry Vice President', 'Men Ministry Secretary', 'Men Ministry Treasurer' , 'Men Ministry Organizer', 'Joy Fellowship President', 'Joy Fellowship President'],
       waterBaps :['Yes' , 'No'],
+      nationalities :['Benin', 'Burkina Faso', 'Cabo Verde', "Côte d'Ivoire", 'The Gambia', 'Ghana', 'Guinea', 'Guinea-Bissau', 'Liberia', 'Mali', 'Mauritania', 'Niger', 'Nigeria', 'Senegal', 'Sierra Leone' ,'Togo', 'Others'],
       baptisedBys :['Yes', 'No'],
       memberStatuses :['Alive', 'Deceased'],
       confirmeds :['Yes' , 'No', 'Pending'],
@@ -324,9 +344,10 @@ export default {
         homeTown: '',
         workingStatus: '',
         homeAddress: '',
+        town: '',
         occupation: '',
-        qualification: '',
-        institutionName: '',
+        educationalLevel: '',
+        highestEducation: '',
         mothersName: '',
         fathersName: '',
         nextOfKin: '',
@@ -574,7 +595,7 @@ export default {
 
 .registration-form {
    
-      height: 465px;
+      height: 480px;
     width: 720px;
     margin: 20px;
     position: fixed;
@@ -589,8 +610,8 @@ export default {
 
 .first_info button{
         position: fixed;
-    left: 990px;
-    top: 540px;
+    left: 712px;
+    top: 570px;
     height: 30px;
     width: 100px;
     color: black;
@@ -615,6 +636,28 @@ export default {
 .label_ha{
    position: fixed;
     left: 440px;
+    top: 520px;
+    font-size: 20px;
+    color: aqua;
+
+}
+
+
+.town{
+    position: fixed;
+    left: 790px;
+    top: 545px;
+    height: 35px;
+    width: 300px;
+    border-radius: 10px;
+    border-color: aqua;
+    background-color: white;
+    text-align:center;
+
+}
+.label_town{
+   position: fixed;
+    left: 800px;
     top: 520px;
     font-size: 20px;
     color: aqua;
@@ -969,6 +1012,28 @@ h2{
 
 }
 
+.el{
+    position: fixed;
+    left: 440px;
+    top: 295px;
+    height: 33px;
+    width: 300px;
+    border-radius: 10px;
+    border-color: aqua;
+    background-color: white;
+    text-align : center;
+
+
+}
+
+.label_el{
+  position: fixed;
+    left: 455px;
+    top: 265px;
+    font-size: 20px;
+    color: aqua;
+
+}
 
 .step2_second_h2{
   position: fixed;
