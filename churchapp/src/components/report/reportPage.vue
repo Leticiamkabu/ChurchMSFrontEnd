@@ -317,7 +317,7 @@ export default {
       console.info('department :', this.filters.department)
 
        try {
-        const response = await axios.get(`https://churchmsbackend.onrender.com/attendance/report_fetch/${this.filters.date}/${this.filters.status}/${this.filters.department}`,{
+        const response = await axios.get(`http://localhost:8000/attendance/report_fetch/${this.filters.date}/${this.filters.status}/${this.filters.department}`,{
           
         });
         
@@ -454,7 +454,7 @@ export default {
       console.info('department :', this.memberFilters.department)
 
       if (this.memberFilters.age == ""){
-          this.memberFilters.age = "a";
+          this.memberFilters.age = "all";
       }
 
       if (this.memberFilters.ageRange == ""){
@@ -470,7 +470,7 @@ export default {
 
        try {
     
-        const response = await axios.get(`https://churchmsbackend.onrender.com/members/sort_member_data/${this.memberFilters.age}/${this.memberFilters.ageRange}/${this.memberFilters.department}/${this.memberFilters.birthMonth}`,{
+        const response = await axios.get(`http://localhost:8000/members/sort_member_data/${this.memberFilters.age}/${this.memberFilters.ageRange}/${this.memberFilters.department}/${this.memberFilters.birthMonth}`,{
           
         });
         

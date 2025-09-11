@@ -151,7 +151,7 @@
 
             <h2 class = "step3_second_h2" > Church Details </h2>
 
-            <label class = "label_meT" for="memeberType">Member Type <span class="required-star">*</span> </label>
+            <label class = "label_meT" for="memberType">Member Type <span class="required-star">*</span> </label>
             <select class = "meT" v-model="form.memberType" id="memberType"  >
               <option disabled value="">Select Member Type</option>
               <option v-for="member in memberT" :key="member" :value="member">
@@ -177,7 +177,7 @@
             </select>
 
 
-            <label class = "label_datJo" for="datejoined">Date Joined <span class="required-star">*</span> </label>
+            <label class = "label_datJo" for="dateJoined">Date Joined <span class="required-star">*</span> </label>
             <input class = "datJo" type="date" v-model="form.dateJoined" id="dateJoined" placeholder="dateJoined"  />
 
             <label class = "label_claSelec" for="classSelection">Sunday class Selection</label>
@@ -223,7 +223,7 @@
             <input  class = "dateBapt" type="date" v-model="form.dateBaptised" id="dateBaptised" placeholder="Date Baptised"  />
 
             <label class = "label_bbths" for="bbths">Baptised by the Holy Spirit</label>
-            <select class = "bbths" v-model="form.baptisedBy" id="baptisedByTheHolySpirit"  required>
+            <select class = "bbths" v-model="form.baptisedBy" id="baptisedByTheHolySpirit" >
               <option disabled value="">Select option</option>
               <option v-for="baptisedBy in baptisedBys" :key="baptisedBy" :value="baptisedBy">
                 {{ baptisedBy }}
@@ -376,6 +376,35 @@ export default {
       
       },
 
+      required_fields: [
+        {
+          title: "Step 1: Basic Information",
+          fields: [
+            { name: "firstName", label: "First Name", required: true },
+            { name: "lastName", label: "Last Name", required: true },
+            { name: "gender", label: "Gender", required: true },
+            { name: "phoneNumber", label: "Phone Number", required: true },
+            { name: "town", label: "Town", required: true },
+            { name: "homeAddress", label: "GPS Address", required: true }
+            
+          ]
+        },
+        {
+          title: "Step 2: Family & Emergency Contact Information",
+          fields: [
+            { name: "nextOfKin", label: "Next of kin", required: true },
+            { name: "nextOfKinPhoneNumber", label: "Next Of Kin Phone", required: true }
+          ]
+        },
+        {
+          title: "Step 3: Church Details",
+          fields: [
+            { name: "memberType", label: "Member Type",type: "select", required: true },
+            { name: "dateJoined", label: "Date Joined", type: "date", required: true }
+          ]
+        },
+      ]
+
     };
   },
 
@@ -390,8 +419,13 @@ export default {
     //https://churchmsbackend.onrender.com
     
     nextStep() {
-      if (this.step < 6) {
+      console.info("VALIDATED : ",this.validateStep() )
+
+      if (this.validateStep()) {
+        console.info("VALIDATED")
         this.step++;
+      } else {
+        alert("Please fill all required fields before continuing!");
       }
     },
     prevStep() {
@@ -399,6 +433,19 @@ export default {
         this.step--;
       }
     },
+    validateStep() {
+      const step = this.required_fields[this.step - 1];
+      console.info("new step : ", step)
+
+      // If no validation required for this step, allow next
+  if (!step || !step.fields) {
+    return true;
+  }
+      return step.fields.every(
+        field => !field.required || this.form[field.name]?.toString().trim()
+      );
+    },
+
     refreshStep() {
      window.location.reload();
     },

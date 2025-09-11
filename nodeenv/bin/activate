@@ -80,7 +80,7 @@ if [ "${BASH_SOURCE:-}" ] ; then
 else
     # dash not movable. fix use case:
     #   dash -c " . node-env/bin/activate && node -v"
-    NODE_VIRTUAL_ENV="/home/leticia/Desktop/churchManagementSystem/frontend2/ChurchMSFrontEnd/nodeenv"
+    NODE_VIRTUAL_ENV="/home/leticia/Desktop/workForP/churchManagementSystem/frontend/ChurchMSFrontEnd/nodeenv"
 fi
 
 # NODE_VIRTUAL_ENV is the parent of the directory where this script is

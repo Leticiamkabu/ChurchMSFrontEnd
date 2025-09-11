@@ -51,7 +51,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(record, index) in attendanceList" :key="index" @click="populateName(record.name, record.membersId, record.attendanceStatus, record.attendanceIDS )">
+            <tr v-for="(record, index) in attendanceList" :key="index" @click="populateName(record.name, record.membersId, record.attendanceStatus, record.attendanceIDS, record.members_Id)">
               <td>{{ record.name }}</td>
               <td>{{ record.date }}</td>
               <td>{{ record.attendanceStatus }}</td>
@@ -95,6 +95,7 @@ export default {
       isEditingAttendance: false,
       attendanceList: [],
       members_ID : '',
+      membersID : '',
       currentStatus : '',
       attendanceIDS : '',
     };
@@ -211,6 +212,7 @@ export default {
 
       console.info("you are in markAttendance")
       console.info("member id", this.members_ID) 
+      console.info("testing", this.membersID) 
 
       
       console.info("name", this.name)
@@ -232,7 +234,7 @@ export default {
     if (this.members_ID !== ""){
       try {
           const response = await axios.post('https://churchmsbackend.onrender.com/attendance/create_attendance',{
-            memberID: this.members_ID,
+            memberID: this.membersID,
             name : this.name,
             status: 'PRESENT',
             serviceType : this.selectedService || "",
@@ -381,12 +383,13 @@ if (this.attendanceIDS !== ""){
    
 
 
-    populateName(selectedName, member_ids,status, attendanceId) {
+    populateName(selectedName, member_ids,status, attendanceId, membersID) {
       console.info("am here too paste")
       this.name = selectedName;
       this.members_ID = member_ids;
       console.info("Member_ID: ",this.members_ID )
       this.currentStatus = status;
+      this.membersID = membersID
       this.attendanceIDS = attendanceId;
       console.info("ID: ",this.attendanceIDS )
     }
