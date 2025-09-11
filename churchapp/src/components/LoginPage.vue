@@ -116,7 +116,7 @@ export default {
 
 
 					try {
-						const feedBack = await axios.post('http://localhost:8000/auth/user_tracking', {
+						const feedBack = await axios.post('https://churchmsbackend.onrender.com/auth/user_tracking', {
 						userId: response.data.data.id,
 						status: "ACTIVE",
 						logInTime: new Date().toISOString(),
@@ -183,7 +183,7 @@ export default {
 
 			console.info("Updating user tracking")
 
-			const response = await axios.patch(`http://localhost:8000/auth/update_user_tracking/${this.userID}/${new Date().toISOString()}`,);
+			const response = await axios.patch(`https://churchmsbackend.onrender.com/auth/update_user_tracking/${this.userID}/${new Date().toISOString()}`,);
 				console.info("Updating : ",response)
 				if(response.data.message === "User activitity tracking updated successfully"){
 					console.info("User tracker updated");
