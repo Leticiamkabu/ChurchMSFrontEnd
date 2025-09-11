@@ -220,6 +220,7 @@ export default {
            
             // On success, move to the completion step
             //this.step = 3;
+            this.form;
             this.loading = false;
             
           } else if (response.data == "Email already exist"){
