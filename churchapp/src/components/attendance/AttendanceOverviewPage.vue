@@ -259,7 +259,7 @@ export default {
 
     // Use the filename provided by the backend or set a default one
     const contentDisposition = response.headers['content-disposition'];
-    let fileName = 'attendance_data.xlsx';
+    let fileName = 'CTC_Attendance_data.xlsx';
     if (contentDisposition) {
       const match = contentDisposition.match(/filename="(.+)"/);
       if (match && match[1]) {
