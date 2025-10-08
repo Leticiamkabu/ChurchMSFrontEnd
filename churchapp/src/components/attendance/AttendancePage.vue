@@ -372,7 +372,7 @@ if (this.attendanceIDS !== ""){
 
       }
 }else{
-  alert("Member not found. Please press Enter to search for the name before marking attendance.");
+  alert("Attendance for this Member not found. Please check if attendance is marked before selecting Edit Attendance");
       this.loading = false;
       this.name = '';
       this.isEditingAttendance = false;
