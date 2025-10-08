@@ -219,8 +219,9 @@ export default {
           if (response.data.message === 'User registeration successfully') {
            
             // On success, move to the completion step
+			alert("User registeration successful");
             //this.step = 3;
-            this.form;
+            this.form = {};
             this.loading = false;
             
           } else if (response.data == "Email already exist"){
