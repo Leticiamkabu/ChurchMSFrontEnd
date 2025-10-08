@@ -112,7 +112,7 @@
         user_id: '',
         usersList: [],
         privileges: ['ADMIN PRIVILEGES', 'DATA CLERK PRIVILEGES', 'ADMINISTRATOR PRIVILEGES', 'GUEST PRIVILEGES'],
-        roles :['ADMIN', 'DATA CLERK', 'ADMINISTRATOR'],
+        roles :['ADMIN', 'DATA CLERK', 'ADMINISTRATOR', 'GUEST'],
         form: {
         firstname: '',
         lastname: '',
