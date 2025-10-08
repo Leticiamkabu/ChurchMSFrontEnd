@@ -139,7 +139,7 @@ export default {
         // Using for...of to handle asynchronous requests within loop
         for (const member of response.data) {
           try {
-            const attendanceResponse = await axios.get(`https://churchmsbackend.onrender.com/attendance/get_attendance_by_member_id/${member.id}`);
+            const attendanceResponse = await axios.get(`https://churchmsbackend.onrender.com/attendance/get_attendance_by_member_id/${member.memberID}`);
             console.info(attendanceResponse);
 
             let attendance = 'Not Marked'; // Default to 'ABSENT'
