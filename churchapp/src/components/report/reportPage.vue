@@ -317,7 +317,7 @@ export default {
       console.info('department :', this.filters.department)
 
        try {
-        const response = await axios.get(`http://127.0.0.1:8000/attendance/report_fetch/${this.filters.date}/${this.filters.status}/${this.filters.department}`,{
+        const response = await axios.get(`https://churchmsbackend.onrender.com/attendance/report_fetch/${this.filters.date}/${this.filters.status}/${this.filters.department}`,{
           
         });
         
@@ -470,7 +470,7 @@ export default {
 
        try {
     
-        const response = await axios.get(`http://localhost:8000/members/sort_member_data/${this.memberFilters.age}/${this.memberFilters.ageRange}/${this.memberFilters.department}/${this.memberFilters.birthMonth}`,{
+        const response = await axios.get(`https://churchmsbackend.onrender.com/members/sort_member_data/${this.memberFilters.age}/${this.memberFilters.ageRange}/${this.memberFilters.department}/${this.memberFilters.birthMonth}`,{
           
         });
         
