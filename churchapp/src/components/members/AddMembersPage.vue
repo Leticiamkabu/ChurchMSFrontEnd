@@ -346,8 +346,7 @@ export default {
         workingStatus: '',
         homeAddress: '',
         occupation: '',
-		educationalLevel: '',
-        highestEducation: '',
+		
         mothersName: '',
         fathersName: '',
         nextOfKin: '',
@@ -506,8 +505,7 @@ export default {
           workingStatus: this.form.workingStatus,
           homeAddress: this.form.homeAddress,
           occupation: this.form.occupation,
-		  educationalLevel: this.form.educationalLevel,
-          highestEducation: this.form.highestEducation,
+		  
           mothersName: this.form.mothersName,
           fathersName: this.form.fathersName,
           nextOfKin: this.form.nextOfKin,
