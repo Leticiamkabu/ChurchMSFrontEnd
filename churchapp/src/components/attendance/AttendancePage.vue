@@ -239,7 +239,7 @@ export default {
             memberID: this.membersID,
             name : this.name,
             status: 'PRESENT',
-            serviceType : this.selectedService || "",
+            serviceType : this.selectedService || "Not Indicated",
             markedBy : this.activeUser,
           
       });
