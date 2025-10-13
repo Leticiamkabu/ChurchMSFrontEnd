@@ -326,7 +326,7 @@ export default {
 
         try {
           // Fetch the file from the backend
-          const response = await axios.get(`https://churchmsbackend.onrender.com/first_timers/download_first_timers_data/${documentFormat}`, {
+          const response = await axios.get(`http://localhost:8000/first_timers/download_first_timers_data/${documentFormat}`, {
             responseType: 'blob', // Specify response type as blob
           });
 
