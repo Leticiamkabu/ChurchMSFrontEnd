@@ -9,19 +9,17 @@
 
 
           <!-- duplicate this li tag if you want to add or remove  navlink with submenu -->
-          <!-- start -->
-          <li class="item">
-            <div href="#" class="nav_link submenu_item">
-              <span class="navlink_icon">
-                <i class="bx bx-grid-alt"></i>
-              </span>
-              <span class="navlink">Overview</span>
-              
-            </div>
-            
-          </li>
-          <!-- end -->
-        
+          
+        <!-- start -->
+        <li class="item">
+          <router-link to="/dataClerkOverview" class="nav_link submenu_item">
+            <span class="navlink_icon">
+              <i class="bx bx-grid-alt"></i>
+            </span>
+            <span class="navlink">Overview</span>
+          </router-link>
+        </li>
+        <!-- end -->
 
         <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
           <!-- start -->
@@ -55,7 +53,7 @@
         <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
               <!-- start -->
           
-          <li class="item">
+          <li class="item" v-if="hasPrivileges()">
             <router-link to="" class="nav_link submenu_item">
 
               <span class="navlink_icon">
@@ -82,6 +80,33 @@
             </ul>
           </li>
           <!-- end -->
+
+
+           <!-- start -->
+        <li class="item" v-if="hasPrivileges()">
+          <router-link to="" class="nav_link submenu_item">
+            <span class="navlink_icon">
+              <i class="bx bx-group"></i>
+            </span>
+            <span class="navlink">First Timers</span>
+            <i class="bx bx-chevron-right arrow-left"></i>
+          </router-link>
+
+          <ul class="menu_items submenu">
+            <router-link to="/firstTimers" class="nav_link submenu_item">
+              <i class="bx bx-user-plus"></i>
+              <a href="#" class="nav_link sublink">Add First Timers</a>
+            </router-link>
+
+            <router-link to="/editFirstTimers" class="nav_link submenu_item">
+              <i class="bx bxs-user-detail"></i>
+              <a href="#" class="nav_link sublink">Edit First Timers</a>
+            </router-link>
+          </ul>
+        </li>
+        <!-- end -->
+
+      
 
           <!-- start -->
           <li class="item">
@@ -190,6 +215,10 @@ submenuItems.forEach((item, index) => {
 
 
   methods: {
+
+    hasPrivileges() {
+    return sessionStorage.getItem('privilege') !== 'DATA CLERK PRIVILEGES';
+  },
     getDashboardRoute() {
       const userRole = sessionStorage.getItem('userRole'); // Or use Vuex if roles are managed there
 

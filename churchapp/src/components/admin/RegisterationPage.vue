@@ -34,10 +34,12 @@
           <input class = "pn" type="text" v-model="form.phoneNumber" id="phoneNumber" placeholder=" Phone Number" required />
 
           <label class = "label_pw" for="password">Password <span class="required-star">*</span> </label>
-          <input class = "pw" type="password" v-model="form.password" id="password" placeholder=" Password" required />
+          <input :type="showPassword ? 'text' : 'password'" class = "pw" v-model="form.password" id="password" placeholder=" Password" required />
+          <label class = "showPassword1"> <input type="checkbox" v-model="showPassword" /> </label>
 
           <label class = "label_cpw" for="confirmPassword">Confirm password <span class="required-star">*</span> </label>
-          <input  class = "cpw" type="password" v-model="form.confirmPassword" id="confirmPassword" placeholder=" Confirm password" required />
+          <input  :type="showPassword1 ? 'text' : 'password'" class = "cpw"  v-model="form.confirmPassword" id="confirmPassword" placeholder=" Confirm password" required />
+          <label class = "showPassword2"> <input type="checkbox" v-model="showPassword1" /> </label>
           <p v-if="passwordMismatch" class="error">Password does not match</p>
 
           <label class = "label_role" for="role">Role <span class="required-star">*</span> </label>
@@ -93,9 +95,11 @@ export default {
     return {
       loading: false,
       step: 1,
+      showPassword: false,
+      showPassword1: false,
       
-      roles :['ADMIN', 'DATA CLERK', 'ADMINISTRATOR', 'GUEST'],
-      privileges: ['ADMIN PRIVILEGES', 'DATA CLERK PRIVILEGES', 'ADMINISTRATOR PRIVILEGES', 'GUEST PRIVILEGES'],
+      roles :['ADMIN', 'CHIEF DATA CLERK','DATA CLERK', 'ADMINISTRATOR', 'GUEST'],
+      privileges: ['ADMIN PRIVILEGES', 'CHIEF DATA CLERK PRIVILEGES','DATA CLERK PRIVILEGES', 'ADMINISTRATOR PRIVILEGES', 'GUEST PRIVILEGES'],
       form: {
       firstname: '',
       lastname: '',
@@ -293,6 +297,20 @@ export default {
   left: 300px;
   top: 30px;
 }
+
+.showPassword1 input[type="checkbox"]{
+ position : relative;
+ right: -320px;
+  top: 307px;
+}
+
+.showPassword2 input[type="checkbox"]{
+ position : relative;
+ right: -530px;
+  top: 307px;
+}
+
+
 
 .container .title {
   font-size: 25px;

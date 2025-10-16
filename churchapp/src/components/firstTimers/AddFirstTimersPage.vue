@@ -27,13 +27,17 @@
             <input class = "name" type="text" v-model="form.name" id="name" placeholder="Name" />
 
             <label class = "label_popular_name" for="middleName">Popular Name</label>
-            <input class = "popular_name" type="text" v-model="form.popularName" id="middleName" placeholder="Middle Name"  />
+            <input class = "popular_name" type="text" v-model="form.popularName" id="middleName" placeholder="Popular Name"  />
 
             <label class = "label_phone_number" for="phoneNumber">Phone Number <span class="required-star">*</span> </label>
             <input  class = "phone_number" type="text" v-model="form.phoneNumber" id="phoneNumber" placeholder="Phone Number"  />
 
             <label class = "label_whatsapp_number" for="whatAppNumber">WhatsApp Number </label>
             <input  class = "whatsapp_number" type="text" v-model="form.whatAppNumber" id="whatAppNumber" placeholder="WhatApp Number"  />
+
+            <label class = "label_birth_month" for="birthMonth">Birth Month <span class="required-star">*</span> </label>
+            <input  class = "birth_month" type="text" v-model="form.birthMonth" id="birthMonth" placeholder="Birth Month"  />
+
 
             <label class = "label_house_location" for="houseLocation">House Location <span class="required-star">*</span> </label>
             <input class = "house_location" type="text" v-model="form.houseLocation" id="houseLocation" placeholder="House Location"  />
@@ -114,6 +118,7 @@ export default {
         houseLocation: '',
         purposeOfComing: '',
         contactHours: '',
+        birthMonth: '',
         specialPrayerOrCounseling: '',
         counselor: '',
         date: '',
@@ -162,7 +167,8 @@ export default {
       !this.form.name ||
       !this.form.phoneNumber ||
       !this.form.houseLocation ||
-      !this.form.purposeOfComing 
+      !this.form.purposeOfComing ||
+      !this.form.birthMonth 
     ) {
       alert("Please fill in all required fields.");
       this.step = 1;
@@ -269,8 +275,8 @@ export default {
 
 .first_info button{
         position: fixed;
-    left: 990px;
-    top: 540px;
+    left: 750px;
+    top: 585px;
     height: 30px;
     width: 100px;
     color: black;
@@ -394,10 +400,33 @@ export default {
 
 }
 
-.house_location{
+.birth_month{
     position: fixed;
     left: 32%;
-    top: 82%;
+    top: 69%;
+    height: 33px;
+    width: 300px;
+    border-radius: 10px;
+    border-color: aqua;
+    background-color: white;
+    text-align : center;
+
+
+}
+
+.label_birth_month{
+   position: fixed;
+    left: 33%;
+    top: 63%;
+    font-size: 20px;
+    color: aqua;
+
+}
+
+.house_location{
+    position: fixed;
+    left: 58%;
+    top: 69%;
     height: 33px;
     width: 300px;
     border-radius: 10px;
@@ -410,8 +439,8 @@ export default {
 
 .label_house_location{
    position: fixed;
-    left: 33%;
-    top: 76%;
+    left: 59%;
+    top: 63%;
     font-size: 20px;
     color: aqua;
 
@@ -419,8 +448,8 @@ export default {
 
 .whatsapp_number{
     position: fixed;
-    left: 62%;
-    top: 64%;
+    left: 58%;
+    top: 54%;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -433,8 +462,8 @@ export default {
 
 .label_whatsapp_number{
    position: fixed;
-    left: 63%;
-    top: 58%;
+    left: 59%;
+    top: 48%;
     font-size: 20px;
     color: aqua;
 
@@ -443,7 +472,7 @@ export default {
 .phone_number{
     position: fixed;
     left: 32%;
-    top: 64%;
+    top: 54%;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -457,15 +486,15 @@ export default {
 .label_phone_number{
    position: fixed;
     left: 33%;
-    top: 58%;
+    top: 48%;
     font-size: 20px;
     color: aqua;
 }
 
 .popular_name{
     position: fixed;
-    left: 62%;
-    top: 45%;
+    left: 58%;
+    top: 39%;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -478,8 +507,8 @@ export default {
 
 .label_popular_name{
    position: fixed;
-    left: 63%;
-    top: 39%;
+    left: 59%;
+    top: 33%;
     font-size: 20px;
     color: aqua;
 
@@ -488,7 +517,7 @@ export default {
 .name{
     position: fixed;
     left: 32%;
-    top: 45%;
+    top: 39%;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -502,7 +531,7 @@ export default {
 .label_name{
    position: fixed;
     left: 33%;
-    top: 39%;
+    top: 33%;
     font-size: 20px;
     color: aqua;
 
@@ -534,7 +563,7 @@ export default {
 h2{
 
   position: fixed;
-        left: 49%;
+        left: 46%;
     top: 27%;
     height: 10px;
     width: 300px;
@@ -559,7 +588,7 @@ h2{
 .date{
     position: fixed;
     left: 32%;
-    top: 82%;
+    top: 67%;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -573,7 +602,7 @@ h2{
 .label_date{
    position: fixed;
     left: 33%;
-    top: 76%;
+    top: 61%;
     font-size: 20px;
     color: aqua;
 
@@ -581,8 +610,8 @@ h2{
 
 .counselor{
     position: fixed;
-    left: 62%;
-    top: 64%;
+    left: 58%;
+    top: 50%;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -595,8 +624,8 @@ h2{
 
 .label_counselor{
    position: fixed;
-    left: 63%;
-    top: 58%;
+    left: 59%;
+    top: 44%;
     font-size: 20px;
     color: aqua;
 }
@@ -604,7 +633,7 @@ h2{
 .special_prayer_or_counseling{
     position: fixed;
     left: 32%;
-    top: 64%;
+    top: 50%;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -618,7 +647,7 @@ h2{
 .label_special_prayer_or_counseling{
    position: fixed;
     left: 33%;
-    top: 58%;
+    top: 44%;
     font-size: 20px;
     color: aqua;
     
@@ -627,8 +656,8 @@ h2{
 
 .contact_hours{
     position: fixed;
-    left: 62%;
-    top: 45%;
+    left: 58%;
+    top: 33%;
     height: 35px;
     width: 300px;
     border-radius: 10px;
@@ -641,8 +670,8 @@ h2{
 
 .label_contact_hours{
    position: fixed;
-    left: 63%;
-    top: 39%;
+    left: 59%;
+    top: 27%;
     font-size: 20px;
     color: aqua;
 
@@ -651,7 +680,7 @@ h2{
 .purpose_of_coming{
     position: fixed;
     left: 32%;
-    top: 45%;
+    top: 33%;
     height: 33px;
     width: 300px;
     border-radius: 10px;
@@ -665,7 +694,7 @@ h2{
 .label_purpose_of_coming{
   position: fixed;
     left: 33%;
-    top: 39%;
+    top: 27%;
     font-size: 20px;
     color: aqua;
 

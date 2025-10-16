@@ -51,7 +51,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(record, index) in attendanceList" :key="index" @click="populateName(record.name, record.membersId, record.attendanceStatus, record.attendanceIDS, record.members_Id)">
+            <tr v-for="(record, index) in attendanceList" :key="index" @click="populateName(record.name, record.membersId, record.attendanceStatus, record.attendanceIDS, record.members_Id, record.attendanceID)">
               <td>{{ record.name }}</td>
               <td>{{ record.date }}</td>
               <td>{{ record.attendanceStatus }}</td>
@@ -179,18 +179,88 @@ export default {
           }
         }
 
-        this.name = ''; // Clear search input after processing
+        // this.name = ''; // Clear search input after processing
       }
-    } else {
-      alert(response.data.detail);
-    }
+    } 
   } catch (error) {
-    console.error("Attendance error:", error);
-    alert("An error occurred during attendance processing. Please try again.");
+    console.error("Member data query error:", error);
+    alert("An error occurred during member data query process. Please try again.");
   }
   finally {
         this.loading = false; // Hide loading screen
       }
+
+
+
+    try {
+          // https://churchmsbackend.onrender.com
+          const response = await axios.get(`http://localhost:8000/first_timers/get_first_timer_by_name/${this.name}`);
+          console.info(response); 
+
+          if (response.data.detail !== 'First timers with the given names do not exist') {
+            console.info("First timer found");
+
+            if (response.data.length > 0) {
+              console.info("Appending First Timer");
+              
+              // Clear current list (if needed)
+            //this.attendanceList = []; 
+
+              // Using for...of to handle asynchronous requests within loop
+              for (const firstTimer of response.data) {
+                
+                try {
+                  console.info('Not Marked >>>>',firstTimer.id);
+                  const attendanceResponse = await axios.get(`https://churchmsbackend.onrender.com/attendance/get_attendance_by_member_id/${firstTimer.id}`);
+                  console.info('attendance response for first timers',attendanceResponse);
+
+                  let attendance = 'Not Marked'; // Default to 'ABSENT'
+                  let attendanceId = '';
+                  let service_type = '';
+                  let markedBy = '';
+                  let timeMarked = '';
+
+                  if (attendanceResponse.data.detail !== 'Attendance with the given member ID does not exist') {
+                    console.info('First Timer attendance found')
+
+                    attendance = attendanceResponse.data.status;
+                    attendanceId = attendanceResponse.data.id;
+                    this.attendanceIDS = attendanceResponse.data.id;
+                    service_type = attendanceResponse.data.serviceType;
+                    markedBy = attendanceResponse.data.markedBy;
+                    timeMarked = attendanceResponse.data.createdOn;
+                  }
+                  else{
+                    console.info('first timer attendance not found')
+                    attendance = 'Not Marked';
+                    service_type = 'Not Indicated';
+                    markedBy = 'Not Indicated';
+                    timeMarked = 'Not Indicated';
+                  }
+
+                  
+                  const today = new Date().toLocaleDateString();
+                  
+                  this.attendanceList.push({ name: firstTimer.name, date: today, attendanceStatus: attendance, membersId : firstTimer.id, attendanceIDS : attendanceId, serviceType: service_type, markedBy:markedBy,timeMarked: timeMarked});
+                } catch (attendanceError) {
+                  console.error("Error fetching attendance for first timers:", attendanceError);
+                }
+              }
+
+              this.name = ''; // Clear search input after processing
+                    
+            }
+
+          }
+        }
+
+        catch (error) {
+          console.error("First timer data query error:", error);
+          alert("An error occurred during first timer data query process. Please try again.");
+        }
+        finally {
+          this.loading = false; // Hide loading screen
+        }
 
   // Clear the search flag after search logic completes (if needed)
   setTimeout(() => {
@@ -202,13 +272,34 @@ export default {
 
 
   async markAttendance() {
+
+    
       if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
+      console.info("YES")
       if (this.isSearching) {
       console.info("its searching")
-      return;}
-      if (this.isEditingAttendance || this.currentStatus == "PRESENT") return;
+      return;
+      }
+
+      if (this.isEditingAttendance ) {
+        console.info("YES editing")
+        return;
+        }
+
+      if(this.name == ''){
+        alert('Please click on the name before you start an action');
+        return;
+      }
+
+      if (this.currentStatus == "ABSENT" || this.currentStatus == "PRESENT" ) {
+        console.info("YESSSS")
+        alert('Attendance marked for this member.')
+        this.name = "";
+        this.attendanceList = [];
+        return;
+      }
 
       this.isMarkingAttendance = true; 
 
@@ -281,6 +372,7 @@ export default {
           console.info("current response ", response.data)
           alert('Invalid Attendance details');
           this.name = '';
+          this.attendanceList = []
 
           setTimeout(() => {
             this.isMarkingAttendance = false;
@@ -303,8 +395,10 @@ export default {
       alert("Member not found. Please press Enter to search for the name before marking attendance.");
       this.loading = false;
       this.name = '';
+      this.attendanceList = []
       this.isMarkingAttendance = false;
     }
+  
       
   }},
 
@@ -313,13 +407,27 @@ export default {
        if(sessionStorage.getItem('userRole') == "GUEST"){
       alert("You are not allowed to perform this action"); 
     }else{
+
       if (this.isSearching) return;
 
       if(this.isMarkingAttendance) return; 
 
       this.isEditingAttendance = true; 
+      if(this.name == ''){
+        alert('Please click on the name before you start an action');
+        return;
+      }
+
+      if(this.attendanceList[0].attendanceStatus == 'Not Marked'){
+        alert('Please mark attendance first before you edit it.');
+        this.name = '';
+        this.attendanceList = [];
+        this.isEditingAttendance = false;
+        return;
+      }
 
       console.info("Editing Attendance")
+      console.info("Edittendance : ", this.attendanceList)
 
 if (this.attendanceIDS !== ""){
       let nowStatus = '' ;
@@ -385,14 +493,16 @@ if (this.attendanceIDS !== ""){
    
 
 
-    populateName(selectedName, member_ids,status, attendanceId, membersID) {
+    populateName(selectedName, member_ids,status, attendanceId, membersID, attendanceIds) {
+
       console.info("am here too paste")
+      console.info("attendance list : ",this.attendanceList )
       this.name = selectedName;
       this.members_ID = member_ids;
       console.info("Member_ID: ",this.members_ID )
       this.currentStatus = status;
       this.membersID = membersID
-      this.attendanceIDS = attendanceId;
+      this.attendanceIDS = attendanceId ?? attendanceIds;
       console.info("ID: ",this.attendanceIDS )
     }
 

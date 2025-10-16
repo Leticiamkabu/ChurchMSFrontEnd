@@ -349,8 +349,12 @@ computed: {
     async getMessage() {
       this.loading = true;
       console.info('notification type :', this.form.notificationType)
-      
-      if (this.form.notificationType == "SMS"){
+      const numrecipients = this.form.recipient
+          .split(',')
+          .map(r => r.trim())
+          .filter(r => r !== '');
+              
+      if (this.form.notificationType == "SMS" && numrecipients.length > 2 ){
 
         console.info('Sending a single message')
         
@@ -404,7 +408,7 @@ computed: {
 
 
       }
-      else{
+      else if (this.form.notificationType == "BULK_SMS" && numrecipients.length < 1 ){
 
         console.info('Sending bulk message')
       
@@ -449,6 +453,10 @@ computed: {
         }
 
 
+      }
+      else{
+        alert("Please choose the right notification type for your message"); 
+        this.loading = false; 
       }
       
     },

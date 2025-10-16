@@ -111,8 +111,8 @@
         showEditModal: false,
         user_id: '',
         usersList: [],
-        privileges: ['ADMIN PRIVILEGES', 'DATA CLERK PRIVILEGES', 'ADMINISTRATOR PRIVILEGES', 'GUEST PRIVILEGES'],
-        roles :['ADMIN', 'DATA CLERK', 'ADMINISTRATOR', 'GUEST'],
+        privileges: ['ADMIN PRIVILEGES','CHIEF DATA CLERK PRIVILEGES', 'DATA CLERK PRIVILEGES', 'ADMINISTRATOR PRIVILEGES', 'GUEST PRIVILEGES'],
+        roles :['ADMIN', 'DATA CLERK', 'CHIEF DATA CLERK','ADMINISTRATOR', 'GUEST'],
         form: {
         firstname: '',
         lastname: '',
@@ -280,6 +280,7 @@
             
               alert("User updated successfully");
               this.showEditModal = false;
+              this.getUsers()
 
             } else {
               console.info("error response for registeration ",response)

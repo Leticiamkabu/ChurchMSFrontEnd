@@ -16,6 +16,7 @@ import ReportPage from '../components/report/reportPage.vue';
 import SMSNotificationPage from '../components/notification/smsNotificationPage.vue';
 import FirstTimersPage from '../components/firstTimers/AddFirstTimersPage.vue';
 import EditFirstTimersPage from '../components/firstTimers/EditFirstTimersPage.vue';
+import DataClerkOverViewPage from '../components/HomePage.vue';
 
 
 
@@ -41,6 +42,7 @@ const routes = [
   { path: '/members', component: MembersPage },
   { path: '/firstTimers', component: FirstTimersPage },
   { path: '/editFirstTimers', component: EditFirstTimersPage },
+  { path: '/dataClerkOverview', component: DataClerkOverViewPage },
 
 ]
 

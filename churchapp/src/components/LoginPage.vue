@@ -107,11 +107,11 @@ export default {
 					if (response.data.data.role === "ADMIN" || response.data.data.role === "ADMINISTRATOR"){
 						this.$router.push('/adminOverView'); // Navigate to home page upon successful login
 					}
-					else if (response.data.data.role === "DATA CLERK"){
-						this.$router.push('/attendanceOverview'); // Navigate to home page upon successful login
+					else if (response.data.data.role === "DATA CLERK" || response.data.data.role === "CHIEF DATA CLERK"){
+						this.$router.push('/home'); // Navigate to home page upon successful login
 					}
 					else{
-						this.$router.push('/home');
+						this.$router.push('/adminOverView');
 					}
 
 
