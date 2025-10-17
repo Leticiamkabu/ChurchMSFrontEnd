@@ -194,7 +194,7 @@ export default {
 
     try {
           // https://churchmsbackend.onrender.com
-          const response = await axios.get(`http://localhost:8000/first_timers/get_first_timer_by_name/${this.name}`);
+          const response = await axios.get(`https://churchmsbackend.onrender.com/first_timers/get_first_timer_by_name/${this.name}`);
           console.info(response); 
 
           if (response.data.detail !== 'First timers with the given names do not exist') {
