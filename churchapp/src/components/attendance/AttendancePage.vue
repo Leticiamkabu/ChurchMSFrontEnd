@@ -22,6 +22,13 @@
       <form @submit.prevent >
         <input type="text" v-model="name" placeholder="Enter Name" required  @keydown.enter="checkName" />
 
+        <select v-model="selectedDepartment" @keydown.enter="checkName">
+          <option disabled value="">Select Department</option>
+          <option v-for="department in departmentNames" :key="department" :value="department" >
+            {{ department }}
+          </option>
+        </select>
+
         <select v-model="selectedService" >
           <option disabled value="">Select service Type</option>
           <option v-for="service in services" :key="service" :value="service">
@@ -88,7 +95,9 @@ export default {
       activeUser: sessionStorage.getItem("username")
 ,
       services: ['First Service', 'Second Service', 'Third Service'],
+      departmentNames: ['Men Ministry', 'Women Ministry', 'Youth Ministry', 'Joy Ministry', 'Missionnettes', 'Pathfinders', 'Royal Rangers', 'Youth Singles', 'Missions', 'Protocol/Ushering', 'Children Ministry', 'Music', 'Sanctuary Keepers'],
       selectedService : '',
+      selectedDepartment : '',
       name: '',
       isSearching: false,
       isMarkingAttendance: false,
@@ -112,7 +121,7 @@ export default {
 
     async checkName() {
       this.loading = true; 
-
+console.info("selected department name : ", this.selectedDepartment);
   console.info("About to check name");
   // If marking attendance is in progress, skip search
   if (this.isMarkingAttendance) return;
@@ -121,9 +130,17 @@ export default {
   this.name = this.name.replace(/\s+/g, ' ');
   console.log("Searching for:", this.name);
 
+  if (this.name === ''){
+      this.name = 'None';
+  }
+  else if (this.department === ''){
+    this.selectedDepartment = 'None';
+  }
+
   try {
     // https://churchmsbackend.onrender.com
-    const response = await axios.get(`https://churchmsbackend.onrender.com/members/get_member_by_words/${this.name}`);
+
+    const response = await axios.get(`http://localhost:8000/members/get_member_by_words/${this.name}/${this.selectedDepartment}`);
     console.info(response); 
 
     // Check if members were found
@@ -179,7 +196,7 @@ export default {
           }
         }
 
-        // this.name = ''; // Clear search input after processing
+         
       }
     } 
   } catch (error) {
@@ -260,6 +277,8 @@ export default {
         }
         finally {
           this.loading = false; // Hide loading screen
+          this.name = ''; // Clear search input after processing
+         this.selectedDepartment = ''; 
         }
 
   // Clear the search flag after search logic completes (if needed)
@@ -551,7 +570,7 @@ form {
   margin-bottom: 20px;
   position: fixed;
   top: 200px;
-  left:450px;
+  left:330px;
 }
 
 input {

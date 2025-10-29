@@ -181,6 +181,7 @@
       }else{
         this.loading = true; 
         console.error('getting details to update')
+        
 
         try {
           const response = await axios.get(`https://churchmsbackend.onrender.com/auth/get_user_by_id/${record.user_id}`);
