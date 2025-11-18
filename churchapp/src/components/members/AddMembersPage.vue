@@ -322,7 +322,7 @@ export default {
       maritalS: ['Married (Ordinance)', 'Married (Customary)', 'Married (Blessing)', 'Single', 'Divorced' ], 
       memberT: ['Member', 'Inactive', 'Visitor', 'Child', 'Backslider', 'Transferred-in', 'Transferred-out', 'Student'], 
       cells:['Salosi cell', 'Bruku cell', 'Junction cell', 'Takyikope cell', 'Aggrey cell', 'Manya cell', 'Gblaka cell', 'Habitat cell', 'Downtown cell', 'Across cell', 'Ayikuma cell', 'Peace cell', 'Mataheko cell', 'Kordiabe cell'],
-      departmentNames: ['Men Ministry', 'Women Ministry', 'Youth Ministry', 'Joy Ministry', 'Missionnettes', 'Pathfinders', 'Royal Rangers', 'Youth Singles', 'Missions', 'Protocol/Ushering', 'Children Ministry', 'Music', 'Sanctuary Keepers'],
+      departmentNames: ['Men Ministry', 'Women Ministry', 'Youth Ministry - Young Sisters', 'Youth Ministry - Path Finders', 'Children - Boys', 'Children - Girls'],
       classsels:['English Adult', 'Ewe Adult(Faith)', 'Twi Adult', 'Dangbe Adult', 'Discipleship class 1', ' Discipleship class 2', 'Deliverance class', 'New Convent', 'Youth English', 'Children', 'Ewe Adult(Love)'],
       positions:['Women Ministry President', 'Women Ministry Vice President', 'Women Ministry Secretary','Women Ministry Treasurer', 'Women Ministry Organizer', 'Men Ministry President', 'Men Ministry Vice President', 'Men Ministry Secretary', 'Men Ministry Treasurer' , 'Men Ministry Organizer', 'Joy Fellowship President', 'Joy Fellowship President'],
       waterBaps :['Yes' , 'No'],

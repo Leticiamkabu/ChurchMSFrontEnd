@@ -92,10 +92,9 @@ export default {
   data() {
     return {
       loading: false,
-      activeUser: sessionStorage.getItem("username")
-,
+      activeUser: sessionStorage.getItem("username"),
       services: ['First Service', 'Second Service', 'Third Service'],
-      departmentNames: ['Men Ministry', 'Women Ministry', 'Youth Ministry', 'Joy Ministry', 'Missionnettes', 'Pathfinders', 'Royal Rangers', 'Youth Singles', 'Missions', 'Protocol/Ushering', 'Children Ministry', 'Music', 'Sanctuary Keepers'],
+      departmentNames: ['Men Ministry', 'Women Ministry', 'Youth Ministry - Young Sisters', 'Youth Ministry - Path Finders', 'Children - Boys', 'Children - Girls'],
       selectedService : '',
       selectedDepartment : '',
       name: '',
