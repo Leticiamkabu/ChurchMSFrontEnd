@@ -132,7 +132,7 @@ console.info("selected department name : ", this.selectedDepartment);
   if (this.name === ''){
       this.name = 'None';
   }
-  else if (this.department === ''){
+  else if (this.selectedDepartment === ''){
     this.selectedDepartment = 'None';
   }
 
