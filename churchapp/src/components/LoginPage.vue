@@ -129,14 +129,20 @@ export default {
 					} catch (error) {
 						console.error("User tracker error :", error);
 						//alert("An error occurred during login. Please try again.");
+				
 					}
+
+				}else if(response.status === 400){
+					console.info(response.data.detail); 
+
+				}	
 					
-				}
+			
 		
 			} catch (error) {
 				if (error.response) {
 					// Server responded with a status outside the 2xx range
-					if (error.response.status === 401 || error.response.status === 403) {
+					if (error.response.status === 401 || error.response.status === 403 || error.response.status === 400) {
 						alert('Invalid credentials');
 					} 
 

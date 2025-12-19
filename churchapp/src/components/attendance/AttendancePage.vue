@@ -139,6 +139,8 @@ console.info("selected department name : ", this.selectedDepartment);
   try {
     // https://churchmsbackend.onrender.com
 
+  console.log("Searching for department :", this.selectedDepartment);
+
     const response = await axios.get(`https://churchmsbackend.onrender.com/members/get_member_by_words/${this.name}/${this.selectedDepartment}`);
     console.info(response); 
 
