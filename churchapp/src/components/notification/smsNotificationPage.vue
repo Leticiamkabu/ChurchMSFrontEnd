@@ -17,11 +17,11 @@
       <Navbar />
 
       <section class="row_view">
-        <button class="attendanceButton"  @click="toggleFilters" > Compose Message </button>
+        <button class="attendanceButton"  @click="toggleFilters('compose')" > Compose Message </button>
       </section>
 
       <section class="row_view">
-        <button class="broadcastButton" @click="toggleFilters"  > Broadcast Message </button>
+        <button class="broadcastButton" @click="toggleFilters('broadcast')"  > Broadcast Message </button>
       </section>
 
       <section class="row_view">
@@ -75,7 +75,26 @@
           </div>
 
           <label class = "label_recipient" for="recipient">Recipient</label>
-          <input class = "recipient" type="text" v-model="form.recipient" id="recipient" placeholder=" Recipient( ',' for seperation)"  />
+          <input class = "recipient" type="text"  v-model="search" @keydown.enter ="searchUsers" id="recipient" placeholder=" Recipient( ',' for seperation)" />
+
+          <!-- Suggestions -->
+          <ul v-if="users.length" class="suggestions">
+            <li
+              v-for="user in users"
+              :key="user.id"
+              @click =" selectedUser(user)"
+            >
+
+            <span v-if="user.isMessage">
+              {{ user.text }}
+            </span>
+
+            <span v-else>
+              {{ user.firstName + ' ' + user.lastName + ' ' + user.phoneNumber }}
+            </span>
+              
+            </li>
+          </ul>
 
           <!-- <label class = "label_message" for="message">Message </label> -->
           <textarea class="message" v-model="form.message" id="message" placeholder=" Message"></textarea>
@@ -277,10 +296,13 @@ export default {
 
   data() {
     return {
+      search: "",
+      otherSearch : "",
       loading: false,
       showNotificationCard: false,
       comingSoonCard: false,
 
+      users: [],
       showScheduledMessageCard : false,
       scheduledMessageForm: {
         recipient: '',
@@ -304,7 +326,12 @@ export default {
         recipient: '',
         message: '',
         notificationType: '',
-        }
+        },
+
+        messageType: null, 
+
+      singleMessage: false,
+      broadCastMessage: false,
 
     };
   },
@@ -313,18 +340,131 @@ export default {
 computed: {
     isAdmin() {
       return sessionStorage.getItem("userRole") === 'ADMIN' ||sessionStorage.getItem("userRole") === 'ADMINISTRATOR' ;
+    },
+
+    filteredUsers() {
+      return this.users.filter(user =>
+        user.name.toLowerCase().includes(this.search.toLowerCase())
+      );
     }
   },
 
 
   
   methods: {
+   async searchUsers() {
+
+    console.info('provikhkl :', this.search)
+
+    if (/\d/.test(this.search)){
+      const parts = this.search.split(',');
+      let test = parts[parts.length - 1].trim().toLowerCase();
+      console.info('provi :', test)
+
+      this.otherSearch = test;
+    }
+
+    console.info('provided user name :', this.search)
+    console.info('provided user  :', typeof this.otherSearch)
+
+    let query =
+  this.otherSearch && this.otherSearch !== "0"
+    ? this.otherSearch
+    : this.search;
+
+console.info('prov  :', typeof query)
+if (query == ''){
+  query = 'None';
+}
+    
+
+    try {
+
+      const response = await axios.get(`https://churchmsbackend.onrender.com/members/get_member_phone_number/${query}`);
+      console.info('similer users :', response.data)
+      this.users = [];
+      this.users = response.data;
+      console.info('new users :', this.users)
+
+      if (response.data.detail == 'Members with the given names do not exist'){
+              console.info('am here')
+              //this.users = [];
+        this.users = [
+          { isMessage: true, text: 'Members with the given names do not exist' }
+        ];
+
+        await new Promise(resolve => setTimeout(resolve, 500));
+        this.users = [];
+
+      }
+
+
+    } catch (error) {
+      this.message = "Could not fetch user number";
+    }
+  
+    },
+
+
+    async selectedUser(user) {
+      
+
+      if (user.isMessage) {
+        this.users = [];
+        return;
+        }
+
+
+      if (!user.phoneNumber) {
+        this.message = "No number for this user";
+        return;
+        }
+
+
+
+      // existing numbers in input
+      let numbers = this.search
+        .split(',')
+        .map(n => n.trim())
+        .filter(n => n !== '');
+
+      this.search = numbers.pop();
+
+    // avoid duplicates
+    if (!numbers.includes(user.phoneNumber)) {
+      numbers.push(user.phoneNumber);
+    }
+    else{
+      console.info("number already selected")
+    }
+
+    // rebuild string
+    this.search = numbers.join(', ') + ', ';
+
+    // hide suggestions
+    this.users = [];
+    },
+
+
+
     closeAllModels(){
       this.comingSoonCard = false;
       this.showNotificationCard = false;
+      this.search = '';
     },
 
-    toggleFilters() {
+    toggleFilters(type) {
+      
+      if (type === "compose") {
+      console.log("Compose clicked")
+      this.messageType = type; 
+      this.singleMessage = true;
+      } 
+      else if (type === "broadcast") {
+      console.log("Broadcast clicked")
+      this.broadCastMessage = true;
+      }
+
       this.loading = true;
       this.closeAllModels();
       this.showNotificationCard = true;
@@ -349,14 +489,26 @@ computed: {
     async getMessage() {
       this.loading = true;
       console.info('notification type :', this.form.notificationType)
-      const numrecipients = this.form.recipient
+      this.form.recipient = this.search;
+      console.info('recipient :', this.form.recipient)
+
+      const numrecipients = this.search
           .split(',')
           .map(r => r.trim())
           .filter(r => r !== '');
               
-      if (this.form.notificationType == "SMS" && numrecipients.length > 2 ){
+      console.info('notifica :', numrecipients)
+
+      if (this.form.notificationType == "SMS" && numrecipients.length < 2 && this.broadCastMessage == true ){
 
         console.info('Sending a single message')
+
+         try {
+          const response = await axios.post('https://churchmsbackend.onrender.com/notification/send/individual_sms',formattedData);
+          response
+         } catch (error) {
+          console.error('Error Sending Message :', error);
+        }
         
       
         const formattedData = {
@@ -404,16 +556,17 @@ computed: {
               message: '',
               notificationType: ''
             };
+            this.search = '';
         }
 
 
       }
-      else if (this.form.notificationType == "BULK_SMS" && numrecipients.length < 1 ){
+      else if (this.form.notificationType == "BULK_SMS" && numrecipients.length > 1 && this.broadCastMessage == true ){
 
         console.info('Sending bulk message')
       
         const formattedData = {
-          recipient: this.form.recipient.split(',').map(num => num.trim()),
+          recipient: numrecipients,
           message: this.form.message,
           notificationType: this.form.notificationType,
           
@@ -432,7 +585,7 @@ computed: {
             console.info("Message sent")
             alert(
             `${response.data.message}\n\n` +
-            `Recipients: ${response.data.recipients.join(', ')}\n` +
+            `Recipients: ${response.data.recipients}\n` +
             `Total number of recipients: ${response.data.total_recipients}`
           );
             this.showNotificationCard = false;
@@ -455,7 +608,7 @@ computed: {
 
       }
       else{
-        alert("Please choose the right notification type for your message"); 
+        alert("Please choose the right button for your message"); 
         this.loading = false; 
       }
       
@@ -659,7 +812,40 @@ select{
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+.suggestions {
+  border: 1px solid #ccc;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    right: -4%;
+    top: 22.4%;
+    width: 55%;
+    position: absolute;
+    z-index: 9999;
+    height: 76%;
+    overflow-y: auto;    /* vertical scroll */
+  overflow-x: hidden;
+    background-color: #a6d5d5
+}
 
+.suggestions li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.suggestions li:hover {
+  background: #eee;
+}
+
+.recipientSelection{
+   top: 260px;
+    left: 495px;
+    position: fixed;
+    color: black;
+   
+    
+    
+}
 
 
 
@@ -1398,6 +1584,7 @@ input {
     border-radius: 10px;
     height: 30px;
     border-color: aqua;
+    width: 20%;
 }
 
 

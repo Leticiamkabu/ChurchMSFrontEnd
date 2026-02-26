@@ -103,18 +103,6 @@ export default {
 					sessionStorage.setItem('username', response.data.data.firstName + " " +response.data.data.lastName);
 					sessionStorage.setItem('privilege', response.data.data.privileges);
 
-
-					if (response.data.data.role === "ADMIN" || response.data.data.role === "ADMINISTRATOR"){
-						this.$router.push('/adminOverView'); // Navigate to home page upon successful login
-					}
-					else if (response.data.data.role === "DATA CLERK" || response.data.data.role === "CHIEF DATA CLERK"){
-						this.$router.push('/home'); // Navigate to home page upon successful login
-					}
-					else{
-						this.$router.push('/adminOverView');
-					}
-
-
 					try {
 						const feedBack = await axios.post('https://churchmsbackend.onrender.com/auth/user_tracking', {
 						userId: response.data.data.id,
@@ -131,6 +119,19 @@ export default {
 						//alert("An error occurred during login. Please try again.");
 				
 					}
+
+					if (response.data.data.role === "ADMIN" || response.data.data.role === "ADMINISTRATOR"){
+						this.$router.push('/adminOverView'); // Navigate to home page upon successful login
+					}
+					else if (response.data.data.role === "DATA CLERK" || response.data.data.role === "CHIEF DATA CLERK"){
+						this.$router.push('/home'); // Navigate to home page upon successful login
+					}
+					else{
+						this.$router.push('/adminOverView');
+					}
+
+
+					
 
 				}else if(response.status === 400){
 					console.info(response.data.detail); 

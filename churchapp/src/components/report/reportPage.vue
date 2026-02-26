@@ -24,6 +24,10 @@
         <button class="memberButton"  @click="toggleMemberFilters" >Member Report</button>
       </section>
 
+      <section class="row_view">
+        <button class="firstTimerButton"  @click="toggleFirstTimersFilters" >First Timer Report</button>
+      </section>
+
 
       <!-- Attendance Popup Modal -->
     <div v-if="showAttendanceFilters" class="attendancePopUP">
@@ -45,6 +49,27 @@
               class="dateFilter"
             />
           </div>
+          <div>
+            <label for="birthMonth" class="birthMonthFilterLabel4">End Month</label>
+            <select
+              v-model="filters.birthMonth"
+              id="birthMonth"
+              class="birthMonthFilter4">
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+            </select>
+          </div>
+
 
           <div>
             <label for="status" class="statusFilterLabel">Status</label>
@@ -87,10 +112,136 @@
 
         <!-- Buttons -->
         <div class="flex justify-end gap-2">
-          <button @click="showAttendanceFilters = false" class="cancleButton2">
+          <button @click="showAttendanceFilters = false" class="cancleButton3">
             Cancel
           </button>
-          <button @click="getAttendanceFetch" class="applyFilterButton">
+          <button @click="getAttendanceFetch" class="applyFilterButton1">
+            Apply Filters
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+<!-- month born Popup Modal -->
+    <div v-if="showFirstTimersFilters" class="attendancePopUP">
+      <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="filterOptionText">Filter Options</h2>
+
+          <button @click="showFirstTimersFilters = false" class="cancleButton">&times;</button>
+        </div>
+
+        <!-- Filter Options -->
+        <div class="grid grid-cols-2 gap-4 mb-4">
+
+            <label for="startDate" class="startDateLabel">Start Date</label>
+            <input class = "startDate" type="date" v-model="memberFilters.age" placeholder="Enter Age" />
+
+
+            <label for="endDate" class="endDateLabel">End Date</label>
+            <input class = "endDate" type="date" v-model="memberFilters.age" placeholder="Enter Age" />
+
+            <div>
+            <label for="birthMonth" class="birthMonthFilterLabel1">Birth Month</label>
+            <select
+              v-model="memberFilters.birthMonth"
+              id="birthMonth"
+              class="birthMonthFilter1">
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+            </select>
+          </div>
+
+
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-2">
+          <button @click="showFirstTimersFilters  = false" class="cancleButton2">
+            Cancel
+          </button>
+          <button @click="getFirstTimerFetch" class="applyFilterButton">
+            Apply Filters
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+      <!-- First Timers Popup Modal -->
+    <div v-if="showFirstTimersFilters" class="attendancePopUP">
+      <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="filterOptionText">Filter Options</h2>
+
+          <button @click="closeFirstTimersFilters" class="cancleButton">&times;</button>
+        </div>
+
+        <!-- Filter Options -->
+        <div class="grid grid-cols-2 gap-4 mb-4">
+
+            <div>
+            <label for="birthMonth" class="birthMonthFilterLabel2">Start Month</label>
+            <select
+              v-model="firstTimerFilters.startMonth"
+              id="birthMonth"
+              class="birthMonthFilter2">
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="birthMonth" class="birthMonthFilterLabel3">End Month</label>
+            <select
+              v-model="firstTimerFilters.endMonth"
+              id="birthMonth"
+              class="birthMonthFilter3">
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+            </select>
+          </div>
+
+
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-2">
+          <button @click="showFirstTimersFilters  = false" class="cancleButton2">
+            Cancel
+          </button>
+          <button @click="getFirstTimerFetch" class="applyFilterButton">
             Apply Filters
           </button>
         </div>
@@ -99,7 +250,7 @@
 
 
 
-      <!-- Member Popup Modal -->
+    <!-- Member Popup Modal -->
     <div v-if="showMembersFilters" class="attendancePopUP">
       <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
         <div class="flex justify-between items-center mb-4">
@@ -139,18 +290,18 @@
               v-model="memberFilters.birthMonth"
               id="birthMonth"
               class="birthMonthFilter">
-              <option value="01">January</option>
-              <option value="02">February</option>
-              <option value="03">March</option>
-              <option value="04">April</option>
-              <option value="05">May</option>
-              <option value="06">June</option>
-              <option value="07">July</option>
-              <option value="08">August</option>
-              <option value="09">September</option>
-              <option value="10">October</option>
-              <option value="11">November</option>
-              <option value="12">December</option>
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
             </select>
           </div>
 
@@ -181,6 +332,8 @@
         </div>
       </div>
     </div>
+
+
 
       <!-- general  Table -->
       <div class="table-container">
@@ -249,6 +402,7 @@ export default {
         date: `${year}-${month}-${day}` ,
         status: "",
         department: "",
+        birthMonth: "",
       },
 
       showMembersFilters: false,
@@ -259,8 +413,16 @@ export default {
         department: "",
       },
 
+      showFirstTimersFilters: false,
+      firstTimerFilters: {
+        startMonth: "",
+        endMonth: "",
+        
+      },
+
+
       attendanceList: [],
-      departmentNames: ['Men Ministries', 'Women Ministries', 'Youth Ministry', 'Joy Ministry', 'Missionnettes', 'Pathfinders', 'Royal Rangers', 'Youth Singles', 'Missions', 'Protocol/Ushering', 'Children Ministry', 'Music', 'Sanctuary Keepers'],
+      departmentNames: ['Men Ministry', 'Women Ministry', 'Youth Ministry - Young Sisters', 'Youth Ministry - Path Finders', 'Children - Boys', 'Children - Girls'],
 
 
     };
@@ -281,13 +443,28 @@ export default {
     toggleFilters() {
       this.showAttendanceFilters = true;
       this.showMembersFilters = false;
+      this.showFirstTimersFilters = false;
     },
 
     toggleMemberFilters() {
       this.showMembersFilters = true;
       this.showAttendanceFilters = false;
+      this.showFirstTimersFilters = false;
       this.attendanceList = [];
     },
+
+    toggleFirstTimersFilters() {
+      this.showMembersFilters = false;
+      this.showAttendanceFilters = false;
+      this.showFirstTimersFilters = true;
+      this.attendanceList = [];
+    },
+
+    closeFirstTimersFilters() {
+      this.showFirstTimersFilters = false;
+      this.firstTimerFilters.startMonth = "";
+      this.firstTimerFilters.endMonth = "";
+      },
 
     async getAttendanceFetch() {
       this.loading = true;
@@ -310,14 +487,19 @@ export default {
       if (this.filters.department == ""){
         this.filters.department = "Not Added";
       }
+
+      if (this.filters.birthMonth == ""){
+        this.filters.birthMonth = "Not Added";
+      }
       
       console.info('getting attendance report fetch')
       console.info('date :', this.filters.date)
       console.info('status :', this.filters.status)
       console.info('department :', this.filters.department)
+      console.info('birthMonth :', this.filters.birthMonth)
 
        try {
-        const response = await axios.get(`https://churchmsbackend.onrender.com/attendance/report_fetch/${this.filters.date}/${this.filters.status}/${this.filters.department}`,{
+        const response = await axios.get(`http://127.0.0.1:8000/attendance/report_fetch/${this.filters.date}/${this.filters.status}/${this.filters.department}/${this.filters.birthMonth}`,{
           
         });
         
@@ -331,6 +513,7 @@ export default {
           this.filters.date = "";
           this.filters.status = "";
           this.filters.department = "";
+          this.filters.birthMonth = "";
           this.reportName = "Attendance_Report";
 
           
@@ -340,6 +523,7 @@ export default {
           this.filters.date = "";
           this.filters.status = "";
           this.filters.department = "";
+          this.filters.birthMonth = "";
           
         }
 
@@ -348,6 +532,7 @@ export default {
           this.filters.date = "";
           this.filters.status = "";
           this.filters.department = "";
+          this.filters.birthMonth = "";
         }
 
       } catch (error) {
@@ -355,12 +540,14 @@ export default {
         this.filters.date = "";
           this.filters.status = "";
           this.filters.department = "";
+          this.filters.birthMonth = "";
       }
       finally {
         this.showAttendanceFilters = false;
         this.filters.date = "";
           this.filters.status = "";
           this.filters.department = "";
+          this.filters.birthMonth = "";
         this.loading = false; // Hide loading screen
       }
 
@@ -470,7 +657,7 @@ export default {
 
        try {
     
-        const response = await axios.get(`https://churchmsbackend.onrender.com/members/sort_member_data/${this.memberFilters.age}/${this.memberFilters.ageRange}/${this.memberFilters.department}/${this.memberFilters.birthMonth}`,{
+        const response = await axios.get(`http://127.0.0.1:8000/members/sort_member_data/${this.memberFilters.age}/${this.memberFilters.ageRange}/${this.memberFilters.department}/${this.memberFilters.birthMonth}`,{
           
         });
         
@@ -523,6 +710,77 @@ export default {
 
     },
 
+
+   async getFirstTimerFetch() {
+      this.loading = true;
+      
+
+      console.info('Getting First Timer filter result')
+
+      console.info('startMonth :', this.firstTimerFilters.startMonth)
+      console.info('endMonth :', this.firstTimerFilters.endMonth)
+
+      const currentMonth = new Date().toLocaleString('en-US', { month: 'long' });
+
+      if (this.firstTimerFilters.startMonth == ""){
+          this.firstTimerFilters.startMonth = currentMonth;
+      }
+
+      if (this.firstTimerFilters.endMonth == ""){
+          this.firstTimerFilters.endMonth = currentMonth;
+      }
+      
+       console.info('startMonthreal:', this.firstTimerFilters.startMonth)
+      console.info('endMonthreal :', this.firstTimerFilters.endMonth)
+
+
+       try {
+    
+        const response = await axios.get(`http://127.0.0.1:8000/first_timers/sort_first_timer_data/${this.firstTimerFilters.startMonth}/${this.firstTimerFilters.endMonth}`,{
+          
+        });
+        
+        console.info("First Timers report data : ", response.data)
+
+        if (response.data.length === 0){
+          alert("Data not availble"); 
+          this.firstTimerFilters.startMonth = "";
+          this.firstTimerFilters.endMonth = "";
+          
+          
+          
+          
+        } else if (response.data.detail !== "No first timers found")  {
+          console.info("Populating First Timers List")
+          this.attendanceList = response.data;
+          this.firstTimerFilters.startMonth = "";
+          this.firstTimerFilters.endMonth = "";
+          this.showFirstTimersFilters = false;
+          
+
+          this.reportName = "FirstTimers_Report";
+        }
+
+        else{
+          alert("No First Timers Data for preview");
+          this.firstTimerFilters.startMonth = "";
+          this.firstTimerFilters.endMonth = "";
+          //this.showFirstTimersFilters = false;
+        }
+
+      } catch (error) {
+        console.error('Error getting Attendance Data :', error);
+        this.firstTimerFilters.startMonth = "";
+          this.firstTimerFilters.endMonth = "";
+      }
+      finally {
+        this.showMembersFilters = false;
+        this.firstTimerFilters.startMonth = "";
+          this.firstTimerFilters.endMonth = "";
+        this.loading = false; // Hide loading screen
+      }
+
+    },
 
   }
 
@@ -1079,6 +1337,16 @@ input {
     
 }
 
+.cancleButton3{
+    top: 365px;
+    left: 660px;
+    position: fixed;
+    background-color: #f4f7f7 !important;
+    color: black;
+    border-radius: 10px;
+    
+    
+}
 
 .applyFilterButton{
     top: 350px;
@@ -1090,6 +1358,18 @@ input {
     
     
 }
+
+.applyFilterButton1{
+    top: 365px;
+    left: 760px;
+    position: fixed;
+    background-color: #f4f7f7 !important;
+    color: black;
+    border-radius: 10px;
+    
+    
+} 
+
 
 
 .memberButton {
@@ -1104,6 +1384,61 @@ input {
     left: 470px;
   position: relative;
 }
+
+.firstTimerButton {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #92c1c0;
+  color: black;
+  cursor: pointer;
+  margin-right: 10px;
+    top: -30px;
+    left: 616px;
+    position: relative;
+}
+
+
+.startDateLabel{
+      top: 220px;
+    left: 540px;
+    position: fixed;
+    color: black;
+     
+}
+
+.startDate{
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    position: fixed;
+    top: 250px;
+    left: 510px;
+    width: 140px;
+   
+}
+
+.endDateLabel{
+    top: 220px;
+    left: 780px;
+    position: fixed;
+    color: black;
+     
+}
+
+.endDate{
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    position: fixed;
+    top: 250px;
+    left: 750px;
+    width: 140px;
+   
+}
+
 
 .ageFilterLabel{
       top: 220px;
@@ -1136,6 +1471,70 @@ input {
 .ageRangeFilter{
     top: 325px;
     left: 765px;
+    position: fixed;
+    color: black;
+   
+}
+
+.birthMonthFilterLabel2{
+    top: 215px;
+    left: 550px;
+    position: fixed;
+    color: black;
+     
+}
+
+.birthMonthFilter2{
+    top: 240px;
+    left: 540px;
+    position: fixed;
+    color: black;
+   
+}
+
+.birthMonthFilterLabel3{
+    top: 215px;
+    left: 755px;
+    position: fixed;
+    color: black;
+     
+}
+
+.birthMonthFilter3{
+    top: 240px;
+    left: 740px;
+    position: fixed;
+    color: black;
+   
+}
+
+.birthMonthFilterLabel4{
+    top: 320px;
+    left: 530px;
+    position: fixed;
+    color: black;
+     
+}
+
+.birthMonthFilter4{
+    top: 345px;
+    left: 515px;
+    position: fixed;
+    color: black;
+   
+}
+
+.birthMonthFilterLabel1{
+    top: 315px;
+    left: 515px;
+    position: fixed;
+    color: black;
+     
+}
+
+.birthMonthFilter1{
+    top: 305px;
+    left: 620px;
     position: fixed;
     color: black;
    

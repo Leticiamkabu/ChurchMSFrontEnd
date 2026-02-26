@@ -7,6 +7,13 @@
       <p>Loading, please wait...</p>
     </div>
 
+    <div v-if="noData" class="no-data-card">
+      <div class="card">
+        <h3>No Data for Today</h3>
+        <h4>Please check back later.</h4>
+      </div>
+    </div>
+
      <!-- Sidebar -->
      <!-- Conditional Rendering for Sidebar -->
     <AdminSidebar v-if="isAdmin" />
@@ -176,6 +183,7 @@ export default {
       imageUrl: { url: "" },
       selectedImage : '',
       showDownloadDropdown: false, 
+      noData : false,
       selectedFile : null,
 
       showEditModal: false,
@@ -230,12 +238,15 @@ export default {
         try {
           const response = await axios.get('https://churchmsbackend.onrender.com/first_timers/get_all_first_timers');
           
-          console.info("First timers list", response.data)
+          console.info("First timers list",  typeof response.data.length)
           if (response.data !== 'No first timers data exists') {
 
-            
-
-            this.FirstTimersList = response.data.map(firstTimer => ({
+            if (response.data.length === 0 ) {
+            console.info('Error fetching first timer list');
+            this.noData = true;
+          
+            }else{
+              this.FirstTimersList = response.data.map(firstTimer => ({
 
             name: firstTimer.name,
             phoneNumber: firstTimer.phoneNumber,
@@ -244,13 +255,13 @@ export default {
             }
 
             ))
+            }
 
             
           } else {
-
-          this.memberList = [];  // Clear the list if no data is found
-          
+            console.info(response.data)
           }
+          
         } catch (error) {
           console.error('Error fetching first timer list:', error);
         }
@@ -2816,6 +2827,28 @@ h2{
 
 }
 
+
+.no-data-card{
+  background:rgb(178, 212, 214);
+    height: 100px;
+    position: fixed;
+    top: 300px;
+    left: 500px;
+    width: 300px;
+    border-radius: 40px;
+}
+
+.no-data-card h4{
+    position: relative;
+    top: 30px;
+    left: 16%;
+}
+
+.no-data-card h3{
+    position: relative;
+    top: 22px;
+    left: 20%;
+}
 
 
 </style>

@@ -7,20 +7,22 @@
       <p>Loading, please wait...</p>
     </div>
 
-    <!-- <div v-if="noData" class="no-data-card">
+     <div v-if="noData" class="no-data-card">
       <div class="card">
         <h3>No Data for Today</h3>
         <h4>Please check back later.</h4>
       </div>
     </div>
-    -->
+    
 
-<div v-if="instra" class="no-data-card">
+<div v-if="instra" class="no-data-card1">
       <div class="card">
         <h3>To view data for Today</h3>
         <h4>Please click the buttons provided.</h4>
       </div>
     </div>
+
+    
 
     <!-- Sidebar -->
      <!-- Conditional Rendering for Sidebar -->
@@ -138,6 +140,7 @@ export default {
     async attendance() {
       this.loading = true; 
       this.instra = false;
+      this.noData = false;
       try {
         const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_attendance_data');
         this.attendanceList = response.data;
@@ -183,8 +186,10 @@ export default {
               markedBy: attendant.markedBy,
           }));
         } else {
+          console.info("yes : ", response.data)
+          this.noData = true;
             this.attendanceList = [];  // Clear the list if no data is found
-            this.noData = true;
+            
             
         }
 
@@ -202,6 +207,7 @@ export default {
     async absentAttendance() {
       this.loading = true; 
       this.instra = false;
+      this.noData = false;
       try {
         const response = await axios.get('https://churchmsbackend.onrender.com/attendance/get_absent_attendance_data');
         this.attendanceList = response.data;
@@ -217,6 +223,7 @@ export default {
     }));
     } else {
         this.attendanceList = [];  // Clear the list if no data is found
+        this.noData = true;
     }
 
       } catch (error) {
@@ -530,15 +537,36 @@ th {
 .no-data-card h4{
     position: relative;
     top: 30px;
-    left: 5%;
+    left: 16%;
 }
 
 .no-data-card h3{
     position: relative;
     top: 22px;
-    left: 14%;
+    left: 20%;
 }
 
+.no-data-card1{
+  background:rgb(178, 212, 214);
+    height: 100px;
+    position: fixed;
+    top: 300px;
+    left: 500px;
+    width: 300px;
+    border-radius: 40px;
+}
+
+.no-data-card1 h4{
+    position: relative;
+    top: 30px;
+    left: 5%;
+}
+
+.no-data-card1 h3{
+    position: relative;
+    top: 22px;
+    left: 14%;
+}
 
 
 
