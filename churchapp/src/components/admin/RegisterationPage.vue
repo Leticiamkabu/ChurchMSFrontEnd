@@ -306,7 +306,7 @@ export default {
 
 .showPassword2 input[type="checkbox"]{
  position : relative;
- right: -530px;
+ right: -665px;
   top: 307px;
 }
 
