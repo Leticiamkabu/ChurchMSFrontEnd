@@ -161,7 +161,7 @@ console.info("selected department name : ", this.selectedDepartment);
             console.info('Not Marked >>>>',member.memberID);
             const encodedId = encodeURIComponent(member.memberID);
             console.info('No Marked >>>>',encodedId);
-            const attendanceResponse = await axios.get(`http://localhost:8000/attendance/get_attendance_by_member_id/${encodedId}`);
+            const attendanceResponse = await axios.get(`https://churchmsbackend.onrender.com/attendance/get_attendance_by_member_id/${encodedId}`);
             console.info(attendanceResponse);
 
             let attendance = 'Not Marked'; // Default to 'ABSENT'
